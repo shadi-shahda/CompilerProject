@@ -1,4 +1,4 @@
-// Generated from c:/Users/VICTUS/IdeaProjects/CompilerProject/grammars/Flask-Python-grammars/FlaskPythonLexer.g4 by ANTLR 4.13.1
+// Generated from c:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/Flask-Python-grammars/FlaskPythonLexer.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
