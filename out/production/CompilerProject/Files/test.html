@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <div style="background-color: #f0f0f0; padding: 20px">
+      <h1 style="color: blue; font-size: 24px">Welcome, {{ username }}</h1>
+
+      <!-- <p>Here is your status report:</p> -->
+
+      {% if isAdmin %}
+      <div style="border: 2px solid red">
+        <b>ADMIN DASHBOARD UNLOCKED</b>
+      </div>
+      {% endif %}
+
+      <ul>
+        {% for item in notifications %}
+        <li style="color: gray">Notification: {{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <br />
+    </div>
+  </body>
+</html>
