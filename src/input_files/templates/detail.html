@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Product Details</title>
+</head>
+<body>
+    <div class="container">
+        <div class="detail-card">
+            <img src="{{ product.image }}">
+            <h1>{{ product.name }}</h1>
+            <h2>{{ product.price }} $</h2>
+            <p>{{ product.details }}</p>
+            <a href="/" class="btn">Back</a>
+        </div>
+    </div>
+</body>
+</html>
