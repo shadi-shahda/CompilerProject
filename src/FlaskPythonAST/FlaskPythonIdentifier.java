@@ -1,0 +1,17 @@
+package FlaskPythonAST;
+
+import FlaskPythonVisitor.ASTVisitor;
+
+public class FlaskPythonIdentifier extends FlaskPythonExpression {
+    public String name;
+
+    public FlaskPythonIdentifier(String name, int line) {
+        super(line);
+        this.name = name;
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
+}
