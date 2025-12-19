@@ -1,4 +1,5 @@
-// Generated from grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
+// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
+package generated;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
