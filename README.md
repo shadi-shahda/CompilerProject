@@ -8,7 +8,7 @@ The workspace contains two folders by default, where:
 
 - `src`: the folder to maintain sources
 - `lib`: the folder to maintain dependencies
-- `run this command to generate antlr recognizer`: java -jar dependencies\antlr-4.13.2-complete.jar -Dlanguage=Java -visitor -listener <path-to-lexer-file> <path-to-parser-file> -o <path-to-generated-files>
+- `run this command to generate antlr recognizer`: java -jar dependencies/antlr-4.13.2-complete.jar -Dlanguage=Java -visitor -listener <path-to-lexer-file> <path-to-parser-file> -o <path-to-generated-files>
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
