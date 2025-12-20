@@ -9,6 +9,7 @@ import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonASTNode;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
 import FlaskPythonAST.FlaskPythonDictionaryExpression;
 import FlaskPythonAST.FlaskPythonExpression;
 import FlaskPythonAST.FlaskPythonFunctionCall;
@@ -48,7 +49,7 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
     @Override
     public FlaskPythonImportStatement visitImportStmt(FlaskPythonParser.ImportStmtContext ctx) {
         int line = ctx.getStart().getLine();
-        String libraryName = ctx.FLASK_LIB().getText();
+        String libraryName = ctx.ID().getText();
         List<String> importedItems = new ArrayList<>();
         for (FlaskPythonParser.ImportItemContext item : ctx.importList().importItem()) {
             importedItems.add(item.getText());
@@ -80,25 +81,16 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
         String routePath = null;
         List<String> methods = new ArrayList<>();
         if (ctx.routeDecorator() != null) {
-            // استخراج المسار (مثلاً '/')
             if (ctx.routeDecorator().STRING() != null) {
                 String rawPath = ctx.routeDecorator().STRING().getText();
-                routePath = rawPath.substring(1, rawPath.length() - 1); // إزالة التنصيص
+                routePath = rawPath.substring(1, rawPath.length() - 1);
             }
 
-            // استخراج الـ methods (مثلاً methods=['GET'])
-            // بما أن القاعدة أصبحت تعتمد على ID، فإن:
-            // ID(0) -> هو "app"
-            // ID(1) -> هو "methods" (إن وجدت)
-
-            // نتحقق هل يوجد ID ثاني في جملة الـ decorator؟
             if (ctx.routeDecorator().ID().size() > 1) {
-                String argName = ctx.routeDecorator().ID(1).getText(); // هذا هو methods
+                String argName = ctx.routeDecorator().ID(1).getText();
 
-                // نتأكد أن المبرمج كتب methods وليس شيئاً آخر
                 if ("methods".equals(argName)) {
                     if (ctx.routeDecorator().list() != null) {
-                        // نأخذ تمثيل القائمة كنص بسيط للتخزين
                         String listText = ctx.routeDecorator().list().getText();
                         methods.add(listText);
                     }
@@ -106,7 +98,6 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
             }
         }
 
-        // 3. معالجة جسم الدالة (Body)
         List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
         return new FlaskPythonFunctionDeclaration(name, parameters, body, routePath, methods, line);
     }
@@ -134,7 +125,7 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
     @Override
     public FlaskPythonIfStatement visitIfStmt(FlaskPythonParser.IfStmtContext ctx) {
         int line = ctx.getStart().getLine();
-        FlaskPythonExpression condition = (FlaskPythonExpression) visit(ctx.expression());
+        FlaskPythonExpression condition = (FlaskPythonExpression) visit(ctx.condition());
         List<FlaskPythonStatement> thenBlock = getStatementsFromBlock(ctx.block(0));
         List<FlaskPythonStatement> elseBlock = null;
 
@@ -145,30 +136,55 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
     }
 
     @Override
+    public FlaskPythonASTNode visitCompareCond(FlaskPythonParser.CompareCondContext ctx) {
+        int line = ctx.getStart().getLine();
+        FlaskPythonExpression left = (FlaskPythonExpression) visit(ctx.expression(0));
+        FlaskPythonExpression right = (FlaskPythonExpression) visit(ctx.expression(1));
+        String op = ctx.getChild(1).getText();
+        return new FlaskPythonBinaryExpression(left, op, right, line);
+    }
+
+    @Override
+    public FlaskPythonASTNode visitVarCond(FlaskPythonParser.VarCondContext ctx) {
+        int line = ctx.getStart().getLine();
+        String name = ctx.ID().getText();
+        return new FlaskPythonIdentifier(name, line);
+    }
+
+    @Override
+    public FlaskPythonASTNode visitBoolCond(FlaskPythonParser.BoolCondContext ctx) {
+        int line = ctx.getStart().getLine();
+        boolean val = Boolean.parseBoolean(ctx.BOOLEAN().getText().toLowerCase());
+        return new FlaskPythonBooleanLiteral(val, line);
+    }
+
+    @Override
     public FLaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
         int line = ctx.getStart().getLine();
-        String varName = ctx.ID().getText();
-        FlaskPythonExpression iterable = (FlaskPythonExpression) visit(ctx.expression());
+        String varName = ctx.ID(0).getText();
+
+        String listName = ctx.ID(1).getText();
+        FlaskPythonExpression iterable = new FlaskPythonIdentifier(listName, line);
         List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
-        // تأكد أنك أنشأت كلاس ForStatement في package ast
+
         return new FLaskPythonForStatement(varName, iterable, body, line);
     }
 
     @Override
     public FlaskPythonBinaryExpression visitMathExpr(FlaskPythonParser.MathExprContext ctx) {
+        int line = ctx.getStart().getLine();
         FlaskPythonExpression left = (FlaskPythonExpression) visit(ctx.expression(0));
         FlaskPythonExpression right = (FlaskPythonExpression) visit(ctx.expression(1));
-        String op = ctx.getChild(1).getText(); // + أو -
-        return new FlaskPythonBinaryExpression(left, op, right, ctx.getStart().getLine());
+        String operator = ctx.getChild(1).getText();
+        return new FlaskPythonBinaryExpression(left, operator, right, line);
     }
 
-    // 3. معالجة استدعاء الميثود (مثل products.append)
     @Override
     public FlaskPythonMethodCall visitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx) {
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
         String methodName = ctx.ID().getText();
         List<FlaskPythonExpression> args = getArguments(ctx.argList());
-        // تأكد أنك أنشأت كلاس MethodCall في package ast
+
         return new FlaskPythonMethodCall(object, methodName, args, ctx.getStart().getLine());
     }
 
@@ -241,7 +257,7 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
         Map<String, FlaskPythonExpression> entries = new HashMap<>();
         for (var entry : ctx.dictionary().dictEntry()) {
             String key = entry.STRING().getText();
-            key = key.substring(1, key.length() - 1); // تنظيف الـ key
+            key = key.substring(1, key.length() - 1);
             FlaskPythonExpression value = (FlaskPythonExpression) visit(entry.expression());
             entries.put(key, value);
         }
@@ -264,6 +280,8 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
             for (var exprCtx : ctx.list().elements().expression()) {
                 elements.add((FlaskPythonExpression) visit(exprCtx));
             }
+        } else if (ctx.list().listComp() != null) {
+            elements.add(new FlaskPythonStringLiteral("List_Comprehension_Structure", line));
         }
         return new FlaskPythonListExpression(elements, line);
     }
@@ -329,9 +347,6 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
             FlaskPythonASTNode node = visit(stmtCtx);
             if (node instanceof FlaskPythonStatement) {
                 stmts.add((FlaskPythonStatement) node);
-            } else if (node instanceof FlaskPythonExpression) {
-                // في حال كان التعبير جملة مستقلة
-                // stmts.add(new ExpressionStatement((Expression)node)); // لو انشأت هذا الكلاس
             }
         }
         return stmts;
@@ -341,16 +356,7 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
         List<FlaskPythonExpression> args = new ArrayList<>();
         if (ctx != null) {
             for (var arg : ctx.argument()) {
-                // التعامل مع الحجج، هنا نفترض أنها تعابير مباشرة
-                // إذا كان key=value، الـ visit الخاص بـ argument سيعالجها
-                // هنا للتبسيط سنأخذ النص كاملاً في حال key=value كـ StringLiteral
-                if (arg.ASSIGN() != null) {
-                    // Named argument logic (skipped for brevity)
-                    // سنضيف القيمة فقط
-                    args.add((FlaskPythonExpression) visit(arg.expression()));
-                } else {
-                    args.add((FlaskPythonExpression) visit(arg.expression()));
-                }
+                args.add((FlaskPythonExpression) visit(arg.expression()));
             }
         }
         return args;

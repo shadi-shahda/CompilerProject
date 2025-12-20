@@ -2,9 +2,9 @@ package FlaskPythonAST;
 
 import FlaskPythonVisitor.ASTVisitor;
 
-public class FlaskPythonAssignmentStatement extends FlaskPythonStatement{
-  public String variableName; // اسم المتغير (الطرف الأيسر)
-    public FlaskPythonExpression expression; // القيمة (الطرف الأيمن)
+public class FlaskPythonAssignmentStatement extends FlaskPythonStatement {
+    public String variableName;
+    public FlaskPythonExpression expression;
 
     public FlaskPythonAssignmentStatement(String variableName, FlaskPythonExpression expression, int line) {
         super(line);

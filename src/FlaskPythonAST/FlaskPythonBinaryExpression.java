@@ -5,7 +5,7 @@ import FlaskPythonVisitor.ASTVisitor;
 public class FlaskPythonBinaryExpression extends FlaskPythonExpression {
     public FlaskPythonExpression left;
     public FlaskPythonExpression right;
-    public String operator; // "==", "!=", "+"
+    public String operator;
 
     public FlaskPythonBinaryExpression(FlaskPythonExpression left, String operator, FlaskPythonExpression right,
             int line) {

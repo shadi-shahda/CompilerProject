@@ -5,8 +5,7 @@ import java.util.Map;
 import FlaskPythonVisitor.ASTVisitor;
 
 public class FlaskPythonDictionaryExpression extends FlaskPythonExpression {
-  
-  // المفتاح دائماً String حسب قواعدنا، والقيمة هي Expression
+
     public Map<String, FlaskPythonExpression> entries;
 
     public FlaskPythonDictionaryExpression(Map<String, FlaskPythonExpression> entries, int line) {

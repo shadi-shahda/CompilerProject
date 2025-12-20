@@ -77,6 +77,27 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfStmt(FlaskPythonParser.IfStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code CompareCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompareCond(FlaskPythonParser.CompareCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code VarCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarCond(FlaskPythonParser.VarCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolCond(FlaskPythonParser.BoolCondContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#forStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -108,13 +129,6 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringExpr(FlaskPythonParser.StringExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionCallExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code IdExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
 	 * @param ctx the parse tree
@@ -136,19 +150,26 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFlaskCallExpr(FlaskPythonParser.FlaskCallExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code DictExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDictExpr(FlaskPythonParser.DictExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ListAccessExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DictExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDictExpr(FlaskPythonParser.DictExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ListExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
@@ -163,6 +184,13 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIntExpr(FlaskPythonParser.IntExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExpr(FlaskPythonParser.BoolExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code MemberAccessExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.

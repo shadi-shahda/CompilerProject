@@ -1,6 +1,7 @@
 import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
 import FlaskPythonAST.FlaskPythonDictionaryExpression;
 import FlaskPythonAST.FlaskPythonFunctionCall;
 import FlaskPythonAST.FlaskPythonFunctionDeclaration;
@@ -20,7 +21,6 @@ import FlaskPythonVisitor.ASTVisitor;
 public class FlaskPythonASTPrinter implements ASTVisitor<String> {
   private int indentLevel = 0;
 
-  // دالة مساعدة لعمل المسافات
   private String indent() {
     return "  ".repeat(indentLevel);
   }
@@ -96,8 +96,6 @@ public class FlaskPythonASTPrinter implements ASTVisitor<String> {
 
   @Override
   public String visit(FlaskPythonFunctionCall call) {
-    // طباعة مختصرة للاستدعاء
-    // ملاحظة: قد نحتاج لإزالة الـ \n الزائدة إذا كان داخل تعبير
     return "Call " + call.functionName + "(" + call.arguments.size() + " args)";
   }
 
@@ -105,8 +103,6 @@ public class FlaskPythonASTPrinter implements ASTVisitor<String> {
   public String visit(FlaskPythonImportStatement stmt) {
     return indent() + "Import: " + stmt.libraryName + " " + stmt.importedItems + "\n";
   }
-
-  // --- التعابير (تعيد نصاً بسيطاً بدون سطر جديد غالباً) ---
 
   @Override
   public String visit(FlaskPythonBinaryExpression e) {
@@ -131,7 +127,7 @@ public class FlaskPythonASTPrinter implements ASTVisitor<String> {
   @Override
   public String visit(FlaskPythonListExpression e) {
     return "[List...]";
-  } // تبسيط للعرض
+  }
 
   @Override
   public String visit(FlaskPythonDictionaryExpression e) {
@@ -146,11 +142,10 @@ public class FlaskPythonASTPrinter implements ASTVisitor<String> {
   @Override
   public String visit(FLaskPythonForStatement forStmt) {
     StringBuilder sb = new StringBuilder();
-    // طباعة رأس الحلقة
+
     sb.append(indent()).append("For ").append(forStmt.variableName)
         .append(" In ").append(forStmt.iterable.accept(this).trim()).append("\n");
 
-    // طباعة جسم الحلقة
     indentLevel++;
     for (FlaskPythonStatement s : forStmt.body) {
       sb.append(s.accept(this));
@@ -162,6 +157,11 @@ public class FlaskPythonASTPrinter implements ASTVisitor<String> {
   @Override
   public String visit(FlaskPythonMethodCall methCall) {
     return methCall.object.accept(this).trim() + "." + methCall.methodName + "(...)";
+  }
+
+  @Override
+  public String visit(FlaskPythonBooleanLiteral booleanLiteral) {
+    return booleanLiteral.value ? "True" : "False";
   }
 
 }
