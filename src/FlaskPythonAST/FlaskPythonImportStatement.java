@@ -5,8 +5,8 @@ import java.util.List;
 import FlaskPythonVisitor.ASTVisitor;
 
 public class FlaskPythonImportStatement extends FlaskPythonStatement {
-  public String libraryName; // اسم المكتبة (مثل flask)
-    public List<String> importedItems; // قائمة العناصر المستوردة (Flask, request...)
+    public String libraryName;
+    public List<String> importedItems;
 
     public FlaskPythonImportStatement(String libraryName, List<String> importedItems, int line) {
         super(line);

@@ -2,9 +2,9 @@ package FlaskPythonAST;
 
 import FlaskPythonVisitor.ASTVisitor;
 
-public class FlaskPythonMemberAccess extends FlaskPythonExpression{
-  public FlaskPythonExpression object; // الكائن (مثل product)
-    public String memberName; // اسم الخاصية (مثل id)
+public class FlaskPythonMemberAccess extends FlaskPythonExpression {
+    public FlaskPythonExpression object;
+    public String memberName;
 
     public FlaskPythonMemberAccess(FlaskPythonExpression object, String memberName, int line) {
         super(line);

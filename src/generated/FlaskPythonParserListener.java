@@ -118,6 +118,42 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitIfStmt(FlaskPythonParser.IfStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code CompareCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompareCond(FlaskPythonParser.CompareCondContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CompareCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompareCond(FlaskPythonParser.CompareCondContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code VarCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarCond(FlaskPythonParser.VarCondContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code VarCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarCond(FlaskPythonParser.VarCondContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BoolCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolCond(FlaskPythonParser.BoolCondContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolCond}
+	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolCond(FlaskPythonParser.BoolCondContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#forStmt}.
 	 * @param ctx the parse tree
 	 */
@@ -170,18 +206,6 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitStringExpr(FlaskPythonParser.StringExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FunctionCallExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionCallExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code IdExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
 	 * @param ctx the parse tree
@@ -218,18 +242,6 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitFlaskCallExpr(FlaskPythonParser.FlaskCallExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code DictExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterDictExpr(FlaskPythonParser.DictExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code DictExpr}
-	 * labeled alternative in {@link FlaskPythonParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitDictExpr(FlaskPythonParser.DictExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ListAccessExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
 	 * @param ctx the parse tree
@@ -241,6 +253,30 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DictExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDictExpr(FlaskPythonParser.DictExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DictExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDictExpr(FlaskPythonParser.DictExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ListExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.
@@ -265,6 +301,18 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntExpr(FlaskPythonParser.IntExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolExpr(FlaskPythonParser.BoolExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolExpr(FlaskPythonParser.BoolExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code MemberAccessExpr}
 	 * labeled alternative in {@link FlaskPythonParser#expression}.

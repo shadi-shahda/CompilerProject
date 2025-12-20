@@ -3,6 +3,7 @@ package FlaskPythonVisitor; // يفضل وضعهم في package خاص
 import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
 import FlaskPythonAST.FlaskPythonDictionaryExpression;
 import FlaskPythonAST.FlaskPythonFunctionCall;
 import FlaskPythonAST.FlaskPythonFunctionDeclaration;
@@ -27,13 +28,14 @@ public interface ASTVisitor<T> {
     T visit(FlaskPythonImportStatement importStmt);
     T visit(FLaskPythonForStatement forStmt);
     
-    T visit(FlaskPythonBinaryExpression binExpr); // للعمليات + - ==
+    T visit(FlaskPythonBinaryExpression binExpr);
     T visit(FlaskPythonIdentifier identifier);
     T visit(FlaskPythonStringLiteral stringLit);
     T visit(FlaskPythonIntegerLiteral intLit);
     T visit(FlaskPythonFunctionCall funcCall);
     T visit(FlaskPythonListExpression listExpr);
     T visit(FlaskPythonDictionaryExpression dictExpr);
-    T visit(FlaskPythonMemberAccess memberAccess); // product.id
+    T visit(FlaskPythonMemberAccess memberAccess);
     T visit(FlaskPythonMethodCall methCall);
+    T visit(FlaskPythonBooleanLiteral booleanLiteral);
 }

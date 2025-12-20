@@ -149,6 +149,42 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCompareCond(FlaskPythonParser.CompareCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompareCond(FlaskPythonParser.CompareCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVarCond(FlaskPythonParser.VarCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVarCond(FlaskPythonParser.VarCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolCond(FlaskPythonParser.BoolCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolCond(FlaskPythonParser.BoolCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterForStmt(FlaskPythonParser.ForStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -209,18 +245,6 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIdExpr(FlaskPythonParser.IdExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -257,18 +281,6 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDictExpr(FlaskPythonParser.DictExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDictExpr(FlaskPythonParser.DictExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -276,6 +288,30 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDictExpr(FlaskPythonParser.DictExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDictExpr(FlaskPythonParser.DictExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -300,6 +336,18 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntExpr(FlaskPythonParser.IntExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolExpr(FlaskPythonParser.BoolExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolExpr(FlaskPythonParser.BoolExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

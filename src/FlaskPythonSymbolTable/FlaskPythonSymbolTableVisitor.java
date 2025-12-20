@@ -3,6 +3,7 @@ package FlaskPythonSymbolTable;
 import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
 import FlaskPythonAST.FlaskPythonDictionaryExpression;
 import FlaskPythonAST.FlaskPythonExpression;
 import FlaskPythonAST.FlaskPythonFunctionCall;
@@ -20,8 +21,6 @@ import FlaskPythonAST.FlaskPythonStatement;
 import FlaskPythonAST.FlaskPythonStringLiteral;
 import FlaskPythonVisitor.ASTVisitor;
 
-// يرث من ASTVisitor (الواجهة التي أنشأناها سابقاً)
-// نوع الإرجاع Void لأننا لا نحتاجZ لإرجاع قيم، فقط نملأ الجدول
 public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
 
     private FlaskPythonSymbolTable symbolTable;
@@ -156,6 +155,11 @@ public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
         for (FlaskPythonExpression expression : methCall.arguments) {
             expression.accept(this);
         }
+        return null;
+    }
+
+    @Override
+    public Void visit(FlaskPythonBooleanLiteral booleanLiteral) {
         return null;
     }
 

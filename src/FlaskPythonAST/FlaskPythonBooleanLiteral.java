@@ -2,10 +2,11 @@ package FlaskPythonAST;
 
 import FlaskPythonVisitor.ASTVisitor;
 
-public class FlaskPythonStringLiteral extends FlaskPythonExpression {
-  public String value;
+public class FlaskPythonBooleanLiteral extends FlaskPythonExpression {
 
-  public FlaskPythonStringLiteral(String value, int line) {
+  public boolean value;
+
+  public FlaskPythonBooleanLiteral(boolean value, int line) {
     super(line);
     this.value = value;
   }
@@ -14,4 +15,5 @@ public class FlaskPythonStringLiteral extends FlaskPythonExpression {
   public <T> T accept(ASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
+  
 }

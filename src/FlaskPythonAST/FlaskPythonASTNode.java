@@ -13,7 +13,5 @@ public abstract class FlaskPythonASTNode {
         return lineNumber;
     }
 
-    // الدالة السحرية التي تحقق الـ Polymorphism
-    // كل عقدة ستنفذها بطريقتها الخاصة لتستدعي الزائر المناسب
     public abstract <T> T accept(ASTVisitor<T> visitor);
 }

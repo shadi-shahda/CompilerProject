@@ -5,9 +5,9 @@ import java.util.List;
 import FlaskPythonVisitor.ASTVisitor;
 
 public class FLaskPythonForStatement extends FlaskPythonStatement {
-  public String variableName; // المتغير p
-  public FlaskPythonExpression iterable; // القائمة products
-  public List<FlaskPythonStatement> body; // جسم الحلقة
+  public String variableName;
+  public FlaskPythonExpression iterable;
+  public List<FlaskPythonStatement> body;
 
   public FLaskPythonForStatement(String variableName, FlaskPythonExpression iterable, List<FlaskPythonStatement> body, int line) {
     super(line);

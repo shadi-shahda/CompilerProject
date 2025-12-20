@@ -20,11 +20,9 @@ public class App {
             System.out.println(">>> 1. Reading File: " + sourceFile);
             CharStream input = CharStreams.fromFileName(sourceFile);
 
-            // 2. التحليل اللفظي (Lexer)
             FlaskPythonLexer lexer = new FlaskPythonLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            // 3. التحليل القواعدي (Parser)
             System.out.println(">>> 2. Parsing...");
             FlaskPythonParser parser = new FlaskPythonParser(tokens);
             ParseTree tree = parser.program();
@@ -38,19 +36,15 @@ public class App {
             AntlrToASTVisitor astBuilder = new AntlrToASTVisitor();
             FlaskPythonASTNode astRoot = astBuilder.visit(tree);
 
-            // 5. بناء جدول الرموز
             System.out.println(">>> 4. Building Symbol Table...");
             FlaskPythonSymbolTable symbolTable = new FlaskPythonSymbolTable();
             FlaskPythonSymbolTableVisitor symbolVisitor = new FlaskPythonSymbolTableVisitor(symbolTable);
-            astRoot.accept(symbolVisitor); // تعبئة الجدول
+            astRoot.accept(symbolVisitor);
 
-            // 6. الطباعة النهائية
             System.out.println("\n================ OUTPUT ================\n");
 
-            // طباعة جدول الرموز
             symbolTable.printTable();
 
-            // طباعة الشجرة
             System.out.println("=== Abstract Syntax Tree (AST) ===");
             FlaskPythonASTPrinter printer = new FlaskPythonASTPrinter();
             String astOutput = astRoot.accept(printer);
