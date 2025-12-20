@@ -1,0 +1,24 @@
+package FlaskPythonAST;
+
+import java.util.List;
+
+import FlaskPythonVisitor.ASTVisitor;
+
+public class FlaskPythonMethodCall extends FlaskPythonExpression {
+  public FlaskPythonExpression object; // الكائن (مثل products)
+  public String methodName; // اسم الدالة (مثل append)
+  public List<FlaskPythonExpression> arguments;
+
+  public FlaskPythonMethodCall(FlaskPythonExpression object, String methodName, List<FlaskPythonExpression> arguments, int line) {
+    super(line);
+    this.object = object;
+    this.methodName = methodName;
+    this.arguments = arguments;
+  }
+
+  @Override
+  public <T> T accept(ASTVisitor<T> visitor) {
+    return visitor.visit(this);
+  }
+}
+

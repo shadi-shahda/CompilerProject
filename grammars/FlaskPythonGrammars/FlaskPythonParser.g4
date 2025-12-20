@@ -26,7 +26,6 @@ importItem:
 	ID
 	| FLASK_CLASS
 	| RENDER_TEMPLATE
-	| REQUEST
 	| REDIRECT
 	| URL_FOR;
 
@@ -36,7 +35,7 @@ functionDecl:
 
 // الـ Decorator: @app.route('/path', methods=['GET'])
 routeDecorator:
-	AT APP DOT ROUTE LPAREN STRING (COMMA METHODS ASSIGN list)? RPAREN;
+	AT ID DOT ROUTE LPAREN STRING (COMMA ID ASSIGN list)? RPAREN;
 
 paramList: ID (COMMA ID)*;
 
@@ -46,10 +45,14 @@ paramList: ID (COMMA ID)*;
 // البلوك هو مجموعة جمل تنتهي بـ # end
 block: statement* BLOCK_END;
 
-statement: ifStmt | returnStmt | assignment | expressionStmt;
+statement: ifStmt | forStmt | returnStmt | assignment | expressionStmt;
 
 // الشرط: if ... : ... # end
 ifStmt: IF expression COLON block (ELSE COLON block)?;
+
+forStmt
+    : FOR ID IN expression COLON block
+    ;
 
 returnStmt: RETURN expression;
 
@@ -62,14 +65,19 @@ expressionStmt: expression;
 // -------------------------------------------------------- 4. التعابير (Expressions)
 // --------------------------------------------------------
 
-expression:
-	expression LBRACKET expression RBRACKET			# ListAccessExpr // products[0]
+expression
+	: expression DOT ID LPAREN argList? RPAREN     # MethodCallExpr
+	| expression LBRACKET expression RBRACKET			# ListAccessExpr // products[0]
 	| expression DOT ID								# MemberAccessExpr // product.id
 	| ID LPAREN argList? RPAREN						# FunctionCallExpr // my_func()
 	| flaskFunc LPAREN argList? RPAREN				# FlaskCallExpr // render_template()
+	| expression (MUL | DIV) expression            # MathExpr
+  | expression (PLUS | MINUS) expression         # MathExpr
 	| expression (EQUALS | NOT_EQUALS) expression	# ComparisonExpr // x == y
 	| list											# ListExpr // [1, 2]
 	| dictionary									# DictExpr // {'id': 1}
+	| expression DOT ID LPAREN argList? RPAREN     # MethodCallExpr
+  | expression DOT ID                            # MemberAccessExpr
 	| ID											# IdExpr // x
 	| INT											# IntExpr // 10
 	| STRING										# StringExpr ; // "hello"

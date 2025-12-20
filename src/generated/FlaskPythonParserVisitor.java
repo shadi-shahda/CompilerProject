@@ -1,5 +1,5 @@
-// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 package generated;
+// Generated from grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -76,6 +76,12 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIfStmt(FlaskPythonParser.IfStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#forStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStmt(FlaskPythonParser.ForStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#returnStmt}.
 	 * @param ctx the parse tree
@@ -164,6 +170,20 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMemberAccessExpr(FlaskPythonParser.MemberAccessExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathExpr(FlaskPythonParser.MathExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MethodCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#flaskFunc}.
 	 * @param ctx the parse tree

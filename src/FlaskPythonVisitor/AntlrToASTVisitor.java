@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonASTNode;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
@@ -18,6 +19,7 @@ import FlaskPythonAST.FlaskPythonImportStatement;
 import FlaskPythonAST.FlaskPythonIntegerLiteral;
 import FlaskPythonAST.FlaskPythonListExpression;
 import FlaskPythonAST.FlaskPythonMemberAccess;
+import FlaskPythonAST.FlaskPythonMethodCall;
 import FlaskPythonAST.FlaskPythonProgram;
 import FlaskPythonAST.FlaskPythonReturnStatement;
 import FlaskPythonAST.FlaskPythonStatement;
@@ -78,13 +80,33 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
         String routePath = null;
         List<String> methods = new ArrayList<>();
         if (ctx.routeDecorator() != null) {
-            routePath = ctx.routeDecorator().STRING().getText();
-            routePath = routePath.substring(1, routePath.length() - 1);
-            if (ctx.routeDecorator().list() != null) {
-                String listText = ctx.routeDecorator().list().getText();
-                methods.add(listText);
+            // استخراج المسار (مثلاً '/')
+            if (ctx.routeDecorator().STRING() != null) {
+                String rawPath = ctx.routeDecorator().STRING().getText();
+                routePath = rawPath.substring(1, rawPath.length() - 1); // إزالة التنصيص
+            }
+
+            // استخراج الـ methods (مثلاً methods=['GET'])
+            // بما أن القاعدة أصبحت تعتمد على ID، فإن:
+            // ID(0) -> هو "app"
+            // ID(1) -> هو "methods" (إن وجدت)
+
+            // نتحقق هل يوجد ID ثاني في جملة الـ decorator؟
+            if (ctx.routeDecorator().ID().size() > 1) {
+                String argName = ctx.routeDecorator().ID(1).getText(); // هذا هو methods
+
+                // نتأكد أن المبرمج كتب methods وليس شيئاً آخر
+                if ("methods".equals(argName)) {
+                    if (ctx.routeDecorator().list() != null) {
+                        // نأخذ تمثيل القائمة كنص بسيط للتخزين
+                        String listText = ctx.routeDecorator().list().getText();
+                        methods.add(listText);
+                    }
+                }
             }
         }
+
+        // 3. معالجة جسم الدالة (Body)
         List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
         return new FlaskPythonFunctionDeclaration(name, parameters, body, routePath, methods, line);
     }
@@ -120,6 +142,34 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
             elseBlock = getStatementsFromBlock(ctx.block(1));
         }
         return new FlaskPythonIfStatement(condition, thenBlock, elseBlock, line);
+    }
+
+    @Override
+    public FLaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
+        int line = ctx.getStart().getLine();
+        String varName = ctx.ID().getText();
+        FlaskPythonExpression iterable = (FlaskPythonExpression) visit(ctx.expression());
+        List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
+        // تأكد أنك أنشأت كلاس ForStatement في package ast
+        return new FLaskPythonForStatement(varName, iterable, body, line);
+    }
+
+    @Override
+    public FlaskPythonBinaryExpression visitMathExpr(FlaskPythonParser.MathExprContext ctx) {
+        FlaskPythonExpression left = (FlaskPythonExpression) visit(ctx.expression(0));
+        FlaskPythonExpression right = (FlaskPythonExpression) visit(ctx.expression(1));
+        String op = ctx.getChild(1).getText(); // + أو -
+        return new FlaskPythonBinaryExpression(left, op, right, ctx.getStart().getLine());
+    }
+
+    // 3. معالجة استدعاء الميثود (مثل products.append)
+    @Override
+    public FlaskPythonMethodCall visitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx) {
+        FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
+        String methodName = ctx.ID().getText();
+        List<FlaskPythonExpression> args = getArguments(ctx.argList());
+        // تأكد أنك أنشأت كلاس MethodCall في package ast
+        return new FlaskPythonMethodCall(object, methodName, args, ctx.getStart().getLine());
     }
 
     @Override
@@ -161,7 +211,7 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
     @Override
     public FlaskPythonIdentifier visitIdExpr(FlaskPythonParser.IdExprContext ctx) {
         int line = ctx.getStart().getLine();
-        String name = ctx.ID().getText();
+        String name = ctx.getText();
         return new FlaskPythonIdentifier(name, line);
     }
 

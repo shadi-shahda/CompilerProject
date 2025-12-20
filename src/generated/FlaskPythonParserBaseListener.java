@@ -1,5 +1,5 @@
-// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 package generated;
+// Generated from grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -144,6 +144,18 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfStmt(FlaskPythonParser.IfStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForStmt(FlaskPythonParser.ForStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForStmt(FlaskPythonParser.ForStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -300,6 +312,30 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMemberAccessExpr(FlaskPythonParser.MemberAccessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMathExpr(FlaskPythonParser.MathExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMathExpr(FlaskPythonParser.MathExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
