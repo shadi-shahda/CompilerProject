@@ -14,12 +14,9 @@ IMPORT: 'import';
 FLASK_LIB: 'flask'; // للمكتبة (from flask)
 FLASK_CLASS: 'Flask'; // للكلاس (import Flask)
 ROUTE: 'route';
-APP: 'app'; // نحتاجها للمتغير app
 RENDER_TEMPLATE: 'render_template';
-REQUEST: 'request';
 REDIRECT: 'redirect';
 URL_FOR: 'url_for';
-METHODS: 'methods';
 GET: 'GET';
 POST: 'POST';
 
@@ -37,10 +34,13 @@ AT: '@';
 ASSIGN: '=';
 EQUALS: '==';
 NOT_EQUALS: '!=';
-PLUS: '+';
+PLUS      : '+';
+MINUS     : '-';
+MUL       : '*';
+DIV       : '/';
 
 // --- 4. الحل السحري للبلوكات (Block Handling) --- عندما يرى المترجم # end سيعتبرها رمز نهاية بلوك
-BLOCK_END: '# end';
+BLOCK_END : '#' [ \t]+ 'end';
 
 ID: [a-zA-Z_] [a-zA-Z0-9_]*;
 INT: [0-9]+;

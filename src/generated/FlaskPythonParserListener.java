@@ -1,5 +1,5 @@
-// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 package generated;
+// Generated from grammars/FlaskPythonGrammars/FlaskPythonParser.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -117,6 +117,16 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfStmt(FlaskPythonParser.IfStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#forStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStmt(FlaskPythonParser.ForStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#forStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStmt(FlaskPythonParser.ForStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#returnStmt}.
 	 * @param ctx the parse tree
@@ -267,6 +277,30 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMemberAccessExpr(FlaskPythonParser.MemberAccessExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathExpr(FlaskPythonParser.MathExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathExpr(FlaskPythonParser.MathExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MethodCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MethodCallExpr}
+	 * labeled alternative in {@link FlaskPythonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#flaskFunc}.
 	 * @param ctx the parse tree
