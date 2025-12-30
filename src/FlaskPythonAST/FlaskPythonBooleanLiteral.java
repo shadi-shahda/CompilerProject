@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonBooleanLiteral extends FlaskPythonExpression {
 
@@ -12,7 +12,7 @@ public class FlaskPythonBooleanLiteral extends FlaskPythonExpression {
   }
 
   @Override
-  public <T> T accept(ASTVisitor<T> visitor) {
+  public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
   

@@ -2,7 +2,7 @@ package FlaskPythonAST;
 
 import java.util.List;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonIfStatement extends FlaskPythonStatement {
   public FlaskPythonExpression condition;
@@ -18,7 +18,7 @@ public class FlaskPythonIfStatement extends FlaskPythonStatement {
   }
 
   @Override
-  public <T> T accept(ASTVisitor<T> visitor) {
+  public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
 

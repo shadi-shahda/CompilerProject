@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonMemberAccess extends FlaskPythonExpression {
     public FlaskPythonExpression object;
@@ -13,7 +13,7 @@ public class FlaskPythonMemberAccess extends FlaskPythonExpression {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

@@ -3,7 +3,7 @@ package FlaskPythonAST;
 import java.util.ArrayList;
 import java.util.List;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonProgram extends FlaskPythonASTNode {
 
@@ -18,7 +18,7 @@ public class FlaskPythonProgram extends FlaskPythonASTNode {
   }
 
   @Override
-  public <T> T accept(ASTVisitor<T> visitor) {
+  public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
 

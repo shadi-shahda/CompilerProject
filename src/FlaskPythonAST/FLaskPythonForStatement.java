@@ -2,7 +2,7 @@ package FlaskPythonAST;
 
 import java.util.List;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FLaskPythonForStatement extends FlaskPythonStatement {
   public String variableName;
@@ -17,7 +17,7 @@ public class FLaskPythonForStatement extends FlaskPythonStatement {
   }
 
   @Override
-  public <T> T accept(ASTVisitor<T> visitor) {
+  public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
 }

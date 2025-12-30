@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonIntegerLiteral extends FlaskPythonExpression {
   public int value;
@@ -11,7 +11,7 @@ public class FlaskPythonIntegerLiteral extends FlaskPythonExpression {
 
 
   @Override
-  public <T> T accept(ASTVisitor<T> visitor) {
+  public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
 }

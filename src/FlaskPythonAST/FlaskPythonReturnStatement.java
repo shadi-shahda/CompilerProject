@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonReturnStatement extends FlaskPythonStatement{
     public FlaskPythonExpression expression;
@@ -11,7 +11,7 @@ public class FlaskPythonReturnStatement extends FlaskPythonStatement{
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

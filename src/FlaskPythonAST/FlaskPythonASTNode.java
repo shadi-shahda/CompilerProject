@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public abstract class FlaskPythonASTNode {
     protected int lineNumber;
@@ -13,5 +13,5 @@ public abstract class FlaskPythonASTNode {
         return lineNumber;
     }
 
-    public abstract <T> T accept(ASTVisitor<T> visitor);
+    public abstract <T> T accept(FlaskPythonASTVisitor<T> visitor);
 }
