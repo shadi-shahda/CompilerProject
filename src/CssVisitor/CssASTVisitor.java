@@ -2,6 +2,8 @@ package CssVisitor;
 
 import CssAST.CssClassSelector;
 import CssAST.CssDeclaration;
+import CssAST.CssFloatValue;
+import CssAST.CssFunction;
 import CssAST.CssHexValue;
 import CssAST.CssIdSelector;
 import CssAST.CssIdentValue;
@@ -29,4 +31,6 @@ public interface CssASTVisitor<T> {
   T visit(CssPxValue pxValue);
   T visit(CssPercentValue percentValue);
   T visit(CssHexValue hexValue);
+  T visit(CssFunction function);
+  T visit(CssFloatValue floatValue);
 }

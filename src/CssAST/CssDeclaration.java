@@ -1,17 +1,22 @@
 package CssAST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import CssVisitor.CssASTVisitor;
 
 public class CssDeclaration extends CssASTNode {
   public String property;
-  List<CssValueTerm> valueTerms;
+  public List<CssValueTerm> valueTerms;
 
-  public CssDeclaration(String property, List<CssValueTerm> valueTerms, int line) {
+  public CssDeclaration(String property, int line) {
     super(line);
     this.property = property;
-    this.valueTerms = valueTerms;
+    this.valueTerms = new ArrayList<>();
+  }
+
+  public void addValueTerm(CssValueTerm term) {
+    valueTerms.add(term);
   }
 
   @Override

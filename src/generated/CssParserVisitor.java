@@ -62,6 +62,12 @@ public interface CssParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(CssParser.DeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CssParser#function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunction(CssParser.FunctionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CssParser#property}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -115,4 +121,18 @@ public interface CssParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHexValue(CssParser.HexValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FloatValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatValue(CssParser.FloatValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionValue(CssParser.FunctionValueContext ctx);
 }

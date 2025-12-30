@@ -2,14 +2,17 @@ lexer grammar CssLexer;
 
 LBRACE: '{';
 RBRACE: '}';
+LPAREN: '(';
+RPAREN: ')';
 COLON: ':';
 SEMICOLON: ';';
 COMMA: ',';
 
 PX: [0-9]+ 'px';
 PERCENT: [0-9]+ '%';
+FLOAT: [0-9]* '.' [0-9]+;
 INT: [0-9]+;
-STRING : '"' ~["]* '"' | '\'' ~[']* '\'';
+STRING: '"' ~["]* '"' | '\'' ~[']* '\'';
 
 HASH: '#' [0-9a-fA-F]+;
 
