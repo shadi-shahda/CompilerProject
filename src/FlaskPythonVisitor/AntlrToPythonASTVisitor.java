@@ -9,7 +9,7 @@ import FlaskPythonAST.*;
 import generated.FlaskPythonParser;
 import generated.FlaskPythonParserBaseVisitor;
 
-public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonASTNode> {
+public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonASTNode> {
     @Override
     public FlaskPythonProgram visitProgram(FlaskPythonParser.ProgramContext ctx) {
         FlaskPythonProgram program = new FlaskPythonProgram();

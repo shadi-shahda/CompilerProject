@@ -94,6 +94,16 @@ public interface CssParserListener extends ParseTreeListener {
 	 */
 	void exitDeclaration(CssParser.DeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CssParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction(CssParser.FunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CssParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction(CssParser.FunctionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CssParser#property}.
 	 * @param ctx the parse tree
 	 */
@@ -185,4 +195,28 @@ public interface CssParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHexValue(CssParser.HexValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FloatValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatValue(CssParser.FloatValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FloatValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatValue(CssParser.FloatValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionValue(CssParser.FunctionValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionValue}
+	 * labeled alternative in {@link CssParser#valueTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionValue(CssParser.FunctionValueContext ctx);
 }

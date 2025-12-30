@@ -15,9 +15,13 @@ selector:
 	| CLASS_SELECTOR	# ClassSelector
 	| HASH				# IdSelector;
 
-block: LBRACE (declaration (SEMICOLON declaration)*)? SEMICOLON? RBRACE;
+block:
+	LBRACE (declaration (SEMICOLON declaration)*)? SEMICOLON? RBRACE;
 
 declaration: property COLON value;
+
+function:
+	IDENTIFIER LPAREN valueTerm (COMMA? valueTerm)* RPAREN;
 
 property: IDENTIFIER;
 
@@ -29,4 +33,6 @@ valueTerm:
 	| STRING	# StringVlue
 	| PX		# PxValue
 	| PERCENT	# PercentValue
-	| HASH		# HexValue;
+	| HASH		# HexValue
+	| FLOAT		# FloatValue
+	| function	# FunctionValue;
