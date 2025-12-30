@@ -5,26 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import FlaskPythonAST.FLaskPythonForStatement;
-import FlaskPythonAST.FlaskPythonASTNode;
-import FlaskPythonAST.FlaskPythonAssignmentStatement;
-import FlaskPythonAST.FlaskPythonBinaryExpression;
-import FlaskPythonAST.FlaskPythonBooleanLiteral;
-import FlaskPythonAST.FlaskPythonDictionaryExpression;
-import FlaskPythonAST.FlaskPythonExpression;
-import FlaskPythonAST.FlaskPythonFunctionCall;
-import FlaskPythonAST.FlaskPythonFunctionDeclaration;
-import FlaskPythonAST.FlaskPythonIdentifier;
-import FlaskPythonAST.FlaskPythonIfStatement;
-import FlaskPythonAST.FlaskPythonImportStatement;
-import FlaskPythonAST.FlaskPythonIntegerLiteral;
-import FlaskPythonAST.FlaskPythonListExpression;
-import FlaskPythonAST.FlaskPythonMemberAccess;
-import FlaskPythonAST.FlaskPythonMethodCall;
-import FlaskPythonAST.FlaskPythonProgram;
-import FlaskPythonAST.FlaskPythonReturnStatement;
-import FlaskPythonAST.FlaskPythonStatement;
-import FlaskPythonAST.FlaskPythonStringLiteral;
+import FlaskPythonAST.*;
 import generated.FlaskPythonParser;
 import generated.FlaskPythonParserBaseVisitor;
 
@@ -133,6 +114,13 @@ public class AntlrToASTVisitor extends FlaskPythonParserBaseVisitor<FlaskPythonA
             elseBlock = getStatementsFromBlock(ctx.block(1));
         }
         return new FlaskPythonIfStatement(condition, thenBlock, elseBlock, line);
+    }
+
+    @Override
+    public FlaskPythonASTNode visitPrintStmt(FlaskPythonParser.PrintStmtContext ctx) {
+        int line = ctx.getStart().getLine();
+        FlaskPythonExpression expression = (FlaskPythonExpression) visit(ctx.expression());
+        return new FlaskPythonPrintStatement(expression, line);
     }
 
     @Override

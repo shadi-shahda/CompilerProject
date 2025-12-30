@@ -1,22 +1,6 @@
 package FlaskPythonVisitor; // يفضل وضعهم في package خاص
 
-import FlaskPythonAST.FLaskPythonForStatement;
-import FlaskPythonAST.FlaskPythonAssignmentStatement;
-import FlaskPythonAST.FlaskPythonBinaryExpression;
-import FlaskPythonAST.FlaskPythonBooleanLiteral;
-import FlaskPythonAST.FlaskPythonDictionaryExpression;
-import FlaskPythonAST.FlaskPythonFunctionCall;
-import FlaskPythonAST.FlaskPythonFunctionDeclaration;
-import FlaskPythonAST.FlaskPythonIdentifier;
-import FlaskPythonAST.FlaskPythonIfStatement;
-import FlaskPythonAST.FlaskPythonImportStatement;
-import FlaskPythonAST.FlaskPythonIntegerLiteral;
-import FlaskPythonAST.FlaskPythonListExpression;
-import FlaskPythonAST.FlaskPythonMemberAccess;
-import FlaskPythonAST.FlaskPythonMethodCall;
-import FlaskPythonAST.FlaskPythonProgram;
-import FlaskPythonAST.FlaskPythonReturnStatement;
-import FlaskPythonAST.FlaskPythonStringLiteral;
+import FlaskPythonAST.*;
 
 public interface ASTVisitor<T> {
 
@@ -27,6 +11,7 @@ public interface ASTVisitor<T> {
     T visit(FlaskPythonAssignmentStatement assignStmt);
     T visit(FlaskPythonImportStatement importStmt);
     T visit(FLaskPythonForStatement forStmt);
+    T visit(FlaskPythonPrintStatement printStmt);
     
     T visit(FlaskPythonBinaryExpression binExpr);
     T visit(FlaskPythonIdentifier identifier);

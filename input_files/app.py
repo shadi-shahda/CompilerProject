@@ -32,9 +32,11 @@ def product_detail(id):
     for p in products:
         if p["id"] == id:
             product = p
+            x = 5
             break
         # end
     # end
+    print(x) # اختبار لنطاق المتغير
     return render_template('detail.html', product=product)
 # end
 

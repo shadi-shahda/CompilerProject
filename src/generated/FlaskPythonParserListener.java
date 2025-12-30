@@ -108,6 +108,16 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitStatement(FlaskPythonParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#printStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintStmt(FlaskPythonParser.PrintStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#printStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintStmt(FlaskPythonParser.PrintStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#ifStmt}.
 	 * @param ctx the parse tree
 	 */

@@ -34,7 +34,10 @@ statement:
 	| forStmt
 	| returnStmt
 	| assignment
-	| expressionStmt;
+	| expressionStmt
+	| printStmt;
+
+printStmt: PRINT LPAREN expression RPAREN;
 
 ifStmt: IF condition COLON block (ELSE COLON block)?;
 
