@@ -1,7 +1,7 @@
 import FlaskPythonAST.*;
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
-public class FlaskPythonASTPrinter implements ASTVisitor<String> {
+public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     private int indentLevel = 0;
 
     private String indent() {

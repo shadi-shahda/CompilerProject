@@ -2,7 +2,7 @@ package FlaskPythonAST;
 
 import java.util.List;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonListExpression extends FlaskPythonExpression {
     public List<FlaskPythonExpression> elements;
@@ -13,7 +13,7 @@ public class FlaskPythonListExpression extends FlaskPythonExpression {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

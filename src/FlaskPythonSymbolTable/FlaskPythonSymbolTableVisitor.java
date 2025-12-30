@@ -1,9 +1,9 @@
 package FlaskPythonSymbolTable;
 
 import FlaskPythonAST.*;
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
-public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
+public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Void> {
 
     private FlaskPythonSymbolTable symbolTable;
 

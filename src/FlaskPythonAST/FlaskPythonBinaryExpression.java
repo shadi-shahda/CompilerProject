@@ -1,6 +1,6 @@
 package FlaskPythonAST;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonBinaryExpression extends FlaskPythonExpression {
     public FlaskPythonExpression left;
@@ -16,7 +16,7 @@ public class FlaskPythonBinaryExpression extends FlaskPythonExpression {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

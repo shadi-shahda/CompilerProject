@@ -2,7 +2,7 @@ package FlaskPythonVisitor; // يفضل وضعهم في package خاص
 
 import FlaskPythonAST.*;
 
-public interface ASTVisitor<T> {
+public interface FlaskPythonASTVisitor<T> {
 
     T visit(FlaskPythonProgram program);
     T visit(FlaskPythonFunctionDeclaration funcDecl);

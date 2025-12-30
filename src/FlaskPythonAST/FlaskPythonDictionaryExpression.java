@@ -2,7 +2,7 @@ package FlaskPythonAST;
 
 import java.util.Map;
 
-import FlaskPythonVisitor.ASTVisitor;
+import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonDictionaryExpression extends FlaskPythonExpression {
 
@@ -14,7 +14,7 @@ public class FlaskPythonDictionaryExpression extends FlaskPythonExpression {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(FlaskPythonASTVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
