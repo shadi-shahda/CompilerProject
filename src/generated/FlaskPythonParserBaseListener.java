@@ -137,6 +137,18 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrintStmt(FlaskPythonParser.PrintStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintStmt(FlaskPythonParser.PrintStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfStmt(FlaskPythonParser.IfStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}

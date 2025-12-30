@@ -71,6 +71,12 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(FlaskPythonParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#printStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStmt(FlaskPythonParser.PrintStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#ifStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

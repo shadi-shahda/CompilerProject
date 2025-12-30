@@ -1,24 +1,6 @@
 package FlaskPythonSymbolTable;
 
-import FlaskPythonAST.FLaskPythonForStatement;
-import FlaskPythonAST.FlaskPythonAssignmentStatement;
-import FlaskPythonAST.FlaskPythonBinaryExpression;
-import FlaskPythonAST.FlaskPythonBooleanLiteral;
-import FlaskPythonAST.FlaskPythonDictionaryExpression;
-import FlaskPythonAST.FlaskPythonExpression;
-import FlaskPythonAST.FlaskPythonFunctionCall;
-import FlaskPythonAST.FlaskPythonFunctionDeclaration;
-import FlaskPythonAST.FlaskPythonIdentifier;
-import FlaskPythonAST.FlaskPythonIfStatement;
-import FlaskPythonAST.FlaskPythonImportStatement;
-import FlaskPythonAST.FlaskPythonIntegerLiteral;
-import FlaskPythonAST.FlaskPythonListExpression;
-import FlaskPythonAST.FlaskPythonMemberAccess;
-import FlaskPythonAST.FlaskPythonMethodCall;
-import FlaskPythonAST.FlaskPythonProgram;
-import FlaskPythonAST.FlaskPythonReturnStatement;
-import FlaskPythonAST.FlaskPythonStatement;
-import FlaskPythonAST.FlaskPythonStringLiteral;
+import FlaskPythonAST.*;
 import FlaskPythonVisitor.ASTVisitor;
 
 public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
@@ -28,7 +10,7 @@ public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
     public FlaskPythonSymbolTableVisitor(FlaskPythonSymbolTable symbolTable) {
         this.symbolTable = symbolTable;
     }
-    
+
     @Override
     public Void visit(FlaskPythonProgram program) {
         for (FlaskPythonStatement stmt : program.statements) {
@@ -145,6 +127,14 @@ public class FlaskPythonSymbolTableVisitor implements ASTVisitor<Void> {
         forStmt.iterable.accept(this);
         for (FlaskPythonStatement stmt : forStmt.body) {
             stmt.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(FlaskPythonPrintStatement printStmt) {
+        if (printStmt.expression != null) {
+            printStmt.expression.accept(this);
         }
         return null;
     }
