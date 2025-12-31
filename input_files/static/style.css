@@ -25,6 +25,10 @@ body {
     width: 200px;
 }
 
+#card-button {
+    margin-top: 10px
+}
+
 img {
     max-width: 100%;
     height: auto;

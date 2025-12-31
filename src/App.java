@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import CssAST.CssASTNode;
+import CssSymbolTable.CssSymbolTable;
+import CssSymbolTable.CssSymbolTableVisitor;
 import CssVisitor.AntlrToCssASTVisitor;
 import FlaskPythonAST.FlaskPythonASTNode;
 import FlaskPythonSymbolTable.FlaskPythonSymbolTable;
@@ -83,14 +85,14 @@ public class App {
             AntlrToCssASTVisitor astBuilder = new AntlrToCssASTVisitor();
             CssASTNode astRoot = astBuilder.visit(tree);
 
-            // System.out.println(">>> 4. Building Symbol Table...");
-            // FlaskPythonSymbolTable symbolTable = new FlaskPythonSymbolTable();
-            // FlaskPythonSymbolTableVisitor symbolVisitor = new FlaskPythonSymbolTableVisitor(symbolTable);
-            // astRoot.accept(symbolVisitor);
+            System.out.println(">>> 4. Building Css Symbol Table...");
+            CssSymbolTable symbolTable = new CssSymbolTable();
+            CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor(symbolTable);
+            astRoot.accept(symbolVisitor);
 
-            // System.out.println("\n================ OUTPUT ================\n");
+            System.out.println("\n================ OUTPUT ================\n");
 
-            // symbolTable.printTable();
+            symbolTable.printTable();
 
             System.out.println("=== Abstract Syntax Tree (AST) ===");
             CssASTPrinter printer = new CssASTPrinter();
