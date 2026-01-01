@@ -18,15 +18,41 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitTemplate(TemplatesParser.TemplateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TemplatesParser#content}.
+	 * Enter a parse tree produced by the {@code HtmlContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
 	 * @param ctx the parse tree
 	 */
-	void enterContent(TemplatesParser.ContentContext ctx);
+	void enterHtmlContent(TemplatesParser.HtmlContentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TemplatesParser#content}.
+	 * Exit a parse tree produced by the {@code HtmlContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
 	 * @param ctx the parse tree
 	 */
-	void exitContent(TemplatesParser.ContentContext ctx);
+	void exitHtmlContent(TemplatesParser.HtmlContentContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code JinjaContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void enterJinjaContent(TemplatesParser.JinjaContentContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code JinjaContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void exitJinjaContent(TemplatesParser.JinjaContentContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TextContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextContent(TemplatesParser.TextContentContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TextContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextContent(TemplatesParser.TextContentContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code NormalTag}
 	 * labeled alternative in {@link TemplatesParser#htmlElement}.
@@ -40,6 +66,18 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitNormalTag(TemplatesParser.NormalTagContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code VoidElement}
+	 * labeled alternative in {@link TemplatesParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterVoidElement(TemplatesParser.VoidElementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code VoidElement}
+	 * labeled alternative in {@link TemplatesParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitVoidElement(TemplatesParser.VoidElementContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code SelfClosingTag}
 	 * labeled alternative in {@link TemplatesParser#htmlElement}.
 	 * @param ctx the parse tree
@@ -52,15 +90,29 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TemplatesParser#attribute}.
+	 * Enter a parse tree produced by the {@code keyValueAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
 	 * @param ctx the parse tree
 	 */
-	void enterAttribute(TemplatesParser.AttributeContext ctx);
+	void enterKeyValueAttribute(TemplatesParser.KeyValueAttributeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TemplatesParser#attribute}.
+	 * Exit a parse tree produced by the {@code keyValueAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
 	 * @param ctx the parse tree
 	 */
-	void exitAttribute(TemplatesParser.AttributeContext ctx);
+	void exitKeyValueAttribute(TemplatesParser.KeyValueAttributeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code onlyKeyAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code onlyKeyAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TemplatesParser#jinjaElement}.
 	 * @param ctx the parse tree

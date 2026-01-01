@@ -17,11 +17,26 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTemplate(TemplatesParser.TemplateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TemplatesParser#content}.
+	 * Visit a parse tree produced by the {@code HtmlContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitContent(TemplatesParser.ContentContext ctx);
+	T visitHtmlContent(TemplatesParser.HtmlContentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code JinjaContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJinjaContent(TemplatesParser.JinjaContentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code TextContent}
+	 * labeled alternative in {@link TemplatesParser#content}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextContent(TemplatesParser.TextContentContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code NormalTag}
 	 * labeled alternative in {@link TemplatesParser#htmlElement}.
@@ -30,6 +45,13 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNormalTag(TemplatesParser.NormalTagContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code VoidElement}
+	 * labeled alternative in {@link TemplatesParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVoidElement(TemplatesParser.VoidElementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code SelfClosingTag}
 	 * labeled alternative in {@link TemplatesParser#htmlElement}.
 	 * @param ctx the parse tree
@@ -37,11 +59,19 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TemplatesParser#attribute}.
+	 * Visit a parse tree produced by the {@code keyValueAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAttribute(TemplatesParser.AttributeContext ctx);
+	T visitKeyValueAttribute(TemplatesParser.KeyValueAttributeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code onlyKeyAttribute}
+	 * labeled alternative in {@link TemplatesParser#attribute}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TemplatesParser#jinjaElement}.
 	 * @param ctx the parse tree
