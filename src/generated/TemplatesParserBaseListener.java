@@ -137,6 +137,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBoolExpr(TemplatesParser.BoolExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolExpr(TemplatesParser.BoolExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBinaryExpr(TemplatesParser.BinaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -156,6 +168,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVarExpr(TemplatesParser.VarExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNotExpr(TemplatesParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotExpr(TemplatesParser.NotExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -204,6 +228,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLogicalExpr(TemplatesParser.LogicalExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLogicalExpr(TemplatesParser.LogicalExprContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

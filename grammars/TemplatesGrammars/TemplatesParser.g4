@@ -24,10 +24,13 @@ jinjaIf:
 jinjaFor: J_FOR ID J_IN ID J_TAG_CLOSE content* J_ENDFOR;
 
 expression:
-	J_LPAREN expression J_RPAREN				# ParenExpr
+	J_LPAREN expression J_RPAREN			# ParenExpr
 	| expression J_DOT ID					# MemberAccessExpr
 	| expression J_LBRACK STRING J_RBRACK	# DictAccessExpr
+	| J_NOT expression						# NotExpr
 	| expression (J_EQ | J_NEQ) expression	# BinaryExpr
+	| expression (J_AND | J_OR) expression	# LogicalExpr
 	| ID									# VarExpr
 	| STRING								# StringExpr
-	| INT									# IntExpr;
+	| INT									# IntExpr
+	| (J_TRUE | J_FALSE)					# BoolExpr;

@@ -11,6 +11,7 @@ J_ENDFOR: '{%' [ \t]* 'endfor' [ \t]* '%}';
 J_IN: 'in';
 J_OR: 'or';
 J_NOT: 'not';
+J_AND: 'and';
 J_TRUE    : 'True' | 'true';
 J_FALSE   : 'False' | 'false';
 
