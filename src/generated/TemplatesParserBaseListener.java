@@ -29,13 +29,37 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContent(TemplatesParser.ContentContext ctx) { }
+	@Override public void enterHtmlContent(TemplatesParser.HtmlContentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContent(TemplatesParser.ContentContext ctx) { }
+	@Override public void exitHtmlContent(TemplatesParser.HtmlContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJinjaContent(TemplatesParser.JinjaContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJinjaContent(TemplatesParser.JinjaContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTextContent(TemplatesParser.TextContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTextContent(TemplatesParser.TextContentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -53,6 +77,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVoidElement(TemplatesParser.VoidElementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVoidElement(TemplatesParser.VoidElementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -65,13 +101,25 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAttribute(TemplatesParser.AttributeContext ctx) { }
+	@Override public void enterKeyValueAttribute(TemplatesParser.KeyValueAttributeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAttribute(TemplatesParser.AttributeContext ctx) { }
+	@Override public void exitKeyValueAttribute(TemplatesParser.KeyValueAttributeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

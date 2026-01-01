@@ -9,7 +9,7 @@ public abstract class TemplatesASTNode {
     this.line = line;
   }
 
-  int getLine() {
+  public int getLine() {
     return this.line;
   }
 

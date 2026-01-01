@@ -13,20 +13,30 @@ import FlaskPythonAST.FlaskPythonASTNode;
 import FlaskPythonSymbolTable.FlaskPythonSymbolTable;
 import FlaskPythonSymbolTable.FlaskPythonSymbolTableVisitor;
 import FlaskPythonVisitor.AntlrToPythonASTVisitor;
+import TemplatesAST.TemplatesASTNode;
+import TemplatesSymbolTable.TemplatesSymbolTable;
+import TemplatesSymbolTable.TemplatesSymbolTableVisitor;
+import TemplatesVisitor.AntlrToTemplatesVisitor;
 import generated.CssLexer;
 import generated.CssParser;
 import generated.FlaskPythonLexer;
 import generated.FlaskPythonParser;
+import generated.TemplatesLexer;
+import generated.TemplatesParser;
 
 public class App {
     public static void main(String[] args) {
         String pythonSourceFile = "input_files/app.py";
         String cssSourceFile = "input_files/static/style.css";
-        String htmlSourceFile = "input_files/templates/index.html";
+        String indexSourceFile = "input_files/templates/index.html";
+        String addSourceFile = "input_files/templates/add.html";
+        String detailsSourceFile = "input_files/templates/detail.html";
         try {
-            printHtml(htmlSourceFile);
             printPython(pythonSourceFile);
             printCss(cssSourceFile);
+            printHtml(indexSourceFile);
+            printHtml(addSourceFile);
+            printHtml(detailsSourceFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,90 +62,90 @@ public class App {
         AntlrToPythonASTVisitor astBuilder = new AntlrToPythonASTVisitor();
         FlaskPythonASTNode astRoot = astBuilder.visit(tree);
 
+        System.out.println("================ AST ================");
+        FlaskPythonASTPrinter printer = new FlaskPythonASTPrinter();
+        String astOutput = astRoot.accept(printer);
+        System.out.println(astOutput);
+
         System.out.println(">>> 4. Building Symbol Table...");
         FlaskPythonSymbolTable symbolTable = new FlaskPythonSymbolTable();
         FlaskPythonSymbolTableVisitor symbolVisitor = new FlaskPythonSymbolTableVisitor(symbolTable);
         astRoot.accept(symbolVisitor);
 
-        System.out.println("\n================ OUTPUT ================\n");
+        System.out.println("\n================ Symbot Table ================\n");
 
         symbolTable.printTable();
-
-        System.out.println("=== Abstract Syntax Tree (AST) ===");
-        FlaskPythonASTPrinter printer = new FlaskPythonASTPrinter();
-        String astOutput = astRoot.accept(printer);
-        System.out.println(astOutput);
     }
 
     private static void printCss(String cssSourceFile) throws IOException {
         System.out.println(">>> 1. Reading Css File: " + cssSourceFile);
-            CharStream pythonInput = CharStreams.fromFileName(cssSourceFile);
+        CharStream cssInput = CharStreams.fromFileName(cssSourceFile);
 
-            CssLexer lexer = new CssLexer(pythonInput);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CssLexer lexer = new CssLexer(cssInput);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            System.out.println(">>> 2. Parsing...");
-            CssParser parser = new CssParser(tokens);
-            ParseTree tree = parser.stylesheet();
+        System.out.println(">>> 2. Parsing...");
+        CssParser parser = new CssParser(tokens);
+        ParseTree tree = parser.stylesheet();
 
-            if (parser.getNumberOfSyntaxErrors() > 0) {
-                System.out.println("Found syntax errors. Stopping.");
-                return;
-            }
+        if (parser.getNumberOfSyntaxErrors() > 0) {
+            System.out.println("Found syntax errors. Stopping.");
+            return;
+        }
 
-            System.out.println(">>> 3. Building AST...");
-            AntlrToCssASTVisitor astBuilder = new AntlrToCssASTVisitor();
-            CssASTNode astRoot = astBuilder.visit(tree);
+        System.out.println(">>> 3. Building AST...");
+        AntlrToCssASTVisitor astBuilder = new AntlrToCssASTVisitor();
+        CssASTNode astRoot = astBuilder.visit(tree);
 
-            System.out.println(">>> 4. Building Css Symbol Table...");
-            CssSymbolTable symbolTable = new CssSymbolTable();
-            CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor(symbolTable);
-            astRoot.accept(symbolVisitor);
+        
+        System.out.println("================ AST ================");
+        CssASTPrinter printer = new CssASTPrinter();
+        String astOutput = astRoot.accept(printer);
+        System.out.println(astOutput);
 
-            System.out.println("\n================ OUTPUT ================\n");
+        System.out.println(">>> 4. Building Css Symbol Table...");
+        CssSymbolTable symbolTable = new CssSymbolTable();
+        CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor(symbolTable);
+        astRoot.accept(symbolVisitor);
 
-            symbolTable.printTable();
+        System.out.println("\n================ Symbot Table ================\n");
 
-            System.out.println("=== Abstract Syntax Tree (AST) ===");
-            CssASTPrinter printer = new CssASTPrinter();
-            String astOutput = astRoot.accept(printer);
-            System.out.println(astOutput);
-
+        symbolTable.printTable();
     }
 
     private static void printHtml(String htmlSourceFile) throws IOException {
-        // System.out.println(">>> 1. Reading Html File: " + htmlSourceFile);
-        //     CharStream pythonInput = CharStreams.fromFileName(htmlSourceFile);
+        System.out.println(">>> 1. Reading Html File: " + htmlSourceFile);
+        CharStream htmlInput = CharStreams.fromFileName(htmlSourceFile);
 
-        //     CssLexer lexer = new CssLexer(pythonInput);
-        //     CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TemplatesLexer lexer = new TemplatesLexer(htmlInput);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        //     System.out.println(">>> 2. Parsing...");
-        //     CssParser parser = new CssParser(tokens);
-        //     ParseTree tree = parser.stylesheet();
+        System.out.println(">>> 2. Parsing...");
+        TemplatesParser parser = new TemplatesParser(tokens);
+        ParseTree tree = parser.template();
 
-        //     if (parser.getNumberOfSyntaxErrors() > 0) {
-        //         System.out.println("Found syntax errors. Stopping.");
-        //         return;
-        //     }
+        if (parser.getNumberOfSyntaxErrors() > 0) {
+            System.out.println("Found syntax errors. Stopping.");
+            return;
+        }
 
-        //     System.out.println(">>> 3. Building AST...");
-        //     AntlrToCssASTVisitor astBuilder = new AntlrToCssASTVisitor();
-        //     CssASTNode astRoot = astBuilder.visit(tree);
+        System.out.println(">>> 3. Building AST...");
+        AntlrToTemplatesVisitor astBuilder = new AntlrToTemplatesVisitor();
+        TemplatesASTNode astRoot = astBuilder.visit(tree);
+        System.out.println("\n================ AST ================\n");
+        System.out.println("=== Abstract Syntax Tree (AST) ===");
+        TemplatesASTPrinter printer = new TemplatesASTPrinter();
+        String astOutput = astRoot.accept(printer);
+        System.out.println(astOutput);
 
-        //     System.out.println(">>> 4. Building Css Symbol Table...");
-        //     CssSymbolTable symbolTable = new CssSymbolTable();
-        //     CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor(symbolTable);
-        //     astRoot.accept(symbolVisitor);
+        System.out.println(">>> 4. Building Templates Symbol Table...");
+        TemplatesSymbolTable symbolTable = new TemplatesSymbolTable();
+        TemplatesSymbolTableVisitor symbolVisitor = new TemplatesSymbolTableVisitor(symbolTable);
+        astRoot.accept(symbolVisitor);
 
-        //     System.out.println("\n================ OUTPUT ================\n");
+        System.out.println("\n================ Symbot Table ================\n");
 
-        //     symbolTable.printTable();
-
-        //     System.out.println("=== Abstract Syntax Tree (AST) ===");
-        //     CssASTPrinter printer = new CssASTPrinter();
-        //     String astOutput = astRoot.accept(printer);
-        //     System.out.println(astOutput);
+        symbolTable.printTable();
 
     }
 

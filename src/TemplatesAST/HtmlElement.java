@@ -7,18 +7,18 @@ import TemplatesVisitor.TemplatesASTVisitor;
 
 public class HtmlElement extends TemplatesASTNode {
   public String tagName;
-  public List<HtmlAttribute> attribute;
+  public List<HtmlAttribute> attributes;
   public List<TemplatesASTNode> templates;
 
   public HtmlElement(String tagName, int line) {
     super(line);
     this.tagName = tagName;
-    this.attribute = new ArrayList<>();
+    this.attributes = new ArrayList<>();
     this.templates = new ArrayList<>();
   }
 
   public void addAttribute(HtmlAttribute attribute) {
-    this.attribute.add(attribute);
+    this.attributes.add(attribute);
   }
 
   public void addTemplate(TemplatesASTNode template) {

@@ -12,7 +12,6 @@ public class CssSymbolTable {
     this.symbols.put(name, symbol);
   }
 
-  // دالة للبحث عن رمز (سنحتاجها عند ربط HTML بـ CSS)
   public CssSymbol resolve(String name) {
     return this.symbols.get(name);
   }

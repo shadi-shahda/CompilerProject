@@ -1,49 +1,58 @@
 lexer grammar TemplatesLexer;
 
-// --- 1. Jinja2 Tokens ---
+DOCTYPE:
+	'<!' [dD][oO][cC][tT][yY][pP][eE] .*? '>' -> skip;
 
-J_IF: '{%' [ \t]* 'if';
-J_TAG_CLOSE: '%}';
-J_ELSE: '{%' [ \t]* 'else' [ \t]* '%}';
-J_ENDIF: '{%' [ \t]* 'endif' [ \t]* '%}';
-J_FOR: '{%' [ \t]* 'for';
-J_ENDFOR: '{%' [ \t]* 'endfor' [ \t]* '%}';
+TAG_OPEN: '<' -> pushMode(TAG_MODE);
+TAG_CLOSE_TAG: '</' -> pushMode(TAG_MODE);
+
+J_BLOCK_START: '{%' -> pushMode(JINJA_MODE);
+J_EXPR_START: '{{' -> pushMode(JINJA_MODE);
+
+TEXT: ~[<{}]+;
+
+mode TAG_MODE;
+TAG_WS: [ \t\r\n]+ -> skip;
+TAG_EQUALS: '=';
+TAG_STRING: '"' .*? '"' | '\'' .*? '\'';
+
+VOID_TAG_ID: 'img' | 'br' | 'hr' | 'link' | 'meta' | 'input';
+
+TAG_ID: [a-zA-Z_][a-zA-Z0-9_-]*;
+
+TAG_EXIT: '>' -> popMode;
+TAG_EXIT_SELF: '/>' -> popMode;
+
+mode JINJA_MODE;
+J_WS: [ \t\r\n]+ -> skip;
+
+J_IF: 'if';
+J_ELSE: 'else';
+J_ENDIF: 'endif';
+J_FOR: 'for';
+J_ENDFOR: 'endfor';
 J_IN: 'in';
+J_AND: 'and';
 J_OR: 'or';
 J_NOT: 'not';
-J_AND: 'and';
-J_TRUE    : 'True' | 'true';
-J_FALSE   : 'False' | 'false';
+J_TRUE: 'True' | 'true';
+J_FALSE: 'False' | 'false';
 
-J_EXPR_OPEN: '{{';
-J_EXPR_CLOSE: '}}';
+J_BLOCK_CLOSE: '%}' -> popMode;
+J_EXPR_CLOSE: '}}' -> popMode;
 
 J_EQ: '==';
 J_NEQ: '!=';
 J_LBRACK: '[';
 J_RBRACK: ']';
+J_DOT: '.';
 J_LPAREN: '(';
 J_RPAREN: ')';
-J_DOT: '.';
+J_GT: '>';
+J_LT: '<';
+J_GTE: '>=';
+J_LTE: '<=';
 
-// --- 2. HTML Tokens ---
-
-TAG_OPEN: '<' -> pushMode(TAG_MODE);
-TAG_CLOSE_TAG: '</';
-TAG_END: '>';
-TAG_SELF_CLOSE: '/>';
-
-// --- 3. Common Tokens ---
-STRING: '"' .*? '"' | '\'' .*? '\'';
-INT: [0-9]+;
-ID: [a-zA-Z_][a-zA-Z0-9_-]*;
-TEXT: ~[<{}]+;
-
-// ---(HTML Attributes) ---
-mode TAG_MODE;
-TAG_EXIT_SELF: '/>' -> popMode;
-TAG_WS: [ \t\r\n]+ -> skip;
-TAG_EQUALS: '=';
-TAG_STRING: '"' .*? '"' | '\'' .*? '\'';
-TAG_ID: [a-zA-Z_][a-zA-Z0-9_-]*;
-TAG_EXIT: '>' -> popMode;
+J_STRING: '"' .*? '"' | '\'' .*? '\'';
+J_INT: [0-9]+;
+J_ID: [a-zA-Z_][a-zA-Z0-9_-]*;
