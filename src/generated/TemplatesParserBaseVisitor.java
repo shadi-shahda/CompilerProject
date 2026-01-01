@@ -1,9 +1,9 @@
-// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/CssGrammars/CssParser.g4 by ANTLR 4.13.2
+// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/TemplatesGrammars/TemplatesParser.g4 by ANTLR 4.13.2
 package generated;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
- * This class provides an empty implementation of {@link CssParserVisitor},
+ * This class provides an empty implementation of {@link TemplatesParserVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
@@ -11,138 +11,117 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * operations with no return type.
  */
 @SuppressWarnings("CheckReturnValue")
-public class CssParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements CssParserVisitor<T> {
+public class TemplatesParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TemplatesParserVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStylesheet(CssParser.StylesheetContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTemplate(TemplatesParser.TemplateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRule(CssParser.RuleContext ctx) { return visitChildren(ctx); }
+	@Override public T visitContent(TemplatesParser.ContentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSelectors(CssParser.SelectorsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNormalTag(TemplatesParser.NormalTagContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTagSelector(CssParser.TagSelectorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitClassSelector(CssParser.ClassSelectorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAttribute(TemplatesParser.AttributeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdSelector(CssParser.IdSelectorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitJinjaElement(TemplatesParser.JinjaElementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBlock(CssParser.BlockContext ctx) { return visitChildren(ctx); }
+	@Override public T visitJinjaPrint(TemplatesParser.JinjaPrintContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDeclaration(CssParser.DeclarationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitJinjaIf(TemplatesParser.JinjaIfContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunction(CssParser.FunctionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitJinjaFor(TemplatesParser.JinjaForContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProperty(CssParser.PropertyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStringExpr(TemplatesParser.StringExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitValue(CssParser.ValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBinaryExpr(TemplatesParser.BinaryExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentValue(CssParser.IdentValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVarExpr(TemplatesParser.VarExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntValue(CssParser.IntValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntExpr(TemplatesParser.IntExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringVlue(CssParser.StringVlueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDictAccessExpr(TemplatesParser.DictAccessExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPxValue(CssParser.PxValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParenExpr(TemplatesParser.ParenExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPercentValue(CssParser.PercentValueContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitHexValue(CssParser.HexValueContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitFloatValue(CssParser.FloatValueContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitFunctionValue(CssParser.FunctionValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx) { return visitChildren(ctx); }
 }

@@ -1,5 +1,5 @@
+// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/CssGrammars/CssParser.g4 by ANTLR 4.13.2
 package generated;
-// Generated from grammars/CssGrammars/CssParser.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

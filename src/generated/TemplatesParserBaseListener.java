@@ -1,4 +1,4 @@
-// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/CssGrammars/CssParser.g4 by ANTLR 4.13.2
+// Generated from C:/Users/VICTUS/Desktop/lectures/projects/CompilerProject/grammars/TemplatesGrammars/TemplatesParser.g4 by ANTLR 4.13.2
 package generated;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -6,240 +6,204 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link CssParserListener},
+ * This class provides an empty implementation of {@link TemplatesParserListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
 @SuppressWarnings("CheckReturnValue")
-public class CssParserBaseListener implements CssParserListener {
+public class TemplatesParserBaseListener implements TemplatesParserListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStylesheet(CssParser.StylesheetContext ctx) { }
+	@Override public void enterTemplate(TemplatesParser.TemplateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStylesheet(CssParser.StylesheetContext ctx) { }
+	@Override public void exitTemplate(TemplatesParser.TemplateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRule(CssParser.RuleContext ctx) { }
+	@Override public void enterContent(TemplatesParser.ContentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRule(CssParser.RuleContext ctx) { }
+	@Override public void exitContent(TemplatesParser.ContentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSelectors(CssParser.SelectorsContext ctx) { }
+	@Override public void enterNormalTag(TemplatesParser.NormalTagContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSelectors(CssParser.SelectorsContext ctx) { }
+	@Override public void exitNormalTag(TemplatesParser.NormalTagContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTagSelector(CssParser.TagSelectorContext ctx) { }
+	@Override public void enterSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTagSelector(CssParser.TagSelectorContext ctx) { }
+	@Override public void exitSelfClosingTag(TemplatesParser.SelfClosingTagContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassSelector(CssParser.ClassSelectorContext ctx) { }
+	@Override public void enterAttribute(TemplatesParser.AttributeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassSelector(CssParser.ClassSelectorContext ctx) { }
+	@Override public void exitAttribute(TemplatesParser.AttributeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdSelector(CssParser.IdSelectorContext ctx) { }
+	@Override public void enterJinjaElement(TemplatesParser.JinjaElementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdSelector(CssParser.IdSelectorContext ctx) { }
+	@Override public void exitJinjaElement(TemplatesParser.JinjaElementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlock(CssParser.BlockContext ctx) { }
+	@Override public void enterJinjaPrint(TemplatesParser.JinjaPrintContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlock(CssParser.BlockContext ctx) { }
+	@Override public void exitJinjaPrint(TemplatesParser.JinjaPrintContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclaration(CssParser.DeclarationContext ctx) { }
+	@Override public void enterJinjaIf(TemplatesParser.JinjaIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclaration(CssParser.DeclarationContext ctx) { }
+	@Override public void exitJinjaIf(TemplatesParser.JinjaIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunction(CssParser.FunctionContext ctx) { }
+	@Override public void enterJinjaFor(TemplatesParser.JinjaForContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunction(CssParser.FunctionContext ctx) { }
+	@Override public void exitJinjaFor(TemplatesParser.JinjaForContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProperty(CssParser.PropertyContext ctx) { }
+	@Override public void enterStringExpr(TemplatesParser.StringExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProperty(CssParser.PropertyContext ctx) { }
+	@Override public void exitStringExpr(TemplatesParser.StringExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterValue(CssParser.ValueContext ctx) { }
+	@Override public void enterBinaryExpr(TemplatesParser.BinaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitValue(CssParser.ValueContext ctx) { }
+	@Override public void exitBinaryExpr(TemplatesParser.BinaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdentValue(CssParser.IdentValueContext ctx) { }
+	@Override public void enterVarExpr(TemplatesParser.VarExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdentValue(CssParser.IdentValueContext ctx) { }
+	@Override public void exitVarExpr(TemplatesParser.VarExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntValue(CssParser.IntValueContext ctx) { }
+	@Override public void enterIntExpr(TemplatesParser.IntExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntValue(CssParser.IntValueContext ctx) { }
+	@Override public void exitIntExpr(TemplatesParser.IntExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStringVlue(CssParser.StringVlueContext ctx) { }
+	@Override public void enterDictAccessExpr(TemplatesParser.DictAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStringVlue(CssParser.StringVlueContext ctx) { }
+	@Override public void exitDictAccessExpr(TemplatesParser.DictAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPxValue(CssParser.PxValueContext ctx) { }
+	@Override public void enterParenExpr(TemplatesParser.ParenExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPxValue(CssParser.PxValueContext ctx) { }
+	@Override public void exitParenExpr(TemplatesParser.ParenExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPercentValue(CssParser.PercentValueContext ctx) { }
+	@Override public void enterMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPercentValue(CssParser.PercentValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterHexValue(CssParser.HexValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHexValue(CssParser.HexValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFloatValue(CssParser.FloatValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFloatValue(CssParser.FloatValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionValue(CssParser.FunctionValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionValue(CssParser.FunctionValueContext ctx) { }
+	@Override public void exitMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
