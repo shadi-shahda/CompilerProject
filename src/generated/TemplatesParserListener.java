@@ -114,6 +114,18 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitStringExpr(TemplatesParser.StringExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code BoolExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolExpr(TemplatesParser.BoolExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolExpr(TemplatesParser.BoolExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code BinaryExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
 	 * @param ctx the parse tree
@@ -137,6 +149,18 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarExpr(TemplatesParser.VarExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NotExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExpr(TemplatesParser.NotExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NotExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExpr(TemplatesParser.NotExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code IntExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
@@ -185,4 +209,16 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LogicalExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogicalExpr(TemplatesParser.LogicalExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LogicalExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogicalExpr(TemplatesParser.LogicalExprContext ctx);
 }

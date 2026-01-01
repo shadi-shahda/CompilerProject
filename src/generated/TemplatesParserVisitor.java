@@ -74,6 +74,13 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringExpr(TemplatesParser.StringExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code BoolExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExpr(TemplatesParser.BoolExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code BinaryExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
 	 * @param ctx the parse tree
@@ -87,6 +94,13 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVarExpr(TemplatesParser.VarExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExpr(TemplatesParser.NotExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code IntExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
@@ -115,4 +129,11 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMemberAccessExpr(TemplatesParser.MemberAccessExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LogicalExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicalExpr(TemplatesParser.LogicalExprContext ctx);
 }
