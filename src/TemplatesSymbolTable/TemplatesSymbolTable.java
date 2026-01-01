@@ -1,10 +1,10 @@
 package TemplatesSymbolTable;
 
+import java.util.Set;
+import java.util.Stack;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
 
 public class TemplatesSymbolTable {
   private Stack<Map<String, TemplatesSymbol>> scopes = new Stack<>();
