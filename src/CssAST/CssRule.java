@@ -8,6 +8,7 @@ import CssVisitor.CssASTVisitor;
 public class CssRule extends CssASTNode {
   public List<CssDeclaration> declarations;
   public List<CssSelector> selectors;
+
   public CssRule(int line) {
     super(line);
     declarations = new ArrayList<>();
@@ -26,7 +27,5 @@ public class CssRule extends CssASTNode {
   public <T> T accept(CssASTVisitor<T> visitor) {
     return visitor.visit(this);
   }
-
-
 
 }

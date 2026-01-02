@@ -12,15 +12,19 @@ public class TemplatesSymbol {
   }
 
   public String getName() {
-    return name;
+    return this.name;
   }
 
   public String getKind() {
-    return kind;
+    return this.kind;
+  }
+
+  public int getLine() {
+    return this.line;
   }
 
   @Override
   public String toString() {
-    return String.format("Symbol{name='%s', kind='%s', line=%d}", name, kind, line);
+    return String.format("Symbol{name='%s', kind='%s', line=%d}", this.name, this.kind, this.line);
   }
 }

@@ -13,6 +13,19 @@ public class FlaskPythonSymbolTable {
 
   public FlaskPythonSymbolTable() {
     scopes.push(new HashMap<>());
+    initializeBuiltins();
+  }
+
+  private void initializeBuiltins() {
+    defineVariable("__name__", FlaskPythonType.STRING);
+    defineVariable("None", FlaskPythonType.OBJECT);
+    defineVariable("True", FlaskPythonType.BOOLEAN);
+    defineVariable("False", FlaskPythonType.BOOLEAN);
+
+    defineVariable("print", FlaskPythonType.OBJECT);
+    defineVariable("len", FlaskPythonType.OBJECT);
+    defineVariable("str", FlaskPythonType.OBJECT);
+    defineVariable("int", FlaskPythonType.OBJECT);
   }
 
   public void enterScope() {
@@ -66,15 +79,38 @@ public class FlaskPythonSymbolTable {
   }
 
   public void printTable() {
-    System.out.println("=== Flask/Python Analysis Results ===");
-    if (semanticErrors.isEmpty()) {
-      System.out.println("No semantic errors found.");
-      System.out.println("Defined Routes: " + definedRoutes);
-    } else {
-      System.err.println("SEMANTIC ERRORS FOUND:");
+    System.out.println("\n======================= SYMBOL TABLE SNAPSHOT =======================");
+
+    System.out.println(String.format("| %-25s | %-20s | %-15s |", "VARIABLE NAME", "TYPE", "SCOPE"));
+    System.out.println("---------------------------------------------------------------------");
+
+    for (int i = 0; i < scopes.size(); i++) {
+      Map<String, FlaskPythonType> scope = scopes.get(i);
+
+      String scopeName = (i == 0) ? "Global (0)" : "Function/Local (" + i + ")";
+
+      // طباعة كل متغير في هذا النطاق
+      for (Map.Entry<String, FlaskPythonType> entry : scope.entrySet()) {
+        System.out.println(String.format("| %-25s | %-20s | %-15s |",
+            entry.getKey(),
+            entry.getValue(),
+            scopeName));
+      }
+    }
+    System.out.println("---------------------------------------------------------------------");
+
+    System.out.println("\n[Additional Context]");
+    System.out.println("Defined Routes:      " + definedRoutes);
+    System.out.println("Available Templates: " + availableTemplates);
+
+    if (!semanticErrors.isEmpty()) {
+      System.err.println("\n!!! SEMANTIC ERRORS DETECTED !!!");
       for (String err : semanticErrors) {
         System.err.println(err);
       }
+    } else {
+      System.out.println("\nStatus: No Semantic Errors Found. Code is Clean.");
     }
+    System.out.println("=====================================================================");
   }
 }

@@ -12,5 +12,4 @@ public class CssClassSelector extends CssSelector {
     return visitor.visit(this);
   }
 
-
 }

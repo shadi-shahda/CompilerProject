@@ -132,14 +132,14 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
           forStmt.getLineNumber());
     }
 
-    this.symbolTable.enterScope();
+    // this.symbolTable.enterScope();
     this.symbolTable.defineVariable(forStmt.variableName, FlaskPythonType.UNKNOWN);
 
     for (FlaskPythonStatement stmt : forStmt.body) {
       stmt.accept(this);
     }
 
-    this.symbolTable.exitScope();
+    // this.symbolTable.exitScope();
     return FlaskPythonType.VOID;
   }
 

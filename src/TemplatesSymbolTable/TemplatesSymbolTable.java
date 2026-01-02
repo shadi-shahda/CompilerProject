@@ -68,14 +68,50 @@ public class TemplatesSymbolTable {
     }
 
     public void printTable() {
-        System.out.println("=== Symbol Table Analysis ===");
-        if (this.hasErrors()) {
-            System.err.println("ERRORS FOUND:");
-            for (String err : semanticErrors)
-                System.err.println(err);
-        } else {
-            System.out.println("No semantic errors found.");
-            System.out.println("Used Classes: " + this.usedClasses);
+        System.out.println("\n====================== TEMPLATES SYMBOL TABLE SNAPSHOT ======================");
+        System.out.println(String.format("| %-25s | %-20s | %-20s |", "NAME", "KIND", "SCOPE / LINE"));
+        System.out.println("-----------------------------------------------------------------------------");
+
+        for (int i = 0; i < scopes.size(); i++) {
+            Map<String, TemplatesSymbol> scope = scopes.get(i);
+            String scopeName = (i == 0) ? "Global Context" : "Loop/Block (" + i + ")";
+
+            for (TemplatesSymbol sym : scope.values()) {
+                String location = scopeName + " : L" + sym.getLine();
+
+                if (sym.getLine() == 0)
+                    location = "Injected Context";
+
+                System.out.println(String.format("| %-25s | %-20s | %-20s |",
+                        sym.getName(),
+                        sym.getKind(),
+                        location));
+            }
         }
+
+        if (!usedClasses.isEmpty() || !usedIds.isEmpty()) {
+            System.out.println("-----------------------------------------------------------------------------");
+            System.out.println("| HTML SELECTORS USAGE (For CSS Linking)                                    |");
+            System.out.println("-----------------------------------------------------------------------------");
+
+            for (String cls : usedClasses) {
+                System.out.println(String.format("| %-25s | %-20s | %-20s |", cls, "HTML CLASS", "Used in Tag"));
+            }
+            for (String id : usedIds) {
+                System.out.println(String.format("| %-25s | %-20s | %-20s |", id, "HTML ID", "Used in Tag"));
+            }
+        }
+
+        System.out.println("-----------------------------------------------------------------------------");
+
+        if (!semanticErrors.isEmpty()) {
+            System.err.println("\n!!! TEMPLATE SEMANTIC ERRORS !!!");
+            for (String err : semanticErrors) {
+                System.err.println(err);
+            }
+        } else {
+            System.out.println("\nStatus: No Semantic Errors Found.");
+        }
+        System.out.println("=============================================================================");
     }
 }

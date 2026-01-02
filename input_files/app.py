@@ -2,22 +2,22 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-# products = [
-#     {
-#         "id": 1,
-#         "name": "Laptop",
-#         "price": 1500,
-#         "details": "High performance laptop for coding.",
-#         "image": "https://via.placeholder.com/150"
-#     },
-#     {
-#         "id": 2,
-#         "name": "Phone",
-#         "price": 800,
-#         "details": "Smart phone with great camera.",
-#         "image": "https://via.placeholder.com/150"
-#     }
-# ]
+products = [
+    {
+        "id": 1,
+        "name": "Laptop",
+        "price": 1500,
+        "details": "High performance laptop for coding.",
+        "image": "https://via.placeholder.com/150"
+    },
+    {
+        "id": 2,
+        "name": "Phone",
+        "price": 800,
+        "details": "Smart phone with great camera.",
+        "image": "https://via.placeholder.com/150"
+    }
+]
 
 # 1. الصفحة الرئيسية: عرض المنتجات
 @app.route('/')

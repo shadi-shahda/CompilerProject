@@ -4,16 +4,16 @@ import CssAST.*;
 import CssVisitor.CssASTVisitor;
 
 public class CssSymbolTableVisitor implements CssASTVisitor<Void> {
-  private CssSymbolTable table;
+  private CssSymbolTable symbolTable;
 
-  public CssSymbolTableVisitor(CssSymbolTable table) {
-    this.table = table;
+  public CssSymbolTableVisitor(CssSymbolTable symbolTable) {
+    this.symbolTable = symbolTable;
   }
 
   @Override
   public Void visit(CssProgram program) {
-    for (CssRule rule : program.rules) {
-      rule.accept(this);
+    for (CssASTNode child : program.rules) {
+      child.accept(this);
     }
     return null;
   }
@@ -27,66 +27,72 @@ public class CssSymbolTableVisitor implements CssASTVisitor<Void> {
   }
 
   @Override
-  public Void visit(CssTagSelector selector) {
-    // اسم التاج (div, body)
-    table.define(selector.name, "TAG", selector.getLine());
+  public Void visit(CssClassSelector classSelector) {
+    String name = classSelector.name;
+    if (!name.startsWith(".")) {
+      name = "." + name;
+    }
+    symbolTable.defineClass(name);
     return null;
   }
 
   @Override
-  public Void visit(CssClassSelector selector) {
-    table.define(selector.name, "CLASS", selector.getLine());
+  public Void visit(CssIdSelector idSelector) {
+    String name = idSelector.name;
+    if (!name.startsWith("#")) {
+      name = "#" + name;
+    }
+    symbolTable.defineId(name);
     return null;
   }
 
   @Override
-  public Void visit(CssIdSelector selector) {
-    table.define(selector.name, "ID", selector.getLine());
+  public Void visit(CssTagSelector tagSelector) {
     return null;
   }
 
   @Override
-  public Void visit(CssDeclaration d) {
+  public Void visit(CssDeclaration declaration) {
     return null;
   }
 
   @Override
-  public Void visit(CssIdentValue v) {
+  public Void visit(CssIdentValue identValue) {
     return null;
   }
 
   @Override
-  public Void visit(CssStringValue v) {
+  public Void visit(CssIntValue intVlaue) {
     return null;
   }
 
   @Override
-  public Void visit(CssIntValue v) {
+  public Void visit(CssStringValue stringVlue) {
     return null;
   }
 
   @Override
-  public Void visit(CssPxValue v) {
+  public Void visit(CssPxValue pxValue) {
     return null;
   }
 
   @Override
-  public Void visit(CssPercentValue v) {
+  public Void visit(CssPercentValue percentValue) {
     return null;
   }
 
   @Override
-  public Void visit(CssHexValue v) {
+  public Void visit(CssHexValue hexValue) {
     return null;
   }
 
   @Override
-  public Void visit(CssFloatValue v) {
+  public Void visit(CssFunction function) {
     return null;
   }
 
   @Override
-  public Void visit(CssFunction v) {
+  public Void visit(CssFloatValue floatValue) {
     return null;
   }
 }

@@ -32,7 +32,7 @@ public class App {
         String addSourceFile = "input_files/templates/add.html";
         String detailsSourceFile = "input_files/templates/detail.html";
         try {
-            printPython(pythonSourceFile);
+            printPython(pythonSourceFile, "index.html", "add.html", "detail.html");
             printCss(cssSourceFile);
             printHtml(indexSourceFile, "products");
             printHtml(detailsSourceFile, "product");
@@ -42,7 +42,7 @@ public class App {
         }
     }
 
-    private static void printPython(String pythonSourceFile) throws IOException {
+    private static void printPython(String pythonSourceFile, String... availableTemplates) throws IOException {
         System.out.println("\n================ Flask & Python ================\n");
         System.out.println(">>> 1. Reading Python File: " + pythonSourceFile);
         CharStream pythonInput = CharStreams.fromFileName(pythonSourceFile);
@@ -70,6 +70,12 @@ public class App {
 
         System.out.println(">>> 4. Building Symbol Table...");
         FlaskPythonSymbolTable symbolTable = new FlaskPythonSymbolTable();
+        if (availableTemplates != null) {
+            for (String var : availableTemplates) {
+                System.out.println("   -> Injecting Context Variable: " + var);
+                symbolTable.addAvailableTemplate(var);
+            }
+        }
         FlaskPythonSymbolTableVisitor symbolVisitor = new FlaskPythonSymbolTableVisitor(symbolTable);
         astRoot.accept(symbolVisitor);
 
