@@ -89,7 +89,6 @@ public class FlaskPythonSymbolTable {
 
       String scopeName = (i == 0) ? "Global (0)" : "Function/Local (" + i + ")";
 
-      // طباعة كل متغير في هذا النطاق
       for (Map.Entry<String, FlaskPythonType> entry : scope.entrySet()) {
         System.out.println(String.format("| %-25s | %-20s | %-15s |",
             entry.getKey(),
