@@ -11,79 +11,31 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(TemplatesProgram node) {
-        for (TemplatesASTNode child : node.children) {
+    public Void visit(JinjaForStatement forStmt) {
+        TemplatesSymbol iterableSymbol = this.symbolTable.resolveVariable(forStmt.listName);
+
+        if (iterableSymbol == null) {
+            this.symbolTable.reportError("Undefined iterable variable '" + forStmt.listName + "'", forStmt.getLine());
+            return null;
+        }
+
+        this.symbolTable.enterScope();
+        this.symbolTable.defineVariable(forStmt.variableName, "LOOP_VAR", forStmt.getLine());
+        for (TemplatesASTNode child : forStmt.statements) {
             child.accept(this);
         }
+        this.symbolTable.exitScope();
         return null;
     }
 
     @Override
-    public Void visit(HtmlElement node) {
-        for (HtmlAttribute attr : node.attributes) {
-            attr.accept(this);
-        }
-
-        for (TemplatesASTNode child : node.templates) {
+    public Void visit(JinjaIfStatement ifStmt) {
+        ifStmt.condition.accept(this);
+        for (TemplatesASTNode child : ifStmt.thenBody) {
             child.accept(this);
         }
-        return null;
-    }
-
-    @Override
-    public Void visit(KeyValueAttribute node) {
-        String cleanValue = stripQuotes(node.value);
-
-        if (node.getKey().equalsIgnoreCase("class")) {
-            String[] classes = cleanValue.split("\\s+");
-            for (String cls : classes) {
-                if (!cls.isEmpty()) {
-                    symbolTable.addUsedClass("." + cls);
-                }
-            }
-        } else if (node.getKey().equalsIgnoreCase("id")) {
-            if (!cleanValue.isEmpty()) {
-                symbolTable.addUsedId("#" + cleanValue);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Void visit(OnlyKeyAttribute node) {
-        return null;
-    }
-
-    @Override
-    public Void visit(HtmlText node) {
-        return null;
-    }
-
-    @Override
-    public Void visit(JinjaForStatement node) {
-        symbolTable.enterScope();
-
-        symbolTable.defineVariable(node.variableName, "LOOP_VAR", node.getLine());
-
-        for (TemplatesASTNode child : node.statements) {
-            child.accept(this);
-        }
-
-        symbolTable.exitScope();
-
-        return null;
-    }
-
-    @Override
-    public Void visit(JinjaIfStatement node) {
-        node.condition.accept(this);
-
-        for (TemplatesASTNode child : node.thenBody) {
-            child.accept(this);
-        }
-
-        if (node.elseBody != null) {
-            for (TemplatesASTNode child : node.elseBody) {
+        if (ifStmt.elseBody != null) {
+            for (TemplatesASTNode child : ifStmt.elseBody) {
                 child.accept(this);
             }
         }
@@ -91,72 +43,99 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(JinjaPrint node) {
-        node.expression.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(VarExpression node) {
-        return null;
-    }
-
-    @Override
-    public Void visit(MemberAccessExpression node) {
-        node.expression.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(DictionaryAccessExpression node) {
-        node.object.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(BinaryExpression node) {
-        node.left.accept(this);
-        node.right.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(LogicalExpression node) {
-        node.left.accept(this);
-        node.right.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(NotExpression node) {
-        node.expression.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(StringExpression node) {
-        return null;
-    }
-
-    @Override
-    public Void visit(IntExpression node) {
-        return null;
-    }
-
-    @Override
-    public Void visit(BoolExpression node) {
-        return null;
-    }
-
-    private String stripQuotes(String value) {
-        if (value == null || value.length() < 2)
-            return value;
-        char first = value.charAt(0);
-        char last = value.charAt(value.length() - 1);
-
-        if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
-            return value.substring(1, value.length() - 1);
+    public Void visit(VarExpression varExpr) {
+        TemplatesSymbol sym = this.symbolTable.resolveVariable(varExpr.name);
+        if (sym == null) {
+            this.symbolTable.reportError("Variable '" + varExpr.name + "' is not defined in the current scope.",
+                    varExpr.getLine());
         }
-        return value;
+        return null;
+    }
+
+    @Override
+    public Void visit(TemplatesProgram program) {
+        for (var c : program.children) {
+            c.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(HtmlElement element) {
+        for (var a : element.attributes) {
+            a.accept(this);
+        }
+        for (var c : element.templates) {
+            c.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(JinjaPrint jinjaPrint) {
+        jinjaPrint.expression.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(MemberAccessExpression memberAccessExpr) {
+        memberAccessExpr.expression.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(DictionaryAccessExpression dictionaryAccessExpr) {
+        dictionaryAccessExpr.object.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(BinaryExpression binaryExpr) {
+        binaryExpr.left.accept(this);
+        binaryExpr.right.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(LogicalExpression logicalExpr) {
+        logicalExpr.left.accept(this);
+        logicalExpr.right.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(NotExpression notExpr) {
+        notExpr.expression.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(KeyValueAttribute attribute) {
+        return null;
+    }
+
+    @Override
+    public Void visit(OnlyKeyAttribute attribute) {
+        return null;
+    }
+
+    @Override
+    public Void visit(HtmlText text) {
+        return null;
+    }
+
+    @Override
+    public Void visit(StringExpression StringExpr) {
+        return null;
+    }
+
+    @Override
+    public Void visit(IntExpression intExpr) {
+        return null;
+    }
+
+    @Override
+    public Void visit(BoolExpression boolExpr) {
+        return null;
     }
 }

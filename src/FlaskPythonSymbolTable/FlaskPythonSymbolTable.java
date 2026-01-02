@@ -1,67 +1,116 @@
 package FlaskPythonSymbolTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class FlaskPythonSymbolTable {
+  private Stack<Map<String, FlaskPythonType>> scopes = new Stack<>();
 
-  private Stack<Map<String, FlaskPythonSymbol>> scopes;
+  private Set<String> definedRoutes = new HashSet<>();
 
-  private List<FlaskPythonSymbol> allSymbols;
+  private Set<String> availableTemplates = new HashSet<>();
 
-  private int currentScopeLevel;
+  private List<String> semanticErrors = new ArrayList<>();
 
   public FlaskPythonSymbolTable() {
-    scopes = new Stack<>();
-    allSymbols = new ArrayList<>();
-    currentScopeLevel = 0;
+    scopes.push(new HashMap<>());
+    initializeBuiltins();
+  }
 
-    enterScope();
+  private void initializeBuiltins() {
+    defineVariable("__name__", FlaskPythonType.STRING);
+    defineVariable("None", FlaskPythonType.OBJECT);
+    defineVariable("True", FlaskPythonType.BOOLEAN);
+    defineVariable("False", FlaskPythonType.BOOLEAN);
+
+    defineVariable("print", FlaskPythonType.OBJECT);
+    defineVariable("len", FlaskPythonType.OBJECT);
+    defineVariable("str", FlaskPythonType.OBJECT);
+    defineVariable("int", FlaskPythonType.OBJECT);
   }
 
   public void enterScope() {
-    scopes.push(new HashMap<>());
-    currentScopeLevel++;
+    this.scopes.push(new HashMap<>());
   }
 
   public void exitScope() {
-    if (!scopes.isEmpty()) {
-      scopes.pop();
-      currentScopeLevel--;
-    }
+    if (this.scopes.size() > 1)
+      this.scopes.pop();
   }
 
-  public void define(String name, String type) {
-    Map<String, FlaskPythonSymbol> currentScope = scopes.peek();
-
-    if (!currentScope.containsKey(name)) {
-      FlaskPythonSymbol symbol = new FlaskPythonSymbol(name, type, currentScopeLevel - 1);
-      currentScope.put(name, symbol);
-
-      allSymbols.add(symbol);
-    }
+  public void defineVariable(String name, FlaskPythonType type) {
+    this.scopes.peek().put(name, type);
   }
 
-  public FlaskPythonSymbol findSymbol(String name) {
-    for (int i = scopes.size() - 1; i >= 0; i--) {
-      if (scopes.get(i).containsKey(name)) {
-        return scopes.get(i).get(name);
+  public boolean isVariableDefined(String name) {
+    for (int i = this.scopes.size() - 1; i >= 0; i--) {
+      if (this.scopes.get(i).containsKey(name))
+        return true;
+    }
+    return false;
+  }
+
+  public FlaskPythonType getVariableType(String name) {
+    for (int i = this.scopes.size() - 1; i >= 0; i--) {
+      if (this.scopes.get(i).containsKey(name)) {
+        return this.scopes.get(i).get(name);
       }
     }
-    return null;
+    return FlaskPythonType.UNKNOWN;
+  }
+
+  public boolean isRouteDefined(String route) {
+    return this.definedRoutes.contains(route);
+  }
+
+  public void addRoute(String route) {
+    this.definedRoutes.add(route);
+  }
+
+  public void addAvailableTemplate(String filename) {
+    this.availableTemplates.add(filename);
+  }
+
+  public boolean isTemplateExists(String filename) {
+    return availableTemplates.contains(filename);
+  }
+
+  public void reportError(String msg, int line) {
+    semanticErrors.add("Error at line " + line + ": " + msg);
   }
 
   public void printTable() {
-    System.out.println("\n=== Symbol Table ===");
-    System.out.println("------------------------------------------------");
-    System.out.printf("| %-15s | %-15s | %-5s |\n", "Name", "Type", "Scope");
-    System.out.println("------------------------------------------------");
-    for (FlaskPythonSymbol s : allSymbols) {
-      System.out.println(s);
+    System.out.println("\n======================= SYMBOL TABLE SNAPSHOT =======================");
+
+    System.out.println(String.format("| %-25s | %-20s | %-15s |", "VARIABLE NAME", "TYPE", "SCOPE"));
+    System.out.println("---------------------------------------------------------------------");
+
+    for (int i = 0; i < scopes.size(); i++) {
+      Map<String, FlaskPythonType> scope = scopes.get(i);
+
+      String scopeName = (i == 0) ? "Global (0)" : "Function/Local (" + i + ")";
+
+      // طباعة كل متغير في هذا النطاق
+      for (Map.Entry<String, FlaskPythonType> entry : scope.entrySet()) {
+        System.out.println(String.format("| %-25s | %-20s | %-15s |",
+            entry.getKey(),
+            entry.getValue(),
+            scopeName));
+      }
     }
-    System.out.println("------------------------------------------------\n");
+    System.out.println("---------------------------------------------------------------------");
+
+    System.out.println("\n[Additional Context]");
+    System.out.println("Defined Routes:      " + definedRoutes);
+    System.out.println("Available Templates: " + availableTemplates);
+
+    if (!semanticErrors.isEmpty()) {
+      System.err.println("\n!!! SEMANTIC ERRORS DETECTED !!!");
+      for (String err : semanticErrors) {
+        System.err.println(err);
+      }
+    } else {
+      System.out.println("\nStatus: No Semantic Errors Found. Code is Clean.");
+    }
+    System.out.println("=====================================================================");
   }
 }
