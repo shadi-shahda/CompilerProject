@@ -1,70 +1,81 @@
 package TemplatesSymbolTable;
 
-import java.util.Set;
-import java.util.Stack;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class TemplatesSymbolTable {
-  private Stack<Map<String, TemplatesSymbol>> scopes = new Stack<>();
+    private Stack<Map<String, TemplatesSymbol>> scopes = new Stack<>();
+    private Set<String> usedClasses = new HashSet<>();
+    private Set<String> usedIds = new HashSet<>();
 
-  private Set<String> usedClasses = new HashSet<>();
-  private Set<String> usedIds = new HashSet<>();
+    private List<String> semanticErrors = new ArrayList<>();
 
-  public TemplatesSymbolTable() {
-    this.scopes.push(new HashMap<>());
-  }
-
-  public void enterScope() {
-    this.scopes.push(new HashMap<>());
-  }
-
-  public void exitScope() {
-    if (this.scopes.size() > 1) {
-      this.scopes.pop();
+    public TemplatesSymbolTable() {
+        this.scopes.push(new HashMap<>());
     }
-  }
 
-  public void defineVariable(String name, String kind, int line) {
-    TemplatesSymbol symbol = new TemplatesSymbol(name, kind, line);
-    this.scopes.peek().put(name, symbol);
-  }
-
-  public TemplatesSymbol resolveVariable(String name) {
-    for (int i = this.scopes.size() - 1; i >= 0; i--) {
-      Map<String, TemplatesSymbol> scope = this.scopes.get(i);
-      if (scope.containsKey(name)) {
-        return scope.get(name);
-      }
+    public void enterScope() {
+        this.scopes.push(new HashMap<>());
     }
-    return null;
-  }
 
-  public void addUsedClass(String className) {
-    this.usedClasses.add(className);
-  }
-
-  public void addUsedId(String idName) {
-    this.usedIds.add(idName);
-  }
-
-  public Set<String> getUsedClasses() {
-    return this.usedClasses;
-  }
-
-  public Set<String> getUsedIds() {
-    return this.usedIds;
-  }
-
-  public void printTable() {
-    System.out.println("=== Template HTML/CSS Usage ===");
-    System.out.println("Used Classes: " + this.usedClasses);
-    System.out.println("Used IDs:     " + this.usedIds);
-
-    System.out.println("\n=== Current Jinja Scopes ===");
-    if (!this.scopes.isEmpty()) {
-      System.out.println("Global Scope Variables: " + this.scopes.firstElement().keySet());
+    public void exitScope() {
+        if (this.scopes.size() > 1) {
+            this.scopes.pop();
+        }
     }
-  }
+
+    public void defineVariable(String name, String kind, int line) {
+        this.scopes.peek().put(name, new TemplatesSymbol(name, kind, line));
+    }
+
+    public void defineContextVariable(String name) {
+        this.scopes.firstElement().put(name, new TemplatesSymbol(name, "CONTEXT_VAR", 0));
+    }
+
+    public TemplatesSymbol resolveVariable(String name) {
+        for (int i = this.scopes.size() - 1; i >= 0; i--) {
+            if (this.scopes.get(i).containsKey(name))
+                return this.scopes.get(i).get(name);
+        }
+        return null;
+    }
+
+    public void reportError(String message, int line) {
+        this.semanticErrors.add("Semantic Error at line " + line + ": " + message);
+    }
+
+    public List<String> getErrors() {
+        return this.semanticErrors;
+    }
+
+    public boolean hasErrors() {
+        return !this.semanticErrors.isEmpty();
+    }
+
+    public void addUsedClass(String c) {
+        this.usedClasses.add(c);
+    }
+
+    public void addUsedId(String i) {
+        this.usedIds.add(i);
+    }
+
+    public Set<String> getUsedClasses() {
+        return this.usedClasses;
+    }
+
+    public Set<String> getUsedIds() {
+        return this.usedIds;
+    }
+
+    public void printTable() {
+        System.out.println("=== Symbol Table Analysis ===");
+        if (this.hasErrors()) {
+            System.err.println("ERRORS FOUND:");
+            for (String err : semanticErrors)
+                System.err.println(err);
+        } else {
+            System.out.println("No semantic errors found.");
+            System.out.println("Used Classes: " + this.usedClasses);
+        }
+    }
 }

@@ -1,156 +1,275 @@
 package FlaskPythonSymbolTable;
 
-import FlaskPythonAST.*;
+import FlaskPythonAST.FLaskPythonForStatement;
+import FlaskPythonAST.FlaskPythonAssignmentStatement;
+import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
+import FlaskPythonAST.FlaskPythonDictionaryExpression;
+import FlaskPythonAST.FlaskPythonExpression;
+import FlaskPythonAST.FlaskPythonFunctionCall;
+import FlaskPythonAST.FlaskPythonFunctionDeclaration;
+import FlaskPythonAST.FlaskPythonIdentifier;
+import FlaskPythonAST.FlaskPythonIfStatement;
+import FlaskPythonAST.FlaskPythonImportStatement;
+import FlaskPythonAST.FlaskPythonIntegerLiteral;
+import FlaskPythonAST.FlaskPythonListExpression;
+import FlaskPythonAST.FlaskPythonMemberAccess;
+import FlaskPythonAST.FlaskPythonMethodCall;
+import FlaskPythonAST.FlaskPythonPrintStatement;
+import FlaskPythonAST.FlaskPythonProgram;
+import FlaskPythonAST.FlaskPythonReturnStatement;
+import FlaskPythonAST.FlaskPythonStatement;
+import FlaskPythonAST.FlaskPythonStringLiteral;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
-public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Void> {
+public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<FlaskPythonType> {
 
-    private FlaskPythonSymbolTable symbolTable;
+  public FlaskPythonSymbolTable symbolTable;
 
-    public FlaskPythonSymbolTableVisitor(FlaskPythonSymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
+  public FlaskPythonSymbolTableVisitor(FlaskPythonSymbolTable symbolTable) {
+    this.symbolTable = symbolTable;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonProgram program) {
+    for (FlaskPythonStatement statement : program.statements) {
+      statement.accept(this);
+    }
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonFunctionDeclaration funcDecl) {
+    if (funcDecl.routePath != null && !funcDecl.routePath.isEmpty()) {
+      String route = stripQuotes(funcDecl.routePath);
+      if (symbolTable.isRouteDefined(route)) {
+        this.symbolTable.reportError("Duplicate route definition detected: " + route, funcDecl.getLineNumber());
+      } else {
+        this.symbolTable.addRoute(route);
+      }
     }
 
-    @Override
-    public Void visit(FlaskPythonProgram program) {
-        for (FlaskPythonStatement stmt : program.statements) {
-            stmt.accept(this);
+    if (this.symbolTable.isVariableDefined(funcDecl.name)) {
+      this.symbolTable.reportError("Function '" + funcDecl.name + "' is already defined.", funcDecl.getLineNumber());
+    }
+    this.symbolTable.defineVariable(funcDecl.name, FlaskPythonType.OBJECT);
+
+    this.symbolTable.enterScope();
+
+    if (funcDecl.parameters != null) {
+      for (String param : funcDecl.parameters) {
+        this.symbolTable.defineVariable(param, FlaskPythonType.UNKNOWN);
+      }
+    }
+
+    if (funcDecl.body != null) {
+      for (FlaskPythonStatement stmt : funcDecl.body) {
+        stmt.accept(this);
+      }
+    }
+
+    this.symbolTable.exitScope();
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonAssignmentStatement assignStmt) {
+    FlaskPythonType inferredType = FlaskPythonType.UNKNOWN;
+    if (assignStmt.expression != null) {
+      inferredType = assignStmt.expression.accept(this);
+    }
+
+    symbolTable.defineVariable(assignStmt.variableName, inferredType);
+
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonIdentifier identifier) {
+    if (!symbolTable.isVariableDefined(identifier.name)) {
+      this.symbolTable.reportError("Undefined variable '" + identifier.name + "' used.", identifier.getLineNumber());
+      return FlaskPythonType.UNKNOWN;
+    }
+    return this.symbolTable.getVariableType(identifier.name);
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonFunctionCall funcCall) {
+    if ("render_template".equals(funcCall.functionName)) {
+      if (funcCall.arguments != null && !funcCall.arguments.isEmpty()) {
+        FlaskPythonExpression firstArg = funcCall.arguments.get(0);
+
+        if (firstArg instanceof FlaskPythonStringLiteral) {
+          String templateName = stripQuotes(((FlaskPythonStringLiteral) firstArg).value);
+          if (!this.symbolTable.isTemplateExists(templateName)) {
+            this.symbolTable.reportError("Template file not found: '" + templateName + "'",
+                funcCall.getLineNumber());
+          }
         }
-        return null;
+      }
+    }
+    for (FlaskPythonExpression arg : funcCall.arguments) {
+      arg.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonFunctionDeclaration funcDecl) {
-        symbolTable.define(funcDecl.name, "FUNCTION");
-        symbolTable.enterScope();
-        if (funcDecl.parameters != null) {
-            for (String param : funcDecl.parameters) {
-                symbolTable.define(param, "PARAMETER");
-            }
-        }
-        for (FlaskPythonStatement stmt : funcDecl.body) {
-            stmt.accept(this);
-        }
-        symbolTable.exitScope();
-        return null;
+    return FlaskPythonType.UNKNOWN;
+  }
+
+  @Override
+  public FlaskPythonType visit(FLaskPythonForStatement forStmt) {
+    FlaskPythonType iterableType = FlaskPythonType.UNKNOWN;
+
+    if (forStmt.iterable != null) {
+      iterableType = forStmt.iterable.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonIfStatement ifStmt) {
-        ifStmt.condition.accept(this);
-        for (FlaskPythonStatement stmt : ifStmt.thenBloc)
-            stmt.accept(this);
-        if (ifStmt.elseBloc != null) {
-            for (FlaskPythonStatement stmt : ifStmt.elseBloc)
-                stmt.accept(this);
-        }
-        return null;
+    if (iterableType != FlaskPythonType.LIST
+        && iterableType != FlaskPythonType.DICT
+        && iterableType != FlaskPythonType.STRING
+        && iterableType != FlaskPythonType.UNKNOWN) {
+
+      this.symbolTable.reportError("Type Error: Object of type '" + iterableType + "' is not iterable.",
+          forStmt.getLineNumber());
     }
 
-    @Override
-    public Void visit(FlaskPythonReturnStatement returnStmt) {
-        if (returnStmt.expression != null)
-            returnStmt.expression.accept(this);
-        return null;
+    this.symbolTable.enterScope();
+    this.symbolTable.defineVariable(forStmt.variableName, FlaskPythonType.UNKNOWN);
+
+    for (FlaskPythonStatement stmt : forStmt.body) {
+      stmt.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonAssignmentStatement assignStmt) {
-        symbolTable.define(assignStmt.variableName, "VARIABLE");
-        assignStmt.expression.accept(this);
-        return null;
+    this.symbolTable.exitScope();
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonBinaryExpression binExpr) {
+    FlaskPythonType left = binExpr.left.accept(this);
+    FlaskPythonType right = binExpr.right.accept(this);
+    String operator = binExpr.operator;
+
+    if (operator.equals("+")) {
+      if ((left == FlaskPythonType.INT && right == FlaskPythonType.STRING) ||
+          (left == FlaskPythonType.STRING && right == FlaskPythonType.INT)) {
+        symbolTable.reportError("Type Error: Unsupported operand types for +: '" + left + "' and '" + right + "'",
+            binExpr.getLineNumber());
+      }
+
+      if (left == right) {
+        return left;
+      }
     }
 
-    @Override
-    public Void visit(FlaskPythonImportStatement importStmt) {
-        symbolTable.define(importStmt.libraryName, "LIBRARY");
-        for (String item : importStmt.importedItems) {
-            symbolTable.define(item, "IMPORTED");
-        }
-        return null;
+    if (operator.equals("==") || operator.equals("!=") || operator.equals(">") || operator.equals("<")
+        || operator.equals(">=") || operator.equals("<=")) {
+      return FlaskPythonType.BOOLEAN;
     }
 
-    @Override
-    public Void visit(FlaskPythonBinaryExpression binExpr) {
-        binExpr.left.accept(this);
-        binExpr.right.accept(this);
-        return null;
+    return FlaskPythonType.UNKNOWN;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonIntegerLiteral intLit) {
+    return FlaskPythonType.INT;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonStringLiteral stringLit) {
+    return FlaskPythonType.STRING;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonBooleanLiteral booleanLiteral) {
+    return FlaskPythonType.BOOLEAN;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonListExpression listExpr) {
+    for (var elem : listExpr.elements) {
+      elem.accept(this);
+    }
+    return FlaskPythonType.LIST;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonDictionaryExpression dictExpr) {
+    for (var val : dictExpr.entries.values()) {
+      val.accept(this);
+    }
+    return FlaskPythonType.DICT;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonIfStatement ifStmt) {
+    if (ifStmt.condition != null) {
+      ifStmt.condition.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonIdentifier identifier) {
-        return null;
+    for (var stmt : ifStmt.thenBloc) {
+      stmt.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonStringLiteral stringLit) {
-        return null;
+    if (ifStmt.elseBloc != null) {
+      for (var stmt : ifStmt.elseBloc) {
+        stmt.accept(this);
+      }
     }
 
-    @Override
-    public Void visit(FlaskPythonIntegerLiteral intLit) {
-        return null;
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonImportStatement importStmt) {
+    if (importStmt.importedItems != null) {
+      for (String name : importStmt.importedItems) {
+        this.symbolTable.defineVariable(name, FlaskPythonType.OBJECT);
+      }
+    }
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonPrintStatement printStmt) {
+    if (printStmt.expression != null) {
+      printStmt.expression.accept(this);
+    }
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonReturnStatement returnStmt) {
+    if (returnStmt.expression != null) {
+      return returnStmt.expression.accept(this);
+    }
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonMemberAccess memberAccess) {
+    FlaskPythonType infferedType = memberAccess.object.accept(this);
+    return infferedType;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonMethodCall methCall) {
+    if (methCall.object != null) {
+      methCall.object.accept(this);
     }
 
-    @Override
-    public Void visit(FlaskPythonFunctionCall funcCall) {
-        for (FlaskPythonExpression expression : funcCall.arguments) {
-            expression.accept(this);
-        }
-        return null;
+    for (var arg : methCall.arguments) {
+      arg.accept(this);
     }
+    
+    return FlaskPythonType.UNKNOWN;
+  }
 
-    @Override
-    public Void visit(FlaskPythonListExpression listExpr) {
-        for (FlaskPythonExpression expression : listExpr.elements) {
-            expression.accept(this);
-        }
-        return null;
+  private String stripQuotes(String s) {
+    if (s == null)
+      return "";
+    if (s.length() >= 2 && (s.startsWith("'") || s.startsWith("\""))) {
+      return s.substring(1, s.length() - 1);
     }
-
-    @Override
-    public Void visit(FlaskPythonDictionaryExpression dictExpr) {
-        for (FlaskPythonExpression expression : dictExpr.entries.values()) {
-            expression.accept(this);
-        }
-        return null;
-    }
-
-    @Override
-    public Void visit(FlaskPythonMemberAccess memberAccess) {
-        memberAccess.object.accept(this);
-        return null;
-    }
-
-    @Override
-    public Void visit(FLaskPythonForStatement forStmt) {
-        forStmt.iterable.accept(this);
-        for (FlaskPythonStatement stmt : forStmt.body) {
-            stmt.accept(this);
-        }
-        return null;
-    }
-
-    @Override
-    public Void visit(FlaskPythonPrintStatement printStmt) {
-        if (printStmt.expression != null) {
-            printStmt.expression.accept(this);
-        }
-        return null;
-    }
-
-    @Override
-    public Void visit(FlaskPythonMethodCall methCall) {
-        methCall.object.accept(this);
-        for (FlaskPythonExpression expression : methCall.arguments) {
-            expression.accept(this);
-        }
-        return null;
-    }
-
-    @Override
-    public Void visit(FlaskPythonBooleanLiteral booleanLiteral) {
-        return null;
-    }
-
+    return s;
+  }
 }
