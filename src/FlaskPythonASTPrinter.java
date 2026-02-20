@@ -32,7 +32,7 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
         indentLevel++;
 
         if (funcDecl.parameters != null) {
-            for (String _ : funcDecl.parameters) {
+            for (String s : funcDecl.parameters) {
                 sb.append(format("FlaskPythonIdentifier", funcDecl.getLineNumber()));
             }
         }
