@@ -1,10 +1,5 @@
 import java.io.IOException;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import CssAST.CssASTNode;
 import CssSymbolTable.CssSymbolTable;
 import CssSymbolTable.CssSymbolTableVisitor;
@@ -23,6 +18,10 @@ import generated.FlaskPythonLexer;
 import generated.FlaskPythonParser;
 import generated.TemplatesLexer;
 import generated.TemplatesParser;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class App {
     public static void main(String[] args) {

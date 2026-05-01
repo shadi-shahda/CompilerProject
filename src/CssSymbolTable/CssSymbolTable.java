@@ -41,6 +41,20 @@ public class CssSymbolTable {
       }
     }
 
+    for (String htmlId : usedIdsInHtml) {
+      if (!definedIds.contains(htmlId)) {
+        System.out.println("WARNING: HTML uses Id '" + htmlId + "' but it is NOT defined in style.css");
+        issuesFound = true;
+      }
+    }
+
+    for (String cssId : definedIds) {
+      if (!usedIdsInHtml.contains(cssId)) {
+        System.out.println("INFO: CSS id '" + cssId + "' is defined but NOT used in any HTML file (Dead Code).");
+        issuesFound = true;
+      }
+    }
+
     if (!issuesFound) {
       System.out.println("SUCCESS: CSS and HTML are perfectly synced!");
     }
