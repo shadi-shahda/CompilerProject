@@ -33,6 +33,7 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
 
         if (funcDecl.parameters != null) {
             for (String s : funcDecl.parameters) {
+                s = s.trim();
                 sb.append(format("FlaskPythonIdentifier", funcDecl.getLineNumber()));
             }
         }
