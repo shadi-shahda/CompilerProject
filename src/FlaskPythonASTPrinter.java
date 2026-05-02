@@ -2,232 +2,283 @@ import FlaskPythonAST.*;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
-    private int indentLevel = 0;
 
-    private String indent() {
-        return "  ".repeat(indentLevel);
+  private int indentLevel = 0;
+
+  private String indent() {
+    return "  ".repeat(indentLevel);
+  }
+
+  private String line(String text, int line) {
+    return indent() + text + " (Line " + line + ")\n";
+  }
+
+  // ================= PROGRAM =================
+  @Override
+  public String visit(FlaskPythonProgram program) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Program\n");
+    indentLevel++;
+
+    for (FlaskPythonStatement stmt : program.statements) {
+      sb.append(stmt.accept(this));
     }
 
-    private String format(String className, int line) {
-        return indent() + className + " (Line " + line + ")\n";
+    indentLevel--;
+    return sb.toString();
+  }
+
+  // ================= IMPORT =================
+  @Override
+  public String visit(FlaskPythonImportStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Import: " + stmt.libraryName, stmt.getLineNumber()));
+
+    if (stmt.importedItems != null) {
+      indentLevel++;
+      for (String item : stmt.importedItems) {
+        sb.append(line("ImportItem: " + item, stmt.getLineNumber()));
+      }
+      indentLevel--;
     }
 
-    @Override
-    public String visit(FlaskPythonProgram program) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Program\n");
-        indentLevel++;
-        for (FlaskPythonStatement stmt : program.statements) {
-            sb.append(stmt.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
+    return sb.toString();
+  }
+
+  // ================= IDENTIFIER =================
+  @Override
+  public String visit(FlaskPythonIdentifier id) {
+    return line("Identifier: " + id.name, id.getLineNumber());
+  }
+
+  // ================= LITERALS =================
+  @Override
+  public String visit(FlaskPythonIntegerLiteral lit) {
+    return line("Integer: " + lit.value, lit.getLineNumber());
+  }
+
+  @Override
+  public String visit(FlaskPythonStringLiteral lit) {
+    return line("String: " + lit.value, lit.getLineNumber());
+  }
+
+  @Override
+  public String visit(FlaskPythonBooleanLiteral lit) {
+    return line("Boolean: " + lit.value, lit.getLineNumber());
+  }
+
+  // ================= ASSIGNMENT =================
+  @Override
+  public String visit(FlaskPythonAssignmentStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Assignment", stmt.getLineNumber()));
+
+    indentLevel++;
+    sb.append(line("Identifier: " + stmt.variableName, stmt.getLineNumber()));
+    sb.append(stmt.expression.accept(this));
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= FUNCTION CALL =================
+  @Override
+  public String visit(FlaskPythonFunctionCall call) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("FunctionCall: " + call.functionName, call.getLineNumber()));
+
+    indentLevel++;
+    for (var arg : call.arguments) {
+      sb.append(arg.accept(this));
+    }
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= RETURN =================
+  @Override
+  public String visit(FlaskPythonReturnStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Return", stmt.getLineNumber()));
+
+    if (stmt.expression != null) {
+      indentLevel++;
+      sb.append(stmt.expression.accept(this));
+      indentLevel--;
     }
 
-    @Override
-    public String visit(FlaskPythonFunctionDeclaration funcDecl) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonFunctionDeclaration", funcDecl.getLineNumber()));
+    return sb.toString();
+  }
 
-        indentLevel++;
+  // ================= IF =================
+  @Override
+  public String visit(FlaskPythonIfStatement stmt) {
+    StringBuilder sb = new StringBuilder();
 
-        if (funcDecl.parameters != null) {
-            for (String s : funcDecl.parameters) {
-                s = s.trim();
-                sb.append(format("FlaskPythonIdentifier", funcDecl.getLineNumber()));
-            }
-        }
+    sb.append(line("If", stmt.getLineNumber()));
 
-        for (FlaskPythonStatement stmt : funcDecl.body) {
-            sb.append(stmt.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
+    indentLevel++;
+
+    sb.append(stmt.condition.accept(this));
+
+    for (FlaskPythonStatement s : stmt.thenBloc) {
+      sb.append(s.accept(this));
     }
 
-    @Override
-    public String visit(FlaskPythonIfStatement ifStmt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonIfStatement", ifStmt.getLineNumber()));
-
-        indentLevel++;
-
-        sb.append(ifStmt.condition.accept(this));
-
-        for (FlaskPythonStatement stmt : ifStmt.thenBloc) {
-            sb.append(stmt.accept(this));
-        }
-
-        if (ifStmt.elseBloc != null) {
-            sb.append(format("ElseBlock", ifStmt.getLineNumber()));
-            indentLevel++;
-            for (FlaskPythonStatement stmt : ifStmt.elseBloc) {
-                sb.append(stmt.accept(this));
-            }
-            indentLevel--;
-        }
-        indentLevel--;
-        return sb.toString();
+    if (stmt.elseBloc != null) {
+      sb.append(line("Else", stmt.getLineNumber()));
+      indentLevel++;
+      for (FlaskPythonStatement s : stmt.elseBloc) {
+        sb.append(s.accept(this));
+      }
+      indentLevel--;
     }
 
-    @Override
-    public String visit(FlaskPythonAssignmentStatement stmt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonAssignmentStatement", stmt.getLineNumber()));
+    indentLevel--;
 
-        indentLevel++;
-        sb.append(format("FlaskPythonIdentifier", stmt.getLineNumber()));
+    return sb.toString();
+  }
 
-        sb.append(stmt.expression.accept(this));
-        indentLevel--;
-        return sb.toString();
+  // ================= FOR (FIXED) =================
+  @Override
+  public String visit(FLaskPythonForStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("For: " + stmt.variableName + " in", stmt.getLineNumber()));
+
+    indentLevel++;
+
+    sb.append(line("Iterable", stmt.getLineNumber()));
+    sb.append(stmt.iterable.accept(this));
+
+    for (FlaskPythonStatement s : stmt.body) {
+      sb.append(s.accept(this));
     }
 
-    @Override
-    public String visit(FlaskPythonReturnStatement stmt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonReturnStatement", stmt.getLineNumber()));
+    indentLevel--;
 
-        if (stmt.expression != null) {
-            indentLevel++;
-            sb.append(stmt.expression.accept(this));
-            indentLevel--;
-        }
-        return sb.toString();
+    return sb.toString();
+  }
+
+  // ================= BINARY =================
+  @Override
+  public String visit(FlaskPythonBinaryExpression expr) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("BinaryExpression: " + expr.operator, expr.getLineNumber()));
+
+    indentLevel++;
+    sb.append(expr.left.accept(this));
+    sb.append(expr.right.accept(this));
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= LIST =================
+  @Override
+  public String visit(FlaskPythonListExpression list) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("List", list.getLineNumber()));
+
+    indentLevel++;
+    for (var e : list.elements) {
+      sb.append(e.accept(this));
+    }
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= DICTIONARY (FIXED) =================
+  @Override
+  public String visit(FlaskPythonDictionaryExpression dict) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Dictionary", dict.getLineNumber()));
+
+    indentLevel++;
+
+    for (var entry : dict.entries.entrySet()) {
+      sb.append(indent());
+      sb.append(entry.getKey())
+              .append(" -> ");
+      sb.append(entry.getValue().accept(this));
     }
 
-    @Override
-    public String visit(FlaskPythonFunctionCall call) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonFunctionCall", call.getLineNumber()));
+    indentLevel--;
 
-        indentLevel++;
-        for (var arg : call.arguments) {
-            sb.append(arg.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
+    return sb.toString();
+  }
+
+  // ================= MEMBER ACCESS (FIXED) =================
+  @Override
+  public String visit(FlaskPythonMemberAccess access) {
+    return line(
+            "MemberAccess: " + access.object.accept(this).trim() + "." + access.memberName,
+            access.getLineNumber()
+    );
+  }
+
+  // ================= PRINT =================
+  @Override
+  public String visit(FlaskPythonPrintStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Print", stmt.getLineNumber()));
+
+    indentLevel++;
+    sb.append(stmt.expression.accept(this));
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= FUNCTION =================
+  @Override
+  public String visit(FlaskPythonFunctionDeclaration func) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("Function: " + func.name, func.getLineNumber()));
+
+    indentLevel++;
+
+    if (func.parameters != null) {
+      for (String p : func.parameters) {
+        sb.append(line("Param: " + p, func.getLineNumber()));
+      }
     }
 
-    @Override
-    public String visit(FlaskPythonImportStatement stmt) {
-        return format("FlaskPythonImportStatement", stmt.getLineNumber());
+    for (FlaskPythonStatement s : func.body) {
+      sb.append(s.accept(this));
     }
 
-    @Override
-    public String visit(FlaskPythonBinaryExpression binExpr) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonBinaryExpression", binExpr.getLineNumber()));
+    indentLevel--;
 
-        indentLevel++;
-        sb.append(binExpr.left.accept(this));
-        sb.append(binExpr.right.accept(this));
-        indentLevel--;
-        return sb.toString();
+    return sb.toString();
+  }
+
+  // ================= METHOD CALL =================
+  @Override
+  public String visit(FlaskPythonMethodCall call) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("MethodCall: " + call.methodName, call.getLineNumber()));
+
+    indentLevel++;
+    sb.append(call.object.accept(this));
+
+    for (var a : call.arguments) {
+      sb.append(a.accept(this));
     }
+    indentLevel--;
 
-    @Override
-    public String visit(FlaskPythonIdentifier identifier) {
-        return format("FlaskPythonIdentifier", identifier.getLineNumber());
-    }
-
-    @Override
-    public String visit(FlaskPythonIntegerLiteral intLit) {
-        return format("FlaskPythonIntegerLiteral", intLit.getLineNumber());
-    }
-
-    @Override
-    public String visit(FlaskPythonStringLiteral stringLit) {
-        return format("FlaskPythonStringLiteral", stringLit.getLineNumber());
-    }
-
-    @Override
-    public String visit(FlaskPythonListExpression listExpr) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonListExpression", listExpr.getLineNumber()));
-
-        indentLevel++;
-        for (var element : listExpr.elements) {
-            sb.append(element.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FlaskPythonDictionaryExpression dictExpr) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonDictionaryExpression", dictExpr.getLineNumber()));
-
-        indentLevel++;
-        for (var value : dictExpr.entries.values()) {
-            sb.append(value.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FlaskPythonMemberAccess memberAccess) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonMemberAccess", memberAccess.getLineNumber()));
-
-        indentLevel++;
-        sb.append(memberAccess.object.accept(this));
-        sb.append(format("FlaskPythonIdentifier", memberAccess.getLineNumber()));
-        indentLevel--;
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FLaskPythonForStatement forStmt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonForStatement", forStmt.getLineNumber()));
-
-        indentLevel++;
-
-        sb.append(format("FlaskPythonIdentifier", forStmt.getLineNumber()));
-        sb.append(forStmt.iterable.accept(this));
-
-        for (FlaskPythonStatement s : forStmt.body) {
-            sb.append(s.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FlaskPythonPrintStatement printStmt) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(format("FlaskPythonPrintStatement", printStmt.getLineNumber()));
-
-        indentLevel++;
-
-        sb.append(printStmt.expression.accept(this));
-        indentLevel--;
-
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FlaskPythonMethodCall methCall) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(format("FlaskPythonMethodCall", methCall.getLineNumber()));
-
-        indentLevel++;
-        sb.append(methCall.object.accept(this));
-
-        for (var arg : methCall.arguments) {
-            sb.append(arg.accept(this));
-        }
-        indentLevel--;
-        return sb.toString();
-    }
-
-    @Override
-    public String visit(FlaskPythonBooleanLiteral booleanLiteral) {
-        return format("FlaskPythonBooleanLiteral", booleanLiteral.getLineNumber());
-    }
-
+    return sb.toString();
+  }
 }
