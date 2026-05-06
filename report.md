@@ -216,14 +216,17 @@ Recommendation:
 
 ### 7.6 Better Error Reporting
 
-Semantic errors are collected, but they could be more actionable.
+Implemented improvements:
 
-Recommendation:
+- AST printers now emit stable `NodeId` and node type for each AST node, improving traceability between diagnostics and AST nodes.
+- Printers retain line numbers for each node, making it easier to map errors to source locations.
+- These changes support grouping and richer diagnostics in later passes and make it simpler to emit structured diagnostics for editor integration.
 
-- Include source spans, not just line numbers
-- Group errors by file and phase
-- Add severity levels such as warning, error, and info
-- Emit structured diagnostics for editor integration
+Remaining recommendations:
+
+- Add full source spans (start/end offsets) at the parser level to accompany node metadata.
+- Introduce severity levels (warning, error, info) in the diagnostic model and group errors by file and phase for reporting.
+- Emit language-server-friendly structured diagnostics as a follow-up.
 
 ### 7.7 Testing and Regression Coverage
 

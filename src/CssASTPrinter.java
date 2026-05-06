@@ -1,4 +1,19 @@
-import CssAST.*;
+import CssAST.CssClassSelector;
+import CssAST.CssDeclaration;
+import CssAST.CssFloatValue;
+import CssAST.CssFunction;
+import CssAST.CssHexValue;
+import CssAST.CssIdSelector;
+import CssAST.CssIdentValue;
+import CssAST.CssIntValue;
+import CssAST.CssPercentValue;
+import CssAST.CssProgram;
+import CssAST.CssPxValue;
+import CssAST.CssRule;
+import CssAST.CssSelector;
+import CssAST.CssStringValue;
+import CssAST.CssTagSelector;
+import CssAST.CssValueTerm;
 import CssVisitor.CssASTVisitor;
 
 public class CssASTPrinter implements CssASTVisitor<String> {
@@ -13,11 +28,18 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return indent() + text + " (Line " + line + ")\n";
   }
 
+  private int nodeCounter = 0;
+
+  private String nodeHeader(Object node) {
+    return indent() + "NodeId:" + (++nodeCounter) + " Type:" + node.getClass().getSimpleName() + "\n";
+  }
+
   // ================= PROGRAM =================
   @Override
   public String visit(CssProgram program) {
     StringBuilder sb = new StringBuilder();
     sb.append("CssProgram\n");
+    sb.append(nodeHeader(program));
 
     indentLevel++;
     for (CssRule rule : program.rules) {

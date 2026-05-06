@@ -1,4 +1,22 @@
-import FlaskPythonAST.*;
+import FlaskPythonAST.FLaskPythonForStatement;
+import FlaskPythonAST.FlaskPythonAssignmentStatement;
+import FlaskPythonAST.FlaskPythonBinaryExpression;
+import FlaskPythonAST.FlaskPythonBooleanLiteral;
+import FlaskPythonAST.FlaskPythonDictionaryExpression;
+import FlaskPythonAST.FlaskPythonFunctionCall;
+import FlaskPythonAST.FlaskPythonFunctionDeclaration;
+import FlaskPythonAST.FlaskPythonIdentifier;
+import FlaskPythonAST.FlaskPythonIfStatement;
+import FlaskPythonAST.FlaskPythonImportStatement;
+import FlaskPythonAST.FlaskPythonIntegerLiteral;
+import FlaskPythonAST.FlaskPythonListExpression;
+import FlaskPythonAST.FlaskPythonMemberAccess;
+import FlaskPythonAST.FlaskPythonMethodCall;
+import FlaskPythonAST.FlaskPythonPrintStatement;
+import FlaskPythonAST.FlaskPythonProgram;
+import FlaskPythonAST.FlaskPythonReturnStatement;
+import FlaskPythonAST.FlaskPythonStatement;
+import FlaskPythonAST.FlaskPythonStringLiteral;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
@@ -13,11 +31,18 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     return indent() + text + " (Line " + line + ")\n";
   }
 
+  private int nodeCounter = 0;
+
+  private String nodeHeader(Object node) {
+    return indent() + "NodeId:" + (++nodeCounter) + " Type:" + node.getClass().getSimpleName() + "\n";
+  }
+
   // ================= PROGRAM =================
   @Override
   public String visit(FlaskPythonProgram program) {
     StringBuilder sb = new StringBuilder();
     sb.append("Program\n");
+    sb.append(nodeHeader(program));
     indentLevel++;
 
     for (FlaskPythonStatement stmt : program.statements) {
