@@ -1,22 +1,4 @@
-import TemplatesAST.BinaryExpression;
-import TemplatesAST.BoolExpression;
-import TemplatesAST.DictionaryAccessExpression;
-import TemplatesAST.HtmlAttribute;
-import TemplatesAST.HtmlElement;
-import TemplatesAST.HtmlText;
-import TemplatesAST.IntExpression;
-import TemplatesAST.JinjaForStatement;
-import TemplatesAST.JinjaIfStatement;
-import TemplatesAST.JinjaPrint;
-import TemplatesAST.KeyValueAttribute;
-import TemplatesAST.LogicalExpression;
-import TemplatesAST.MemberAccessExpression;
-import TemplatesAST.NotExpression;
-import TemplatesAST.OnlyKeyAttribute;
-import TemplatesAST.StringExpression;
-import TemplatesAST.TemplatesASTNode;
-import TemplatesAST.TemplatesProgram;
-import TemplatesAST.VarExpression;
+import TemplatesAST.*;
 import TemplatesVisitor.TemplatesASTVisitor;
 
 public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
@@ -27,184 +9,258 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return "  ".repeat(indentLevel);
   }
 
-  private String format(String className, int line) {
-    return indent() + className + " (Line " + line + ")\n";
+  private String line(String label, int line) {
+    return indent() + label + " (Line " + line + ")\n";
   }
 
+  private void inc() { indentLevel++; }
+  private void dec() { indentLevel--; }
+
+  // ================= PROGRAM =================
   @Override
   public String visit(TemplatesProgram program) {
     StringBuilder sb = new StringBuilder();
+
     sb.append("TemplatesProgram\n");
-    indentLevel++;
-    for (TemplatesASTNode nodes : program.children) {
-      sb.append(nodes.accept(this));
+
+    inc();
+    for (TemplatesASTNode node : program.children) {
+      sb.append(node.accept(this));
     }
-    indentLevel--;
+    dec();
+
     return sb.toString();
   }
 
+  // ================= HTML TEXT =================
   @Override
   public String visit(HtmlText text) {
-    return format("HtmlText", text.getLine());
+    return line("HtmlText: " + text.text, text.getLine());
   }
 
-  @Override
-  public String visit(KeyValueAttribute attribute) {
-    return format("KeyValueAttribute", attribute.getLine());
-  }
-
-  @Override
-  public String visit(OnlyKeyAttribute attribute) {
-    return format("OnlyKeyAttribute", attribute.getLine());
-  }
-
+  // ================= HTML ELEMENT =================
   @Override
   public String visit(HtmlElement element) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("HtmlElement", element.getLine()));
-    indentLevel++;
-    for (HtmlAttribute attribute : element.attributes) {
-      sb.append(attribute.accept(this));
+
+    sb.append(indent())
+            .append("HtmlElement: ")
+            .append(element.tagName)
+            .append(" (Line ")
+            .append(element.getLine())
+            .append(")\n");
+
+    inc();
+
+    // Attributes
+    for (HtmlAttribute attr : element.attributes) {
+      sb.append(attr.accept(this));
     }
 
-    for (TemplatesASTNode templates : element.templates) {
-      sb.append(templates.accept(this));
+    // Children
+    for (TemplatesASTNode node : element.templates) {
+      sb.append(node.accept(this));
     }
-    indentLevel--;
+
+    dec();
     return sb.toString();
   }
 
+  // ================= KEY-VALUE ATTRIBUTE =================
+  @Override
+  public String visit(KeyValueAttribute attribute) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("KeyValueAttribute", attribute.getLine()));
+    inc();
+
+    sb.append(indent()).append("Key: ").append(attribute.getKey()).append("\n");
+    sb.append(indent()).append("Value: ").append(attribute.value).append("\n");
+
+    dec();
+    return sb.toString();
+  }
+
+  // ================= ONLY KEY ATTRIBUTE =================
+  @Override
+  public String visit(OnlyKeyAttribute attribute) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("OnlyKeyAttribute", attribute.getLine()));
+    inc();
+
+    sb.append(indent()).append("Key: ").append(attribute.getKey()).append("\n");
+
+    dec();
+    return sb.toString();
+  }
+
+  // ================= JINJA PRINT =================
   @Override
   public String visit(JinjaPrint jinjaPrint) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("JinjaPrint", jinjaPrint.getLine()));
-    indentLevel++;
+
+    sb.append(line("JinjaPrint", jinjaPrint.getLine()));
+
+    inc();
     sb.append(jinjaPrint.expression.accept(this));
-    indentLevel--;
+    dec();
+
     return sb.toString();
   }
 
+  // ================= IF =================
   @Override
   public String visit(JinjaIfStatement ifStmt) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("JinjaIfStatement", ifStmt.getLine()));
-    indentLevel++;
 
-    sb.append(format("Condition", ifStmt.getLine()));
-    indentLevel++;
+    sb.append(line("JinjaIf", ifStmt.getLine()));
+
+    inc();
+
+    sb.append(line("Condition", ifStmt.getLine()));
+    inc();
     sb.append(ifStmt.condition.accept(this));
-    indentLevel--;
+    dec();
 
-    sb.append(format("ThenBlock", ifStmt.getLine()));
-    indentLevel++;
-    for (TemplatesASTNode thenBody : ifStmt.thenBody) {
-      sb.append(thenBody.accept(this));
+    sb.append(line("Then", ifStmt.getLine()));
+    inc();
+    for (TemplatesASTNode node : ifStmt.thenBody) {
+      sb.append(node.accept(this));
     }
-    indentLevel--;
+    dec();
 
-    sb.append(format("ElseBlock", ifStmt.getLine()));
-    indentLevel++;
     if (ifStmt.elseBody != null) {
-      for (TemplatesASTNode elseBody : ifStmt.elseBody) {
-        sb.append(elseBody.accept(this));
+      sb.append(line("Else", ifStmt.getLine()));
+      inc();
+      for (TemplatesASTNode node : ifStmt.elseBody) {
+        sb.append(node.accept(this));
       }
+      dec();
     }
-    indentLevel--;
 
-    indentLevel--;
+    dec();
     return sb.toString();
   }
 
+  // ================= FOR =================
   @Override
   public String visit(JinjaForStatement forStmt) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("JinjaForStatement", forStmt.getLine()));
-    indentLevel++;
-    sb.append(format("LoopVariable", forStmt.getLine()));
 
-    sb.append(format("LoopList", forStmt.getLine()));
-    indentLevel++;
-    for (TemplatesASTNode statements : forStmt.statements) {
-      sb.append(statements.accept(this));
+    sb.append(line("JinjaFor", forStmt.getLine()));
+
+    inc();
+
+    sb.append(indent())
+            .append("LoopVariable: ")
+            .append(forStmt.variableName)
+            .append("\n");
+
+    sb.append(indent())
+            .append("LoopList: ")
+            .append(forStmt.listName)
+            .append("\n");
+
+    sb.append(line("Body", forStmt.getLine()));
+    inc();
+
+    for (TemplatesASTNode node : forStmt.statements) {
+      sb.append(node.accept(this));
     }
-    indentLevel--;
 
-    indentLevel--;
+    dec();
+    dec();
+
     return sb.toString();
   }
 
+  // ================= EXPRESSIONS =================
   @Override
-  public String visit(MemberAccessExpression memberAccessExpr) {
+  public String visit(MemberAccessExpression expr) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("MemberAccessExpression", memberAccessExpr.getLine()));
-    indentLevel++;
-    sb.append(memberAccessExpr.expression.accept(this));
-    sb.append(format("MemberIdentifier", memberAccessExpr.getLine()));
-    indentLevel--;
+
+    sb.append(line("MemberAccess", expr.getLine()));
+
+    inc();
+    sb.append(expr.expression.accept(this));
+    dec();
+
     return sb.toString();
   }
 
   @Override
-  public String visit(DictionaryAccessExpression dictionaryAccessExpr) {
+  public String visit(DictionaryAccessExpression expr) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("DictionaryAccessExpression", dictionaryAccessExpr.getLine()));
-    indentLevel++;
-    sb.append(dictionaryAccessExpr.object.accept(this));
-    sb.append(format("DictionaryKey", dictionaryAccessExpr.getLine()));
-    indentLevel--;
+
+    sb.append(line("DictionaryAccess", expr.getLine()));
+
+    inc();
+    sb.append(expr.object.accept(this));
+    dec();
+
     return sb.toString();
   }
 
   @Override
-  public String visit(NotExpression notExpr) {
+  public String visit(NotExpression expr) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("NotExpression", notExpr.getLine()));
-    indentLevel++;
-    sb.append(notExpr.expression.accept(this));
-    indentLevel--;
+
+    sb.append(line("Not", expr.getLine()));
+
+    inc();
+    sb.append(expr.expression.accept(this));
+    dec();
+
     return sb.toString();
   }
 
   @Override
-  public String visit(BinaryExpression binaryExpr) {
+  public String visit(BinaryExpression expr) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("BinaryExpression", binaryExpr.getLine()));
-    indentLevel++;
-    sb.append(binaryExpr.left.accept(this));
-    sb.append(binaryExpr.right.accept(this));
-    indentLevel--;
+
+    sb.append(line("BinaryExpression", expr.getLine()));
+
+    inc();
+    sb.append(expr.left.accept(this));
+    sb.append(expr.right.accept(this));
+    dec();
+
     return sb.toString();
   }
 
   @Override
-  public String visit(LogicalExpression logicalExpr) {
+  public String visit(LogicalExpression expr) {
     StringBuilder sb = new StringBuilder();
-    sb.append(format("LogicalExpression", logicalExpr.getLine()));
-    indentLevel++;
-    sb.append(logicalExpr.left.accept(this));
-    sb.append(logicalExpr.right.accept(this));
-    indentLevel--;
+
+    sb.append(line("LogicalExpression", expr.getLine()));
+
+    inc();
+    sb.append(expr.left.accept(this));
+    sb.append(expr.right.accept(this));
+    dec();
+
     return sb.toString();
   }
 
+  // ================= LITERALS =================
   @Override
-  public String visit(VarExpression varExpr) {
-    return format("VarExpression", varExpr.getLine());
+  public String visit(VarExpression expr) {
+    return line("Var: " + expr.name, expr.getLine());
   }
 
   @Override
-  public String visit(StringExpression StringExpr) {
-    return format("StringExpression", StringExpr.getLine());
+  public String visit(StringExpression expr) {
+    return line("String: " + expr.name, expr.getLine());
   }
 
   @Override
-  public String visit(IntExpression intExpr) {
-    return format("IntExpression", intExpr.getLine());
+  public String visit(IntExpression expr) {
+    return line("Int: " + expr.value, expr.getLine());
   }
 
   @Override
-  public String visit(BoolExpression boolExpr) {
-    return format("BoolExpression", boolExpr.getLine());
+  public String visit(BoolExpression expr) {
+    return line("Bool: " + expr.value, expr.getLine());
   }
-
 }
