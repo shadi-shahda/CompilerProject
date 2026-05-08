@@ -9,5 +9,6 @@ public enum FlaskPythonType {
   UNKNOWN,
   OBJECT,
   ROUTE,
-  METHOD
+  METHOD,
+  TEMPLATE_VARIABLE
 }

@@ -8,8 +8,10 @@ import TemplatesAST.IntExpression;
 import TemplatesAST.JinjaForStatement;
 import TemplatesAST.JinjaIfStatement;
 import TemplatesAST.JinjaPrint;
+import TemplatesAST.JinjaSet;
 import TemplatesAST.KeyValueAttribute;
 import TemplatesAST.LogicalExpression;
+import TemplatesAST.MathExpression;
 import TemplatesAST.MemberAccessExpression;
 import TemplatesAST.NotExpression;
 import TemplatesAST.OnlyKeyAttribute;
@@ -37,8 +39,13 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return indent() + "NodeId:" + (++nodeCounter) + " Type:" + node.getClass().getSimpleName() + "\n";
   }
 
-  private void inc() { indentLevel++; }
-  private void dec() { indentLevel--; }
+  private void inc() {
+    indentLevel++;
+  }
+
+  private void dec() {
+    indentLevel--;
+  }
 
   // ================= PROGRAM =================
   @Override
@@ -69,11 +76,11 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     StringBuilder sb = new StringBuilder();
 
     sb.append(indent())
-            .append("HtmlElement: ")
-            .append(element.tagName)
-            .append(" (Line ")
-            .append(element.getLine())
-            .append(")\n");
+        .append("HtmlElement: ")
+        .append(element.tagName)
+        .append(" (Line ")
+        .append(element.getLine())
+        .append(")\n");
 
     inc();
 
@@ -134,6 +141,19 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
+  // ================= JINJA SET =================
+  @Override
+  public String visit(JinjaSet jinjaSet) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(line("JinjaSet: " + jinjaSet.variableName, jinjaSet.getLine()));
+    inc();
+    if (jinjaSet.expression != null) {
+      sb.append(jinjaSet.expression.accept(this));
+    }
+    dec();
+    return sb.toString();
+  }
+
   // ================= IF =================
   @Override
   public String visit(JinjaIfStatement ifStmt) {
@@ -178,14 +198,14 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     inc();
 
     sb.append(indent())
-            .append("LoopVariable: ")
-            .append(forStmt.variableName)
-            .append("\n");
+        .append("LoopVariable: ")
+        .append(forStmt.variableName)
+        .append("\n");
 
     sb.append(indent())
-            .append("LoopList: ")
-            .append(forStmt.listName)
-            .append("\n");
+        .append("LoopList: ")
+        .append(forStmt.listName)
+        .append("\n");
 
     sb.append(line("Body", forStmt.getLine()));
     inc();
@@ -222,6 +242,20 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
 
     inc();
     sb.append(expr.object.accept(this));
+    dec();
+
+    return sb.toString();
+  }
+
+  @Override
+  public String visit(MathExpression mathExpr) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("MathExpression: " + mathExpr.getOperator(), mathExpr.getLine()));
+
+    inc();
+    sb.append(mathExpr.getLeft().accept(this));
+    sb.append(mathExpr.getRight().accept(this));
     dec();
 
     return sb.toString();

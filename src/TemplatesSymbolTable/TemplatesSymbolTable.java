@@ -2,15 +2,21 @@ package TemplatesSymbolTable;
 
 import java.util.*;
 
+import FlaskPythonSymbolTable.FlaskPythonSymbolTable;
+
 public class TemplatesSymbolTable {
+    FlaskPythonSymbolTable pythonSymbolTable;
     private Stack<Map<String, TemplatesSymbol>> scopes = new Stack<>();
     private Set<String> usedSelectors = new HashSet<>();
     private Set<String> usedClasses = new HashSet<>();
     private Set<String> usedIds = new HashSet<>();
+    private String routeName;
 
     private List<String> semanticErrors = new ArrayList<>();
 
-    public TemplatesSymbolTable() {
+    public TemplatesSymbolTable(FlaskPythonSymbolTable pythonSymbolTable, String routeName) {
+        this.pythonSymbolTable = pythonSymbolTable;
+        this.routeName = routeName;
         this.scopes.push(new HashMap<>());
     }
 
@@ -36,6 +42,11 @@ public class TemplatesSymbolTable {
         for (int i = this.scopes.size() - 1; i >= 0; i--) {
             if (this.scopes.get(i).containsKey(name))
                 return this.scopes.get(i).get(name);
+        }
+        if(this.pythonSymbolTable != null) {
+            if (this.pythonSymbolTable.isVariableForThisRoute(name, routeName)) {
+                return new TemplatesSymbol(name, "PYTHON_VAR", 0);
+            }
         }
         return null;
     }

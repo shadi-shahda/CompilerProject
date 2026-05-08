@@ -9,8 +9,10 @@ import TemplatesAST.IntExpression;
 import TemplatesAST.JinjaForStatement;
 import TemplatesAST.JinjaIfStatement;
 import TemplatesAST.JinjaPrint;
+import TemplatesAST.JinjaSet;
 import TemplatesAST.KeyValueAttribute;
 import TemplatesAST.LogicalExpression;
+import TemplatesAST.MathExpression;
 import TemplatesAST.MemberAccessExpression;
 import TemplatesAST.NotExpression;
 import TemplatesAST.OnlyKeyAttribute;
@@ -25,11 +27,13 @@ public interface TemplatesASTVisitor<T> {
   T visit(OnlyKeyAttribute attribute);
   T visit(HtmlElement element);
   T visit(JinjaPrint jinjaPrint);
+  T visit(JinjaSet jinjaSet);
   T visit(JinjaIfStatement ifStmt);
   T visit(JinjaForStatement forStmt);
 
   T visit(MemberAccessExpression memberAccessExpr);
   T visit(DictionaryAccessExpression dictionaryAccessExpr);
+  T visit(MathExpression mathExpr);
   T visit(NotExpression notExpr);
   T visit(BinaryExpression binaryExpr);
   T visit(LogicalExpression logicalExpr);

@@ -10,6 +10,7 @@ public class FlaskPythonSymbolTable {
   private Set<String> availableTemplates = new HashSet<>();
 
   private List<String> semanticErrors = new ArrayList<>();
+  private Map<String, List<String>> templateRouteVariables = new HashMap<>();
 
   public FlaskPythonSymbolTable() {
     scopes.push(new HashMap<>());
@@ -64,6 +65,25 @@ public class FlaskPythonSymbolTable {
 
   public void addRoute(String route) {
     this.definedRoutes.add(route);
+  }
+
+  public void addTemplateVariable(String variableName, String routeName) {
+    if(this.templateRouteVariables.containsKey(routeName)) {
+      this.templateRouteVariables.get(routeName).add(variableName);
+    } else {
+      List<String> variables = new ArrayList<>();
+      variables.add(variableName);
+      this.templateRouteVariables.put(routeName, variables);
+    }
+  }
+
+  public boolean isVariableForThisRoute(String variableName, String routeName) {
+    if (this.templateRouteVariables.containsKey(routeName)) {
+      if (this.templateRouteVariables.get(routeName).contains(variableName)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void addAvailableTemplate(String filename) {
