@@ -4,6 +4,7 @@ import java.util.*;
 
 public class TemplatesSymbolTable {
     private Stack<Map<String, TemplatesSymbol>> scopes = new Stack<>();
+    private Set<String> usedSelectors = new HashSet<>();
     private Set<String> usedClasses = new HashSet<>();
     private Set<String> usedIds = new HashSet<>();
 
@@ -51,12 +52,20 @@ public class TemplatesSymbolTable {
         return !this.semanticErrors.isEmpty();
     }
 
+    public void addUsedSelector(String s) {
+        this.usedSelectors.add(s);
+    }
+
     public void addUsedClass(String c) {
         this.usedClasses.add(c);
     }
 
     public void addUsedId(String i) {
         this.usedIds.add(i);
+    }
+
+    public Set<String> getUsedSelectors() {
+        return usedSelectors;
     }
 
     public Set<String> getUsedClasses() {
@@ -89,11 +98,15 @@ public class TemplatesSymbolTable {
             }
         }
 
-        if (!usedClasses.isEmpty() || !usedIds.isEmpty()) {
+        if (!usedSelectors.isEmpty() || !usedClasses.isEmpty() || !usedIds.isEmpty()) {
             System.out.println("-----------------------------------------------------------------------------");
             System.out.println("| HTML SELECTORS USAGE (For CSS Linking)                                    |");
             System.out.println("-----------------------------------------------------------------------------");
 
+            for (String selector : usedSelectors) {
+                System.out
+                        .println(String.format("| %-25s | %-20s | %-20s |", selector, "HTML SELECTOR", "Used in Tag"));
+            }
             for (String cls : usedClasses) {
                 System.out.println(String.format("| %-25s | %-20s | %-20s |", cls, "HTML CLASS", "Used in Tag"));
             }

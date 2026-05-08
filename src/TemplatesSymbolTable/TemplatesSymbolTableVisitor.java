@@ -1,12 +1,37 @@
 package TemplatesSymbolTable;
 
-import TemplatesAST.*;
+import TemplatesAST.BinaryExpression;
+import TemplatesAST.BoolExpression;
+import TemplatesAST.DictionaryAccessExpression;
+import TemplatesAST.HtmlElement;
+import TemplatesAST.HtmlText;
+import TemplatesAST.IntExpression;
+import TemplatesAST.JinjaForStatement;
+import TemplatesAST.JinjaIfStatement;
+import TemplatesAST.JinjaPrint;
+import TemplatesAST.KeyValueAttribute;
+import TemplatesAST.LogicalExpression;
+import TemplatesAST.MemberAccessExpression;
+import TemplatesAST.NotExpression;
+import TemplatesAST.OnlyKeyAttribute;
+import TemplatesAST.StringExpression;
+import TemplatesAST.TemplatesASTNode;
+import TemplatesAST.TemplatesProgram;
+import TemplatesAST.VarExpression;
 import TemplatesVisitor.TemplatesASTVisitor;
 
 public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     private TemplatesSymbolTable symbolTable;
 
     public TemplatesSymbolTableVisitor(TemplatesSymbolTable symbolTable) {
+        this.symbolTable = symbolTable;
+    }
+
+    public TemplatesSymbolTable getSymbolTable() {
+        return symbolTable;
+    }
+
+    public void setSymbolTable(TemplatesSymbolTable symbolTable) {
         this.symbolTable = symbolTable;
     }
 
@@ -63,11 +88,25 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(HtmlElement element) {
         for (var a : element.attributes) {
+            if(a instanceof KeyValueAttribute) {
+                KeyValueAttribute kvAttr = (KeyValueAttribute) a;
+                if (kvAttr.getKey().equals("class")) {
+                    String[] classes = kvAttr.value.split("\\s+");
+                    for (String cls : classes) {
+                        symbolTable.addUsedClass(cls);
+                    }
+                } else if (kvAttr.getKey().equals("id")) {
+                    symbolTable.addUsedId(kvAttr.value);
+                } else {
+                    symbolTable.addUsedSelector(element.tagName + "[" + kvAttr.getKey() + "]");
+                }
+            }
             a.accept(this);
         }
         for (var c : element.templates) {
             c.accept(this);
         }
+        symbolTable.addUsedSelector(element.tagName);
         return null;
     }
 

@@ -3,11 +3,21 @@ package CssSymbolTable;
 import java.util.*;
 
 public class CssSymbolTable {
+  static final public CssSymbolTable instance = new CssSymbolTable();
+
+  private CssSymbolTable() {}
+
+  private Set<String> definedSelectors = new HashSet<>();
   private Set<String> definedClasses = new HashSet<>();
   private Set<String> definedIds = new HashSet<>();
 
+  private Set<String> usedSelectors = new HashSet<>();
   private Set<String> usedClassesInHtml = new HashSet<>();
   private Set<String> usedIdsInHtml = new HashSet<>();
+
+  public void defineSelector(String selector) {
+    this.definedSelectors.add(selector);
+  }
 
   public void defineClass(String className) {
     definedClasses.add(className);
@@ -17,9 +27,10 @@ public class CssSymbolTable {
     definedIds.add(idName);
   }
 
-  public void setUsedHtmlSelectors(Set<String> classes, Set<String> ids) {
+  public void setUsedHtmlSelectors(Set<String> classes, Set<String> ids, Set<String> selectors) {
     this.usedClassesInHtml.addAll(classes);
     this.usedIdsInHtml.addAll(ids);
+    this.usedSelectors.addAll(selectors);
   }
 
   public void performCrossCheck() {
@@ -65,6 +76,11 @@ public class CssSymbolTable {
     System.out.println(String.format("| %-30s | %-15s | %-15s |", "SELECTOR NAME", "TYPE", "SCOPE"));
     System.out.println("---------------------------------------------------------------------------");
 
+    for (String selectorName : definedSelectors) {
+      System.out.println(String.format("| %-30s | %-15s | %-15s |",
+          selectorName, "CSS SELECTOR", "Global"));
+    }
+
     for (String className : definedClasses) {
       System.out.println(String.format("| %-30s | %-15s | %-15s |",
           className, "CSS CLASS", "Global"));
@@ -78,9 +94,13 @@ public class CssSymbolTable {
     System.out.println("---------------------------------------------------------------------------");
 
     System.out.println("[Analysis Summary]");
+    System.out.println("Total Selectors Defined: " + definedSelectors.size());
+    System.out.println("Used in HTML:          "
+        + (usedSelectors.size()) + " selectors");
     System.out.println("Total Classes Defined: " + definedClasses.size());
+    System.out.println("Used in HTML:          " +  usedClassesInHtml.size() + " Classes");
     System.out.println("Total IDs Defined:     " + definedIds.size());
-    System.out.println("Used in HTML:          " + (usedClassesInHtml.size() + usedIdsInHtml.size()) + " selectors");
+    System.out.println("Used in HTML:          " + usedIdsInHtml.size() + " Ids");
 
     System.out.println("===========================================================================");
   }
