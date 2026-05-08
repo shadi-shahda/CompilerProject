@@ -33,10 +33,11 @@ public class App {
         String detailsSourceFile = "input_files/templates/detail.html";
         try {
             printPython(pythonSourceFile, "index.html", "add.html", "detail.html");
-            printCss(cssSourceFile);
             printHtml(indexSourceFile, "products");
             printHtml(detailsSourceFile, "product");
             printHtml(addSourceFile);
+            printCss(cssSourceFile);
+            CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,13 +112,12 @@ public class App {
         System.out.println(astOutput);
 
         System.out.println(">>> 4. Building Css Symbol Table...");
-        CssSymbolTable symbolTable = new CssSymbolTable();
-        CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor(symbolTable);
+        CssSymbolTableVisitor symbolVisitor = new CssSymbolTableVisitor();
         astRoot.accept(symbolVisitor);
 
         System.out.println("\n================ Symbot Table ================\n");
 
-        symbolTable.printTable();
+        CssSymbolTable.instance.printTable();
     }
 
     private static void printHtml(String htmlSourceFile, String... contextVars) throws IOException {
@@ -156,6 +156,10 @@ public class App {
         }
         TemplatesSymbolTableVisitor symbolVisitor = new TemplatesSymbolTableVisitor(symbolTable);
         astRoot.accept(symbolVisitor);
+
+        CssSymbolTable.instance.setUsedHtmlSelectors(symbolVisitor.getSymbolTable().getUsedClasses(),
+                symbolVisitor.getSymbolTable().getUsedIds(),
+                symbolVisitor.getSymbolTable().getUsedSelectors());
 
         System.out.println("\n================ Symbot Table ================\n");
 

@@ -4,11 +4,7 @@ import CssAST.*;
 import CssVisitor.CssASTVisitor;
 
 public class CssSymbolTableVisitor implements CssASTVisitor<Void> {
-  private CssSymbolTable symbolTable;
-
-  public CssSymbolTableVisitor(CssSymbolTable symbolTable) {
-    this.symbolTable = symbolTable;
-  }
+  private CssSymbolTable symbolTable = CssSymbolTable.instance;
 
   @Override
   public Void visit(CssProgram program) {
@@ -48,6 +44,8 @@ public class CssSymbolTableVisitor implements CssASTVisitor<Void> {
 
   @Override
   public Void visit(CssTagSelector tagSelector) {
+    String name = tagSelector.name;
+    symbolTable.defineSelector(name);
     return null;
   }
 
