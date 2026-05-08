@@ -621,11 +621,6 @@ public class CssParser extends Parser {
 		public PercentValueContext(ValueTermContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class StringVlueContext extends ValueTermContext {
-		public TerminalNode STRING() { return getToken(CssParser.STRING, 0); }
-		public StringVlueContext(ValueTermContext ctx) { copyFrom(ctx); }
-	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class PxValueContext extends ValueTermContext {
 		public TerminalNode PX() { return getToken(CssParser.PX, 0); }
 		public PxValueContext(ValueTermContext ctx) { copyFrom(ctx); }
@@ -641,6 +636,11 @@ public class CssParser extends Parser {
 	public static class FloatValueContext extends ValueTermContext {
 		public TerminalNode FLOAT() { return getToken(CssParser.FLOAT, 0); }
 		public FloatValueContext(ValueTermContext ctx) { copyFrom(ctx); }
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class StringValueContext extends ValueTermContext {
+		public TerminalNode STRING() { return getToken(CssParser.STRING, 0); }
+		public StringValueContext(ValueTermContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IdentValueContext extends ValueTermContext {
@@ -682,7 +682,7 @@ public class CssParser extends Parser {
 				}
 				break;
 			case 3:
-				_localctx = new StringVlueContext(_localctx);
+				_localctx = new StringValueContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(92);

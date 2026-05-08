@@ -148,17 +148,17 @@ public interface CssParserListener extends ParseTreeListener {
 	 */
 	void exitIntValue(CssParser.IntValueContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code StringVlue}
+	 * Enter a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link CssParser#valueTerm}.
 	 * @param ctx the parse tree
 	 */
-	void enterStringVlue(CssParser.StringVlueContext ctx);
+	void enterStringValue(CssParser.StringValueContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code StringVlue}
+	 * Exit a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link CssParser#valueTerm}.
 	 * @param ctx the parse tree
 	 */
-	void exitStringVlue(CssParser.StringVlueContext ctx);
+	void exitStringValue(CssParser.StringValueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code PxValue}
 	 * labeled alternative in {@link CssParser#valueTerm}.

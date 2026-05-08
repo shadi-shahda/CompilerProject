@@ -232,7 +232,7 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
 
     for (var entry : dict.entries.entrySet()) {
       sb.append(indent());
-      sb.append(entry.getKey())
+      sb.append(entry.getKey().accept(this))
               .append(" -> ");
       sb.append(entry.getValue().accept(this));
     }
@@ -246,9 +246,8 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
   @Override
   public String visit(FlaskPythonMemberAccess access) {
     return line(
-            "MemberAccess: " + access.object.accept(this).trim() + "." + access.memberName,
-            access.getLineNumber()
-    );
+        "MemberAccess: " + access.object.accept(this).trim() + "." + access.memberName,
+        access.getLineNumber());
   }
 
   // ================= PRINT =================

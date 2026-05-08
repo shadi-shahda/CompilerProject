@@ -109,7 +109,7 @@ public class CssParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringVlue(CssParser.StringVlueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStringValue(CssParser.StringValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

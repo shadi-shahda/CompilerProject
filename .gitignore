@@ -1,3 +1,5 @@
 # Ignore build/output directories
 out/
 bin/
+report.md
+tests/

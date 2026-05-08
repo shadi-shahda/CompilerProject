@@ -78,6 +78,16 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitRouteDecorator(FlaskPythonParser.RouteDecoratorContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#methodsParam}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodsParam(FlaskPythonParser.MethodsParamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#methodsParam}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodsParam(FlaskPythonParser.MethodsParamContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#paramList}.
 	 * @param ctx the parse tree
 	 */

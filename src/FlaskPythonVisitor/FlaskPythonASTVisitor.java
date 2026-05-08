@@ -1,4 +1,4 @@
-package FlaskPythonVisitor; // يفضل وضعهم في package خاص
+package FlaskPythonVisitor;
 
 import FlaskPythonAST.*;
 
