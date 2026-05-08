@@ -53,6 +53,12 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRouteDecorator(FlaskPythonParser.RouteDecoratorContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#methodsParam}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodsParam(FlaskPythonParser.MethodsParamContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#paramList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

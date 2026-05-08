@@ -1,4 +1,22 @@
-import TemplatesAST.*;
+import TemplatesAST.BinaryExpression;
+import TemplatesAST.BoolExpression;
+import TemplatesAST.DictionaryAccessExpression;
+import TemplatesAST.HtmlAttribute;
+import TemplatesAST.HtmlElement;
+import TemplatesAST.HtmlText;
+import TemplatesAST.IntExpression;
+import TemplatesAST.JinjaForStatement;
+import TemplatesAST.JinjaIfStatement;
+import TemplatesAST.JinjaPrint;
+import TemplatesAST.KeyValueAttribute;
+import TemplatesAST.LogicalExpression;
+import TemplatesAST.MemberAccessExpression;
+import TemplatesAST.NotExpression;
+import TemplatesAST.OnlyKeyAttribute;
+import TemplatesAST.StringExpression;
+import TemplatesAST.TemplatesASTNode;
+import TemplatesAST.TemplatesProgram;
+import TemplatesAST.VarExpression;
 import TemplatesVisitor.TemplatesASTVisitor;
 
 public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
@@ -13,6 +31,12 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return indent() + label + " (Line " + line + ")\n";
   }
 
+  private int nodeCounter = 0;
+
+  private String nodeHeader(Object node) {
+    return indent() + "NodeId:" + (++nodeCounter) + " Type:" + node.getClass().getSimpleName() + "\n";
+  }
+
   private void inc() { indentLevel++; }
   private void dec() { indentLevel--; }
 
@@ -22,6 +46,7 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     StringBuilder sb = new StringBuilder();
 
     sb.append("TemplatesProgram\n");
+    sb.append(nodeHeader(program));
 
     inc();
     for (TemplatesASTNode node : program.children) {

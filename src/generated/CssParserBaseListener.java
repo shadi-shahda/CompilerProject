@@ -173,13 +173,13 @@ public class CssParserBaseListener implements CssParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStringVlue(CssParser.StringVlueContext ctx) { }
+	@Override public void enterStringValue(CssParser.StringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStringVlue(CssParser.StringVlueContext ctx) { }
+	@Override public void exitStringValue(CssParser.StringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

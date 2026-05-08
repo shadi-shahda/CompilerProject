@@ -67,13 +67,11 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
                 routePath = rawPath.substring(1, rawPath.length() - 1);
             }
 
-            if (ctx.routeDecorator().ID().size() > 1) {
-                String argName = ctx.routeDecorator().ID(1).getText();
-
-                if ("methods".equals(argName)) {
-                    if (ctx.routeDecorator().list() != null) {
-                        String listText = ctx.routeDecorator().list().getText();
-                        methods.add(listText);
+            if (ctx.routeDecorator().methodsParam() != null) {
+                if (ctx.routeDecorator().methodsParam().STRING() != null) {
+                    for (int i = 0; i < ctx.routeDecorator().methodsParam().STRING().size(); i++) {
+                        String method = ctx.routeDecorator().methodsParam().STRING(i).getText();
+                        methods.add(method);
                     }
                 }
             }
@@ -242,11 +240,11 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     @Override
     public FlaskPythonDictionaryExpression visitDictExpr(FlaskPythonParser.DictExprContext ctx) {
         int line = ctx.getStart().getLine();
-        Map<String, FlaskPythonExpression> entries = new HashMap<>();
+        Map<FlaskPythonExpression, FlaskPythonExpression> entries = new HashMap<>();
         for (var entry : ctx.dictionary().dictEntry()) {
-            String key = entry.STRING().getText();
-            key = key.substring(1, key.length() - 1);
-            FlaskPythonExpression value = (FlaskPythonExpression) visit(entry.expression());
+            FlaskPythonExpression key = (FlaskPythonExpression) visit(entry.expression(0));
+            
+            FlaskPythonExpression value = (FlaskPythonExpression) visit(entry.expression(1));
             entries.put(key, value);
         }
         return new FlaskPythonDictionaryExpression(entries, line);
@@ -284,9 +282,9 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     @Override
     public FlaskPythonASTNode visitMemberAccessExpr(FlaskPythonParser.MemberAccessExprContext ctx) {
         int line = ctx.getStart().getLine();
-        String memeberName = ctx.ID().getText();
+        String memberName = ctx.ID().getText();
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
-        return new FlaskPythonMemberAccess(object, memeberName, line);
+        return new FlaskPythonMemberAccess(object, memberName, line);
     }
 
     @Override
@@ -330,14 +328,14 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     private List<FlaskPythonStatement> getStatementsFromBlock(FlaskPythonParser.BlockContext ctx) {
-        List<FlaskPythonStatement> stmts = new ArrayList<>();
+        List<FlaskPythonStatement> stats = new ArrayList<>();
         for (var stmtCtx : ctx.statement()) {
             FlaskPythonASTNode node = visit(stmtCtx);
             if (node instanceof FlaskPythonStatement) {
-                stmts.add((FlaskPythonStatement) node);
+                stats.add((FlaskPythonStatement) node);
             }
         }
-        return stmts;
+        return stats;
     }
 
     private List<FlaskPythonExpression> getArguments(FlaskPythonParser.ArgListContext ctx) {

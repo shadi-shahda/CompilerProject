@@ -30,7 +30,7 @@ value: valueTerm (COMMA? valueTerm)*;
 valueTerm:
 	IDENTIFIER	# IdentValue
 	| INT		# IntValue
-	| STRING	# StringVlue
+	| STRING	# StringValue
 	| PX		# PxValue
 	| PERCENT	# PercentValue
 	| HASH		# HexValue

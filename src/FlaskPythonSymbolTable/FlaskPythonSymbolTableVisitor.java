@@ -1,5 +1,8 @@
 package FlaskPythonSymbolTable;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import FlaskPythonAST.FLaskPythonForStatement;
 import FlaskPythonAST.FlaskPythonAssignmentStatement;
 import FlaskPythonAST.FlaskPythonBinaryExpression;
@@ -40,6 +43,12 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
   @Override
   public FlaskPythonType visit(FlaskPythonFunctionDeclaration funcDecl) {
+    if (funcDecl.methods.size() > 1) {
+      Set<String> checkMethodDuplication = new HashSet<>(funcDecl.methods);
+      if (checkMethodDuplication.size() < funcDecl.methods.size()) {
+        this.symbolTable.reportError("Duplicate method definition detected", funcDecl.getLineNumber());
+      }
+    }
     if (funcDecl.routePath != null && !funcDecl.routePath.isEmpty()) {
       String route = stripQuotes(funcDecl.routePath);
       if (symbolTable.isRouteDefined(route)) {
@@ -52,7 +61,12 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
     if (this.symbolTable.isVariableDefined(funcDecl.name)) {
       this.symbolTable.reportError("Function '" + funcDecl.name + "' is already defined.", funcDecl.getLineNumber());
     }
-    this.symbolTable.defineVariable(funcDecl.name, FlaskPythonType.OBJECT);
+
+    if (funcDecl.routePath == null || funcDecl.routePath.isEmpty()) {
+      this.symbolTable.defineVariable(funcDecl.name, FlaskPythonType.METHOD);
+    } else {
+      this.symbolTable.defineVariable(funcDecl.name, FlaskPythonType.ROUTE);
+    }
 
     this.symbolTable.enterScope();
 
@@ -95,6 +109,32 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
   @Override
   public FlaskPythonType visit(FlaskPythonFunctionCall funcCall) {
+    // Validate known built-in functions
+    switch (funcCall.functionName) {
+      case "len":
+        if (funcCall.arguments == null || funcCall.arguments.isEmpty()) {
+          symbolTable.reportError("TypeError: len() missing required argument", funcCall.getLineNumber());
+        } else {
+          FlaskPythonType argType = funcCall.arguments.get(0).accept(this);
+          if (argType != FlaskPythonType.LIST && argType != FlaskPythonType.STRING && argType != FlaskPythonType.DICT &&
+              argType != FlaskPythonType.UNKNOWN) {
+            symbolTable.reportError("TypeError: object of type '" + argType + "' has no len()",
+                funcCall.getLineNumber());
+          }
+        }
+        return FlaskPythonType.INT;
+      case "str":
+        if (funcCall.arguments == null || funcCall.arguments.isEmpty()) {
+          symbolTable.reportError("TypeError: str() missing required argument", funcCall.getLineNumber());
+        }
+        return FlaskPythonType.STRING;
+      case "int":
+        if (funcCall.arguments == null || funcCall.arguments.isEmpty()) {
+          symbolTable.reportError("TypeError: int() missing required argument", funcCall.getLineNumber());
+        }
+        return FlaskPythonType.INT;
+    }
+
     if ("render_template".equals(funcCall.functionName)) {
       if (funcCall.arguments != null && !funcCall.arguments.isEmpty()) {
         FlaskPythonExpression firstArg = funcCall.arguments.get(0);
@@ -132,14 +172,16 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
           forStmt.getLineNumber());
     }
 
-    // this.symbolTable.enterScope();
+    // Enter block scope for for loop
+    this.symbolTable.enterScope();
     this.symbolTable.defineVariable(forStmt.variableName, FlaskPythonType.UNKNOWN);
 
     for (FlaskPythonStatement stmt : forStmt.body) {
       stmt.accept(this);
     }
 
-    // this.symbolTable.exitScope();
+    // Exit block scope for for loop
+    this.symbolTable.exitScope();
     return FlaskPythonType.VOID;
   }
 
@@ -149,20 +191,41 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
     FlaskPythonType right = binExpr.right.accept(this);
     String operator = binExpr.operator;
 
-    if (operator.equals("+")) {
-      if ((left == FlaskPythonType.INT && right == FlaskPythonType.STRING) ||
-          (left == FlaskPythonType.STRING && right == FlaskPythonType.INT)) {
-        symbolTable.reportError("Type Error: Unsupported operand types for +: '" + left + "' and '" + right + "'",
+    // Arithmetic operators
+    if (operator.equals("+") || operator.equals("-") || operator.equals("*") || operator.equals("/")) {
+      if (left == FlaskPythonType.INT && right == FlaskPythonType.INT) {
+        return FlaskPythonType.INT;
+      } else if (left == FlaskPythonType.STRING && operator.equals("+") && right == FlaskPythonType.STRING) {
+        return FlaskPythonType.STRING;
+      } else if ((left == FlaskPythonType.INT || left == FlaskPythonType.UNKNOWN) &&
+          (right == FlaskPythonType.INT || right == FlaskPythonType.UNKNOWN)) {
+        return left == FlaskPythonType.UNKNOWN ? right : left;
+      } else if (left != FlaskPythonType.UNKNOWN && right != FlaskPythonType.UNKNOWN) {
+        symbolTable.reportError(
+            "Type Error: Unsupported operand types for " + operator + ": '" + left + "' and '" + right + "'",
             binExpr.getLineNumber());
       }
-
-      if (left == right) {
-        return left;
-      }
+      return FlaskPythonType.INT;
     }
 
+    // Comparison operators always return boolean
     if (operator.equals("==") || operator.equals("!=") || operator.equals(">") || operator.equals("<")
         || operator.equals(">=") || operator.equals("<=")) {
+      // Validate that comparable types are being used
+      if (left != FlaskPythonType.UNKNOWN && right != FlaskPythonType.UNKNOWN) {
+        if ((left == FlaskPythonType.INT || left == FlaskPythonType.STRING) &&
+            (right == FlaskPythonType.INT || right == FlaskPythonType.STRING)) {
+          if (left != right) {
+            symbolTable.reportError("Type Warning: Comparing different types " + left + " and " + right,
+                binExpr.getLineNumber());
+          }
+        }
+      }
+      return FlaskPythonType.BOOLEAN;
+    }
+
+    // Logical operators
+    if (operator.equals("and") || operator.equals("or")) {
       return FlaskPythonType.BOOLEAN;
     }
 
@@ -186,17 +249,46 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
   @Override
   public FlaskPythonType visit(FlaskPythonListExpression listExpr) {
-    for (var elem : listExpr.elements) {
-      elem.accept(this);
+    // Infer element types from list contents
+    FlaskPythonType elementType = FlaskPythonType.UNKNOWN;
+
+    if (!listExpr.elements.isEmpty()) {
+      // Try to infer element type from first element
+      FlaskPythonType firstElemType = listExpr.elements.get(0).accept(this);
+      elementType = firstElemType;
+
+      // Check for type consistency in remaining elements
+      for (int i = 1; i < listExpr.elements.size(); i++) {
+        FlaskPythonType elemType = listExpr.elements.get(i).accept(this);
+        if (elemType != elementType && elemType != FlaskPythonType.UNKNOWN && elementType != FlaskPythonType.UNKNOWN) {
+          // Mixed types in list - warn but don't fail
+          if (i == 1) {
+            this.symbolTable.reportError("Type Warning: List contains mixed types: " + elementType + " and " + elemType,
+                listExpr.getLineNumber());
+          }
+          elementType = FlaskPythonType.UNKNOWN; // Fall back to unknown if mixed
+        }
+      }
     }
+
     return FlaskPythonType.LIST;
   }
 
   @Override
   public FlaskPythonType visit(FlaskPythonDictionaryExpression dictExpr) {
-    for (var val : dictExpr.entries.values()) {
-      val.accept(this);
+    FlaskPythonType valueType = FlaskPythonType.UNKNOWN;
+
+    int count = 0;
+    for (var entry : dictExpr.entries.entrySet()) {
+      FlaskPythonType valType = entry.getValue().accept(this);
+      if (count == 0) {
+        valueType = valType;
+      } else if (valType != valueType && valType != FlaskPythonType.UNKNOWN && valueType != FlaskPythonType.UNKNOWN) {
+        valueType = FlaskPythonType.UNKNOWN; // Mixed value types
+      }
+      count++;
     }
+
     return FlaskPythonType.DICT;
   }
 
@@ -206,14 +298,20 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
       ifStmt.condition.accept(this);
     }
 
+    // Enter scope for then block
+    this.symbolTable.enterScope();
     for (var stmt : ifStmt.thenBloc) {
       stmt.accept(this);
     }
+    this.symbolTable.exitScope();
 
+    // Enter separate scope for else block if present
     if (ifStmt.elseBloc != null) {
+      this.symbolTable.enterScope();
       for (var stmt : ifStmt.elseBloc) {
         stmt.accept(this);
       }
+      this.symbolTable.exitScope();
     }
 
     return FlaskPythonType.VOID;
@@ -260,7 +358,7 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
     for (var arg : methCall.arguments) {
       arg.accept(this);
     }
-    
+
     return FlaskPythonType.UNKNOWN;
   }
 

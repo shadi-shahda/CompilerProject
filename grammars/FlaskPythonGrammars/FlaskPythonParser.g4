@@ -23,7 +23,10 @@ functionDecl:
 	routeDecorator? DEF ID LPAREN paramList? RPAREN COLON block;
 
 routeDecorator:
-	AT ID DOT ROUTE LPAREN STRING (COMMA ID ASSIGN list)? RPAREN;
+	AT ID DOT ROUTE LPAREN STRING (COMMA methodsParam)? RPAREN;
+
+methodsParam:
+	METHODS ASSIGN LBRACKET (STRING (COMMA STRING)*)? RBRACKET;
 
 paramList: ID (COMMA ID)*;
 
@@ -65,8 +68,6 @@ expression:
 	| expression (EQUALS | NOT_EQUALS) expression	# ComparisonExpr
 	| list											# ListExpr
 	| dictionary									# DictExpr
-	| expression DOT ID LPAREN argList? RPAREN		# MethodCallExpr
-	| expression DOT ID								# MemberAccessExpr
 	| ID											# IdExpr
 	| INT											# IntExpr
 	| BOOLEAN										# boolExpr
@@ -86,4 +87,4 @@ listComp: expression FOR ID IN expression (IF expression)?;
 
 dictionary: LBRACE dictEntry (COMMA dictEntry)* RBRACE;
 
-dictEntry: STRING COLON expression;
+dictEntry: expression COLON expression;

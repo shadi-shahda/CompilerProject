@@ -7,5 +7,7 @@ public enum FlaskPythonType {
   DICT,
   VOID,
   UNKNOWN,
-  OBJECT
+  OBJECT,
+  ROUTE,
+  METHOD
 }

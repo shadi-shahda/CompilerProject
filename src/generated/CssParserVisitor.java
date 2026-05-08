@@ -94,12 +94,12 @@ public interface CssParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIntValue(CssParser.IntValueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code StringVlue}
+	 * Visit a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link CssParser#valueTerm}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringVlue(CssParser.StringVlueContext ctx);
+	T visitStringValue(CssParser.StringValueContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PxValue}
 	 * labeled alternative in {@link CssParser#valueTerm}.

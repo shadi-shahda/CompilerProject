@@ -778,24 +778,6 @@ public class CssParser extends Parser {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class StringVlueContext extends ValueTermContext {
-		public TerminalNode STRING() { return getToken(CssParser.STRING, 0); }
-		public StringVlueContext(ValueTermContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CssParserListener ) ((CssParserListener)listener).enterStringVlue(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CssParserListener ) ((CssParserListener)listener).exitStringVlue(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CssParserVisitor ) return ((CssParserVisitor<? extends T>)visitor).visitStringVlue(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class PxValueContext extends ValueTermContext {
 		public TerminalNode PX() { return getToken(CssParser.PX, 0); }
 		public PxValueContext(ValueTermContext ctx) { copyFrom(ctx); }
@@ -848,6 +830,24 @@ public class CssParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof CssParserVisitor ) return ((CssParserVisitor<? extends T>)visitor).visitFloatValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class StringValueContext extends ValueTermContext {
+		public TerminalNode STRING() { return getToken(CssParser.STRING, 0); }
+		public StringValueContext(ValueTermContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CssParserListener ) ((CssParserListener)listener).enterStringValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CssParserListener ) ((CssParserListener)listener).exitStringValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CssParserVisitor ) return ((CssParserVisitor<? extends T>)visitor).visitStringValue(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -930,7 +930,7 @@ public class CssParser extends Parser {
 				}
 				break;
 			case 3:
-				_localctx = new StringVlueContext(_localctx);
+				_localctx = new StringValueContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(92);

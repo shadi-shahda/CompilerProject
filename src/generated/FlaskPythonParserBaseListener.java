@@ -101,6 +101,18 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMethodsParam(FlaskPythonParser.MethodsParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethodsParam(FlaskPythonParser.MethodsParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParamList(FlaskPythonParser.ParamListContext ctx) { }
 	/**
 	 * {@inheritDoc}

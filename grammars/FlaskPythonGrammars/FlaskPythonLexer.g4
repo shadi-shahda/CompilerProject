@@ -14,8 +14,7 @@ ROUTE: 'route';
 RENDER_TEMPLATE: 'render_template';
 REDIRECT: 'redirect';
 URL_FOR: 'url_for';
-GET: 'GET';
-POST: 'POST';
+METHODS: 'methods';
 PRINT: 'print';
 
 LBRACE: '{';

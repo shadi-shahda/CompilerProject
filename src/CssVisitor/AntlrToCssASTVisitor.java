@@ -13,7 +13,6 @@ import CssAST.CssPercentValue;
 import CssAST.CssProgram;
 import CssAST.CssPxValue;
 import CssAST.CssRule;
-import CssAST.CssStringValue;
 import CssAST.CssTagSelector;
 import CssAST.CssValueTerm;
 import generated.CssParser;
@@ -29,7 +28,6 @@ import generated.CssParser.IntValueContext;
 import generated.CssParser.PercentValueContext;
 import generated.CssParser.PxValueContext;
 import generated.CssParser.RuleContext;
-import generated.CssParser.StringVlueContext;
 import generated.CssParser.StylesheetContext;
 import generated.CssParser.TagSelectorContext;
 
@@ -98,13 +96,6 @@ public class AntlrToCssASTVisitor extends CssParserBaseVisitor<CssASTNode> {
     int line = ctx.getStart().getLine();
     String value = ctx.getText();
     return new CssIdentValue(value, line);
-  }
-
-  @Override
-  public CssStringValue visitStringVlue(StringVlueContext ctx) {
-    int line = ctx.getStart().getLine();
-    String value = ctx.getText();
-    return new CssStringValue(value, line);
   }
 
   @Override

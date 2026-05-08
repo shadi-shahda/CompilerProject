@@ -6,9 +6,9 @@ import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonDictionaryExpression extends FlaskPythonExpression {
 
-    public Map<String, FlaskPythonExpression> entries;
+    public Map<FlaskPythonExpression, FlaskPythonExpression> entries;
 
-    public FlaskPythonDictionaryExpression(Map<String, FlaskPythonExpression> entries, int line) {
+    public FlaskPythonDictionaryExpression(Map<FlaskPythonExpression, FlaskPythonExpression> entries, int line) {
         super(line);
         this.entries = entries;
     }
