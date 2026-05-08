@@ -9,8 +9,10 @@ import TemplatesAST.IntExpression;
 import TemplatesAST.JinjaForStatement;
 import TemplatesAST.JinjaIfStatement;
 import TemplatesAST.JinjaPrint;
+import TemplatesAST.JinjaSet;
 import TemplatesAST.KeyValueAttribute;
 import TemplatesAST.LogicalExpression;
+import TemplatesAST.MathExpression;
 import TemplatesAST.MemberAccessExpression;
 import TemplatesAST.NotExpression;
 import TemplatesAST.OnlyKeyAttribute;
@@ -54,6 +56,18 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     }
 
     @Override
+    public Void visit(JinjaSet jinjaSet) {
+        // Evaluate expression for any variable usage
+        if (jinjaSet.expression != null) {
+            jinjaSet.expression.accept(this);
+        }
+
+        // Define variable in current scope as template variable
+        this.symbolTable.defineVariable(jinjaSet.variableName, "TEMPLATE_VAR", jinjaSet.getLine());
+        return null;
+    }
+
+    @Override
     public Void visit(JinjaIfStatement ifStmt) {
         ifStmt.condition.accept(this);
         for (TemplatesASTNode child : ifStmt.thenBody) {
@@ -88,7 +102,7 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(HtmlElement element) {
         for (var a : element.attributes) {
-            if(a instanceof KeyValueAttribute) {
+            if (a instanceof KeyValueAttribute) {
                 KeyValueAttribute kvAttr = (KeyValueAttribute) a;
                 if (kvAttr.getKey().equals("class")) {
                     String[] classes = kvAttr.value.split("\\s+");
@@ -119,6 +133,14 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(MemberAccessExpression memberAccessExpr) {
         memberAccessExpr.expression.accept(this);
+        return null;
+    }
+
+    @Override
+    public Void visit(MathExpression mathExpr) {
+        mathExpr.getLeft().accept(this);
+
+        mathExpr.getRight().accept(this);
         return null;
     }
 

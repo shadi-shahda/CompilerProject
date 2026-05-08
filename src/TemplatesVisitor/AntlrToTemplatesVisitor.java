@@ -10,8 +10,10 @@ import TemplatesAST.IntExpression;
 import TemplatesAST.JinjaForStatement;
 import TemplatesAST.JinjaIfStatement;
 import TemplatesAST.JinjaPrint;
+import TemplatesAST.JinjaSet;
 import TemplatesAST.KeyValueAttribute;
 import TemplatesAST.LogicalExpression;
+import TemplatesAST.MathExpression;
 import TemplatesAST.MemberAccessExpression;
 import TemplatesAST.NotExpression;
 import TemplatesAST.OnlyKeyAttribute;
@@ -30,8 +32,10 @@ import generated.TemplatesParser.JinjaContentContext;
 import generated.TemplatesParser.JinjaForContext;
 import generated.TemplatesParser.JinjaIfContext;
 import generated.TemplatesParser.JinjaPrintContext;
+import generated.TemplatesParser.JinjaSetContext;
 import generated.TemplatesParser.KeyValueAttributeContext;
 import generated.TemplatesParser.LogicalExprContext;
+import generated.TemplatesParser.MathExprContext;
 import generated.TemplatesParser.MemberAccessExprContext;
 import generated.TemplatesParser.NormalTagContext;
 import generated.TemplatesParser.NotExprContext;
@@ -158,6 +162,14 @@ public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<Template
   }
 
   @Override
+  public TemplatesASTNode visitJinjaSet(JinjaSetContext ctx) {
+    int line = ctx.getStart().getLine();
+    String varName = ctx.J_ID().getText();
+    TemplatesExpression expr = (TemplatesExpression) visit(ctx.expression());
+    return new JinjaSet(varName, expr, line);
+  }
+
+  @Override
   public TemplatesASTNode visitMemberAccessExpr(MemberAccessExprContext ctx) {
     int line = ctx.getStart().getLine();
     String attribute = ctx.J_ID().getText();
@@ -171,6 +183,16 @@ public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<Template
     String key = ctx.J_STRING().getText().substring(1, ctx.J_STRING().getText().length() - 1);
     TemplatesExpression object = (TemplatesExpression) visit(ctx.expression());
     return new DictionaryAccessExpression(line, key, object);
+  }
+
+  @Override
+  public TemplatesASTNode visitMathExpr(MathExprContext ctx) {
+
+    int line = ctx.getStart().getLine();
+    TemplatesExpression left = (TemplatesExpression) visit(ctx.expression(0));
+    String operator = ctx.getChild(1).getText();
+    TemplatesExpression right = (TemplatesExpression) visit(ctx.expression(1));
+    return new MathExpression(line, left, operator, right);
   }
 
   @Override

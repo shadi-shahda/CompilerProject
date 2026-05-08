@@ -97,6 +97,12 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitJinjaFor(TemplatesParser.JinjaForContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TemplatesParser#jinjaSet}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJinjaSet(TemplatesParser.JinjaSetContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
 	 * @param ctx the parse tree
@@ -166,4 +172,11 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLogicalExpr(TemplatesParser.LogicalExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathExpr(TemplatesParser.MathExprContext ctx);
 }

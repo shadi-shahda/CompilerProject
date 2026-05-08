@@ -144,6 +144,14 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
           if (!this.symbolTable.isTemplateExists(templateName)) {
             this.symbolTable.reportError("Template file not found: '" + templateName + "'",
                 funcCall.getLineNumber());
+          } else {
+            for (int i = 1; i < funcCall.arguments.size(); i++) {
+              FlaskPythonExpression arg = funcCall.arguments.get(i);
+              if (arg instanceof FlaskPythonIdentifier) {
+                String varName = ((FlaskPythonIdentifier) arg).name;
+                this.symbolTable.addTemplateVariable(varName, templateName);
+              }
+            }
           }
         }
       }
@@ -351,7 +359,9 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
   @Override
   public FlaskPythonType visit(FlaskPythonMethodCall methCall) {
-    if (methCall.object != null) {
+    if (methCall.object != null)
+
+    {
       methCall.object.accept(this);
     }
 

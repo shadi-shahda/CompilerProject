@@ -173,6 +173,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterJinjaSet(TemplatesParser.JinjaSetContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJinjaSet(TemplatesParser.JinjaSetContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStringExpr(TemplatesParser.StringExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -288,6 +300,18 @@ public class TemplatesParserBaseListener implements TemplatesParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLogicalExpr(TemplatesParser.LogicalExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMathExpr(TemplatesParser.MathExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMathExpr(TemplatesParser.MathExprContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

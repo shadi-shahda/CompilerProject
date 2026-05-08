@@ -32,10 +32,11 @@ public class App {
         String addSourceFile = "input_files/templates/add.html";
         String detailsSourceFile = "input_files/templates/detail.html";
         try {
-            printPython(pythonSourceFile, "index.html", "add.html", "detail.html");
-            printHtml(indexSourceFile, "products");
-            printHtml(detailsSourceFile, "product");
-            printHtml(addSourceFile);
+            FlaskPythonSymbolTable pythonSymbolTable = printPython(pythonSourceFile, "index.html", "add.html",
+                    "detail.html");
+            printHtml(indexSourceFile, pythonSymbolTable);
+            printHtml(detailsSourceFile, pythonSymbolTable);
+            printHtml(addSourceFile, pythonSymbolTable);
             printCss(cssSourceFile);
             CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
@@ -43,7 +44,8 @@ public class App {
         }
     }
 
-    private static void printPython(String pythonSourceFile, String... availableTemplates) throws IOException {
+    private static FlaskPythonSymbolTable printPython(String pythonSourceFile, String... availableTemplates)
+            throws IOException {
         System.out.println("\n================ Flask & Python ================\n");
         System.out.println(">>> 1. Reading Python File: " + pythonSourceFile);
         CharStream pythonInput = CharStreams.fromFileName(pythonSourceFile);
@@ -57,7 +59,7 @@ public class App {
 
         if (parser.getNumberOfSyntaxErrors() > 0) {
             System.out.println("Found syntax errors. Stopping.");
-            return;
+            return null;
         }
 
         System.out.println(">>> 3. Building AST...");
@@ -83,6 +85,7 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         symbolTable.printTable();
+        return symbolTable;
     }
 
     private static void printCss(String cssSourceFile) throws IOException {
@@ -120,7 +123,8 @@ public class App {
         CssSymbolTable.instance.printTable();
     }
 
-    private static void printHtml(String htmlSourceFile, String... contextVars) throws IOException {
+    private static void printHtml(String htmlSourceFile, FlaskPythonSymbolTable pythonSymbolTable,
+            String... contextVars) throws IOException {
         System.out.println("\n================ Jinja2 & HTML ================\n");
         System.out.println(">>> 1. Reading Html File: " + htmlSourceFile);
         CharStream htmlInput = CharStreams.fromFileName(htmlSourceFile);
@@ -147,7 +151,9 @@ public class App {
         System.out.println(astOutput);
 
         System.out.println(">>> 4. Building Templates Symbol Table...");
-        TemplatesSymbolTable symbolTable = new TemplatesSymbolTable();
+        String[] routeNamePath = htmlSourceFile.split("/");
+        String routeName = routeNamePath[routeNamePath.length - 1];
+        TemplatesSymbolTable symbolTable = new TemplatesSymbolTable(pythonSymbolTable, routeName);
         if (contextVars != null) {
             for (String var : contextVars) {
                 System.out.println("   -> Injecting Context Variable: " + var);

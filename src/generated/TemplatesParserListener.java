@@ -154,6 +154,16 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitJinjaFor(TemplatesParser.JinjaForContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TemplatesParser#jinjaSet}.
+	 * @param ctx the parse tree
+	 */
+	void enterJinjaSet(TemplatesParser.JinjaSetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TemplatesParser#jinjaSet}.
+	 * @param ctx the parse tree
+	 */
+	void exitJinjaSet(TemplatesParser.JinjaSetContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code StringExpr}
 	 * labeled alternative in {@link TemplatesParser#expression}.
 	 * @param ctx the parse tree
@@ -273,4 +283,16 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLogicalExpr(TemplatesParser.LogicalExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathExpr(TemplatesParser.MathExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MathExpr}
+	 * labeled alternative in {@link TemplatesParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathExpr(TemplatesParser.MathExprContext ctx);
 }
