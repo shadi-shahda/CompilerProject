@@ -3,6 +3,7 @@ package CssSymbolTable;
 import java.util.*;
 
 public class CssSymbolTable {
+
   static final public CssSymbolTable instance = new CssSymbolTable();
 
   private CssSymbolTable() {}
@@ -15,53 +16,129 @@ public class CssSymbolTable {
   private Set<String> usedClassesInHtml = new HashSet<>();
   private Set<String> usedIdsInHtml = new HashSet<>();
 
+  // =========================
+  // NORMALIZATION HELPERS
+  // =========================
+
+  private String normalizeClass(String value) {
+    if (value == null) return "";
+
+    value = value.replace("\"", "").trim();
+
+    if (value.startsWith(".")) {
+      value = value.substring(1);
+    }
+
+    return value;
+  }
+
+  private String normalizeId(String value) {
+    if (value == null) return "";
+
+    value = value.replace("\"", "").trim();
+
+    if (value.startsWith("#")) {
+      value = value.substring(1);
+    }
+
+    return value;
+  }
+
+  private String normalizeSelector(String value) {
+    if (value == null) return "";
+
+    value = value.replace("\"", "").trim();
+
+    // element selectors like button, img stay as-is
+    // but we still remove accidental spaces
+    return value;
+  }
+
+  // =========================
+  // DEFINE CSS SIDE
+  // =========================
+
   public void defineSelector(String selector) {
-    this.definedSelectors.add(selector);
+    definedSelectors.add(normalizeSelector(selector));
   }
 
   public void defineClass(String className) {
-    definedClasses.add(className);
+    definedClasses.add(normalizeClass(className));
   }
 
   public void defineId(String idName) {
-    definedIds.add(idName);
+    definedIds.add(normalizeId(idName));
   }
 
-  public void setUsedHtmlSelectors(Set<String> classes, Set<String> ids, Set<String> selectors) {
-    this.usedClassesInHtml.addAll(classes);
-    this.usedIdsInHtml.addAll(ids);
-    this.usedSelectors.addAll(selectors);
+  // =========================
+  // HTML SIDE INPUT
+  // =========================
+
+  public void setUsedHtmlSelectors(Set<String> classes,
+                                   Set<String> ids,
+                                   Set<String> selectors) {
+
+    for (String c : classes) {
+      usedClassesInHtml.add(normalizeClass(c));
+    }
+
+    for (String i : ids) {
+      usedIdsInHtml.add(normalizeId(i));
+    }
+
+    for (String s : selectors) {
+      usedSelectors.add(normalizeSelector(s));
+    }
   }
+
+  // =========================
+  // CROSS CHECK
+  // =========================
 
   public void performCrossCheck() {
+
     System.out.println("=== CSS <-> HTML Cross-Reference Analysis ===");
 
     boolean issuesFound = false;
 
+    // CHECK CLASSES
     for (String htmlClass : usedClassesInHtml) {
       if (!definedClasses.contains(htmlClass)) {
-        System.out.println("WARNING: HTML uses class '" + htmlClass + "' but it is NOT defined in style.css");
+        System.out.println(
+                "WARNING: HTML uses class '" + htmlClass +
+                        "' but it is NOT defined in style.css"
+        );
         issuesFound = true;
       }
     }
 
     for (String cssClass : definedClasses) {
       if (!usedClassesInHtml.contains(cssClass)) {
-        System.out.println("INFO: CSS class '" + cssClass + "' is defined but NOT used in any HTML file (Dead Code).");
+        System.out.println(
+                "INFO: CSS class '" + cssClass +
+                        "' is defined but NOT used in HTML (Dead Code)."
+        );
         issuesFound = true;
       }
     }
 
+    // CHECK IDS
     for (String htmlId : usedIdsInHtml) {
       if (!definedIds.contains(htmlId)) {
-        System.out.println("WARNING: HTML uses Id '" + htmlId + "' but it is NOT defined in style.css");
+        System.out.println(
+                "WARNING: HTML uses id '" + htmlId +
+                        "' but it is NOT defined in style.css"
+        );
         issuesFound = true;
       }
     }
 
     for (String cssId : definedIds) {
       if (!usedIdsInHtml.contains(cssId)) {
-        System.out.println("INFO: CSS id '" + cssId + "' is defined but NOT used in any HTML file (Dead Code).");
+        System.out.println(
+                "INFO: CSS id '" + cssId +
+                        "' is defined but NOT used in HTML (Dead Code)."
+        );
         issuesFound = true;
       }
     }
@@ -71,37 +148,33 @@ public class CssSymbolTable {
     }
   }
 
+  // =========================
+  // DEBUG PRINT
+  // =========================
+
   public void printTable() {
-    System.out.println("\n======================== CSS SYMBOL TABLE SNAPSHOT ========================");
-    System.out.println(String.format("| %-30s | %-15s | %-15s |", "SELECTOR NAME", "TYPE", "SCOPE"));
-    System.out.println("---------------------------------------------------------------------------");
 
-    for (String selectorName : definedSelectors) {
-      System.out.println(String.format("| %-30s | %-15s | %-15s |",
-          selectorName, "CSS SELECTOR", "Global"));
+    System.out.println("\n================ CSS SYMBOL TABLE SNAPSHOT ================");
+
+    for (String selector : definedSelectors) {
+      System.out.println(selector + " | SELECTOR");
     }
 
-    for (String className : definedClasses) {
-      System.out.println(String.format("| %-30s | %-15s | %-15s |",
-          className, "CSS CLASS", "Global"));
+    for (String cls : definedClasses) {
+      System.out.println(cls + " | CLASS");
     }
 
-    for (String idName : definedIds) {
-      System.out.println(String.format("| %-30s | %-15s | %-15s |",
-          idName, "CSS ID", "Global"));
+    for (String id : definedIds) {
+      System.out.println(id + " | ID");
     }
 
-    System.out.println("---------------------------------------------------------------------------");
+    System.out.println("\n================ ANALYSIS =================");
 
-    System.out.println("[Analysis Summary]");
-    System.out.println("Total Selectors Defined: " + definedSelectors.size());
-    System.out.println("Used in HTML:          "
-        + (usedSelectors.size()) + " selectors");
-    System.out.println("Total Classes Defined: " + definedClasses.size());
-    System.out.println("Used in HTML:          " +  usedClassesInHtml.size() + " Classes");
-    System.out.println("Total IDs Defined:     " + definedIds.size());
-    System.out.println("Used in HTML:          " + usedIdsInHtml.size() + " Ids");
+    System.out.println("Selectors: " + definedSelectors.size());
+    System.out.println("Classes:   " + definedClasses.size());
+    System.out.println("IDs:       " + definedIds.size());
 
-    System.out.println("===========================================================================");
+    System.out.println("Used Classes: " + usedClassesInHtml.size());
+    System.out.println("Used IDs:     " + usedIdsInHtml.size());
   }
 }
