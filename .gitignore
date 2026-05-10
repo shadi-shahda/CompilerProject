@@ -1,3 +1,29 @@
+# Build output
+/out/
+/*.class
+
+# Java build folders
+/target/
+/bin/
+
+# IDE files
+/.idea/
+/*.iml
+/.classpath
+/.project
+/.settings/
+/.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs and temp
+*.log
+*.tmp
+
+# Maven / Gradle
+/.gradle/
 # Ignore build/output directories
 out/
 bin/
