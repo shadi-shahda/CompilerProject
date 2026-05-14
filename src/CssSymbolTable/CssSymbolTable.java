@@ -75,8 +75,8 @@ public class CssSymbolTable {
   // =========================
 
   public void setUsedHtmlSelectors(Set<String> classes,
-                                   Set<String> ids,
-                                   Set<String> selectors) {
+      Set<String> ids,
+      Set<String> selectors) {
 
     for (String c : classes) {
       usedClassesInHtml.add(normalizeClass(c));
@@ -102,43 +102,41 @@ public class CssSymbolTable {
     boolean issuesFound = false;
 
     // CHECK CLASSES
-    for (String htmlClass : usedClassesInHtml) {
-      if (!definedClasses.contains(htmlClass)) {
-        System.out.println(
-                "WARNING: HTML uses class '" + htmlClass +
-                        "' but it is NOT defined in style.css"
-        );
-        issuesFound = true;
-      }
-    }
+    // for (String htmlClass : usedClassesInHtml) {
+    // if (!definedClasses.contains(htmlClass)) {
+    // System.out.println(
+    // "WARNING: HTML uses class '" + htmlClass +
+    // "' but it is NOT defined in style.css"
+    // );
+    // issuesFound = true;
+    // }
+    // }
 
     for (String cssClass : definedClasses) {
       if (!usedClassesInHtml.contains(cssClass)) {
         System.out.println(
-                "INFO: CSS class '" + cssClass +
-                        "' is defined but NOT used in HTML (Dead Code)."
-        );
+            "WARNING: CSS class '" + cssClass +
+                "' is defined but NOT used in HTML (Dead Code).");
         issuesFound = true;
       }
     }
 
     // CHECK IDS
-    for (String htmlId : usedIdsInHtml) {
-      if (!definedIds.contains(htmlId)) {
-        System.out.println(
-                "WARNING: HTML uses id '" + htmlId +
-                        "' but it is NOT defined in style.css"
-        );
-        issuesFound = true;
-      }
-    }
+    // for (String htmlId : usedIdsInHtml) {
+    // if (!definedIds.contains(htmlId)) {
+    // System.out.println(
+    // "WARNING: HTML uses id '" + htmlId +
+    // "' but it is NOT defined in style.css"
+    // );
+    // issuesFound = true;
+    // }
+    // }
 
     for (String cssId : definedIds) {
       if (!usedIdsInHtml.contains(cssId)) {
         System.out.println(
-                "INFO: CSS id '" + cssId +
-                        "' is defined but NOT used in HTML (Dead Code)."
-        );
+            "WARNING: CSS id '" + cssId +
+                "' is defined but NOT used in HTML (Dead Code).");
         issuesFound = true;
       }
     }
