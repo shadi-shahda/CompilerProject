@@ -1,27 +1,6 @@
 package TemplatesVisitor;
 
-import TemplatesAST.BinaryExpression;
-import TemplatesAST.BoolExpression;
-import TemplatesAST.DictionaryAccessExpression;
-import TemplatesAST.HtmlAttribute;
-import TemplatesAST.HtmlElement;
-import TemplatesAST.HtmlText;
-import TemplatesAST.IntExpression;
-import TemplatesAST.JinjaForStatement;
-import TemplatesAST.JinjaIfStatement;
-import TemplatesAST.JinjaPrint;
-import TemplatesAST.JinjaSet;
-import TemplatesAST.KeyValueAttribute;
-import TemplatesAST.LogicalExpression;
-import TemplatesAST.MathExpression;
-import TemplatesAST.MemberAccessExpression;
-import TemplatesAST.NotExpression;
-import TemplatesAST.OnlyKeyAttribute;
-import TemplatesAST.StringExpression;
-import TemplatesAST.TemplatesASTNode;
-import TemplatesAST.TemplatesExpression;
-import TemplatesAST.TemplatesProgram;
-import TemplatesAST.VarExpression;
+import TemplatesAST.*;
 import generated.TemplatesParser;
 import generated.TemplatesParser.BinaryExprContext;
 import generated.TemplatesParser.BoolExprContext;
@@ -49,6 +28,9 @@ import generated.TemplatesParser.VarExprContext;
 import generated.TemplatesParser.VoidElementContext;
 import generated.TemplatesParserBaseVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<TemplatesASTNode> {
   @Override
   public TemplatesASTNode visitTemplate(TemplateContext ctx) {
@@ -74,7 +56,8 @@ public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<Template
   @Override
   public TemplatesASTNode visitTextContent(TextContentContext ctx) {
     int line = ctx.getStart().getLine();
-    return new HtmlText(ctx.TEXT().getText(), line);
+    String text = ctx.TEXT().getText();
+    return new HtmlText(text, line);
   }
 
   @Override
@@ -111,8 +94,77 @@ public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<Template
   public TemplatesASTNode visitKeyValueAttribute(KeyValueAttributeContext ctx) {
     int line = ctx.getStart().getLine();
     String key = ctx.getChild(0).getText();
-    String value = ctx.TAG_STRING().getText();
+    AttributeValue value = (AttributeValue) visit(ctx.attributeValue());
     return new KeyValueAttribute(key, line, value);
+  }
+
+  @Override
+  public TemplatesASTNode visitDoubleQuotedAttribute(TemplatesParser.DoubleQuotedAttributeContext ctx) {
+    int line = ctx.getStart().getLine();
+
+    AttributeValue value = new AttributeValue(line);
+
+    for (TemplatesParser.AttributePartContext part : ctx.attributePart()) {
+      value.addPart((AttributePart) visit(part));
+    }
+
+    return value;
+  }
+
+  @Override
+  public TemplatesASTNode visitSingleQuotedAttribute(TemplatesParser.SingleQuotedAttributeContext ctx) {
+    int line = ctx.getStart().getLine();
+
+    AttributeValue value = new AttributeValue(line);
+
+    for (TemplatesParser.SingleAttributePartContext part : ctx.singleAttributePart()) {
+      value.addPart((AttributePart) visit(part));
+    }
+
+    return value;
+  }
+
+
+  @Override
+  public TemplatesASTNode visitAttributeTextPart(
+          TemplatesParser.AttributeTextPartContext ctx) {
+
+    int line = ctx.getStart().getLine();
+
+    return new AttributeTextPart(line, ctx.ATTR_TEXT().getText());
+  }
+
+  @Override
+  public TemplatesASTNode visitSingleAttributeTextPart(
+          TemplatesParser.SingleAttributeTextPartContext ctx) {
+
+    int line = ctx.getStart().getLine();
+
+    return new AttributeTextPart(line, ctx.ATTR_TEXT_SINGLE().getText());
+  }
+
+  @Override
+  public TemplatesASTNode visitAttributeExpressionPart(
+          TemplatesParser.AttributeExpressionPartContext ctx) {
+
+    int line = ctx.getStart().getLine();
+
+    TemplatesExpression expr =
+            (TemplatesExpression) visit(ctx.expression());
+
+    return new AttributeExpressionPart(line, expr);
+  }
+
+  @Override
+  public TemplatesASTNode visitSingleAttributeExpressionPart(
+          TemplatesParser.SingleAttributeExpressionPartContext ctx) {
+
+    int line = ctx.getStart().getLine();
+
+    TemplatesExpression expr =
+            (TemplatesExpression) visit(ctx.expression());
+
+    return new AttributeExpressionPart(line, expr);
   }
 
   @Override

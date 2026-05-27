@@ -73,6 +73,48 @@ public interface TemplatesParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code DoubleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoubleQuotedAttribute(TemplatesParser.DoubleQuotedAttributeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleQuotedAttribute(TemplatesParser.SingleQuotedAttributeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttributeTextPart(TemplatesParser.AttributeTextPartContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttributeExpressionPart(TemplatesParser.AttributeExpressionPartContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleAttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleAttributeTextPart(TemplatesParser.SingleAttributeTextPartContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleAttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleAttributeExpressionPart(TemplatesParser.SingleAttributeExpressionPartContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TemplatesParser#jinjaElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

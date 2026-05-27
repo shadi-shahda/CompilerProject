@@ -7,7 +7,10 @@ public class HtmlText extends TemplatesASTNode {
 
   public HtmlText(String text, int line) {
     super(line);
-    this.text = text;
+    text = text.trim();
+    if(!text.isEmpty()) {
+      this.text = text;
+    }
   }
 
   @Override

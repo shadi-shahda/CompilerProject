@@ -10,12 +10,13 @@ TAG_CLOSE_TAG: '</' -> pushMode(TAG_MODE);
 J_BLOCK_START: '{%' -> pushMode(JINJA_MODE);
 J_EXPR_START: '{{' -> pushMode(JINJA_MODE);
 
-TEXT: ~[<{}]+;
+TEXT: ~[<{]+;
 
 mode TAG_MODE;
 TAG_WS: [ \t\r\n]+ -> skip;
 TAG_EQUALS: '=';
-TAG_STRING: '"' .*? '"' | '\'' .*? '\'';
+DOUBLE_QUOTE: '"' -> pushMode(ATTRIBUTE_MODE);
+SINGLE_QUOTE: '\'' -> pushMode(SINGLE_ATTRIBUTE_MODE);
 
 VOID_TAG_ID: 'img' | 'br' | 'hr' | 'link' | 'meta' | 'input';
 
@@ -24,7 +25,22 @@ TAG_ID: [a-zA-Z_][a-zA-Z0-9_-]*;
 TAG_EXIT: '>' -> popMode;
 TAG_EXIT_SELF: '/>' -> popMode;
 
+mode ATTRIBUTE_MODE;
+
+ATTR_EXPR_START: '{{' -> pushMode(JINJA_MODE);
+ATTR_TEXT: ~[{"]+;
+ATTR_QUOTE_END: '"' -> popMode;
+
+mode SINGLE_ATTRIBUTE_MODE;
+
+ATTR_EXPR_START_SINGLE: '{{' -> pushMode(JINJA_MODE);
+
+ATTR_TEXT_SINGLE: ~[{'']+;
+
+ATTR_SINGLE_QUOTE_END: '\'' -> popMode;
+
 mode JINJA_MODE;
+
 J_WS: [ \t\r\n]+ -> skip;
 
 J_IF: 'if';

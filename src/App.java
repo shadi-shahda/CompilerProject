@@ -157,7 +157,7 @@ public class App {
         if (contextVars != null) {
             for (String var : contextVars) {
                 System.out.println("   -> Injecting Context Variable: " + var);
-                symbolTable.defineContextVariable(var);
+                symbolTable.defineContextVariable(var, var.toUpperCase());
             }
         }
         TemplatesSymbolTableVisitor symbolVisitor = new TemplatesSymbolTableVisitor(symbolTable);

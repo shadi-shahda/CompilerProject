@@ -17,8 +17,28 @@ htmlElement:
 	| TAG_OPEN VOID_TAG_ID attribute* TAG_EXIT									# VoidElement
 	| TAG_OPEN (TAG_ID | VOID_TAG_ID) attribute* TAG_EXIT_SELF					# SelfClosingTag;
 
-attribute: (TAG_ID | VOID_TAG_ID) TAG_EQUALS TAG_STRING	# keyValueAttribute
-	| (TAG_ID | VOID_TAG_ID)							# onlyKeyAttribute;
+// attribute: (TAG_ID | VOID_TAG_ID) TAG_EQUALS TAG_STRING # keyValueAttribute | (TAG_ID |
+// VOID_TAG_ID) # onlyKeyAttribute;
+
+attribute
+    : (TAG_ID | VOID_TAG_ID) TAG_EQUALS attributeValue # keyValueAttribute
+    | (TAG_ID | VOID_TAG_ID) # onlyKeyAttribute
+    ;
+
+attributeValue
+    : DOUBLE_QUOTE attributePart* ATTR_QUOTE_END # DoubleQuotedAttribute
+    | SINGLE_QUOTE singleAttributePart* ATTR_SINGLE_QUOTE_END # SingleQuotedAttribute
+    ;
+
+attributePart
+    : ATTR_TEXT # AttributeTextPart
+    | ATTR_EXPR_START expression J_EXPR_CLOSE # AttributeExpressionPart
+    ;
+
+singleAttributePart
+    : ATTR_TEXT_SINGLE # SingleAttributeTextPart
+    | ATTR_EXPR_START_SINGLE expression J_EXPR_CLOSE # SingleAttributeExpressionPart
+    ;
 
 jinjaElement: jinjaPrint | jinjaIf | jinjaFor | jinjaSet;
 

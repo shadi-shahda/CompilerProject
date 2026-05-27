@@ -31,11 +31,14 @@ public class TemplatesSymbolTable {
     }
 
     public void defineVariable(String name, String kind, int line) {
-        this.scopes.peek().put(name, new TemplatesSymbol(name, kind, line));
+        this.scopes.peek().put(
+                name,
+                new TemplatesSymbol(name, kind, line)
+        );
     }
 
-    public void defineContextVariable(String name) {
-        this.scopes.firstElement().put(name, new TemplatesSymbol(name, "CONTEXT_VAR", 0));
+    public void defineContextVariable(String name, String type) {
+        this.scopes.firstElement().put(name, new TemplatesSymbol(name, "CONTEXT_VAR",0));
     }
 
     public TemplatesSymbol resolveVariable(String name) {
@@ -45,7 +48,7 @@ public class TemplatesSymbolTable {
         }
         if(this.pythonSymbolTable != null) {
             if (this.pythonSymbolTable.isVariableForThisRoute(name, routeName)) {
-                return new TemplatesSymbol(name, "PYTHON_VAR", 0);
+                return new TemplatesSymbol(name, "PYTHON_VAR",0);
             }
         }
         return null;
