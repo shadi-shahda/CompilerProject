@@ -1,24 +1,6 @@
 package TemplatesVisitor;
 
-import TemplatesAST.BinaryExpression;
-import TemplatesAST.BoolExpression;
-import TemplatesAST.DictionaryAccessExpression;
-import TemplatesAST.HtmlElement;
-import TemplatesAST.HtmlText;
-import TemplatesAST.IntExpression;
-import TemplatesAST.JinjaForStatement;
-import TemplatesAST.JinjaIfStatement;
-import TemplatesAST.JinjaPrint;
-import TemplatesAST.JinjaSet;
-import TemplatesAST.KeyValueAttribute;
-import TemplatesAST.LogicalExpression;
-import TemplatesAST.MathExpression;
-import TemplatesAST.MemberAccessExpression;
-import TemplatesAST.NotExpression;
-import TemplatesAST.OnlyKeyAttribute;
-import TemplatesAST.StringExpression;
-import TemplatesAST.TemplatesProgram;
-import TemplatesAST.VarExpression;
+import TemplatesAST.*;
 
 public interface TemplatesASTVisitor<T> {
   T visit(TemplatesProgram program);
@@ -41,4 +23,7 @@ public interface TemplatesASTVisitor<T> {
   T visit(StringExpression StringExpr);
   T visit(IntExpression intExpr);
   T visit(BoolExpression boolExpr);
+  T visit(AttributeValue value);
+  T visit(AttributeTextPart textPart);
+  T visit(AttributeExpressionPart expressionPart);
 }

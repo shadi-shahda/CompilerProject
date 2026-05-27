@@ -1,26 +1,9 @@
 package TemplatesSymbolTable;
 
-import TemplatesAST.BinaryExpression;
-import TemplatesAST.BoolExpression;
-import TemplatesAST.DictionaryAccessExpression;
-import TemplatesAST.HtmlElement;
-import TemplatesAST.HtmlText;
-import TemplatesAST.IntExpression;
-import TemplatesAST.JinjaForStatement;
-import TemplatesAST.JinjaIfStatement;
-import TemplatesAST.JinjaPrint;
-import TemplatesAST.JinjaSet;
-import TemplatesAST.KeyValueAttribute;
-import TemplatesAST.LogicalExpression;
-import TemplatesAST.MathExpression;
-import TemplatesAST.MemberAccessExpression;
-import TemplatesAST.NotExpression;
-import TemplatesAST.OnlyKeyAttribute;
-import TemplatesAST.StringExpression;
-import TemplatesAST.TemplatesASTNode;
-import TemplatesAST.TemplatesProgram;
-import TemplatesAST.VarExpression;
+import TemplatesAST.*;
 import TemplatesVisitor.TemplatesASTVisitor;
+
+import java.util.Arrays;
 
 public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     private TemplatesSymbolTable symbolTable;
@@ -102,15 +85,19 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(HtmlElement element) {
         for (var a : element.attributes) {
-            if (a instanceof KeyValueAttribute) {
-                KeyValueAttribute kvAttr = (KeyValueAttribute) a;
+            if (a instanceof KeyValueAttribute kvAttr) {
                 if (kvAttr.getKey().equals("class")) {
-                    String[] classes = kvAttr.value.split("\\s+");
-                    for (String cls : classes) {
-                        symbolTable.addUsedClass(cls);
+                    for (AttributePart part : kvAttr.value.parts) {
+                        if(part instanceof AttributeTextPart) {
+                            symbolTable.addUsedClass(((AttributeTextPart) part).text);
+                        }
                     }
                 } else if (kvAttr.getKey().equals("id")) {
-                    symbolTable.addUsedId(kvAttr.value);
+                    for (AttributePart part : kvAttr.value.parts) {
+                        if(part instanceof AttributeTextPart) {
+                            symbolTable.addUsedId(((AttributeTextPart) part).text);
+                        }
+                    }
                 } else {
                     symbolTable.addUsedSelector(element.tagName + "[" + kvAttr.getKey() + "]");
                 }
@@ -133,6 +120,16 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(MemberAccessExpression memberAccessExpr) {
         memberAccessExpr.expression.accept(this);
+        if (memberAccessExpr.expression instanceof VarExpression expression) {
+            TemplatesSymbol symbol =
+                    symbolTable.resolveVariable(expression.name);
+//            if (symbol == null) {
+//                symbolTable.reportError(
+//                        "Undefined variable '" + expression.name + "'",
+//                        memberAccessExpr.getLine());
+//                return null;
+//            }
+        }
         return null;
     }
 
@@ -172,6 +169,9 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
 
     @Override
     public Void visit(KeyValueAttribute attribute) {
+        if (attribute.value != null) {
+            attribute.value.accept(this);
+        }
         return null;
     }
 
@@ -197,6 +197,25 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
 
     @Override
     public Void visit(BoolExpression boolExpr) {
+        return null;
+    }
+
+    @Override
+    public Void visit(AttributeValue attributeValue) {
+        for (AttributePart part : attributeValue.parts) {
+            part.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(AttributeTextPart textPart) {
+        return null;
+    }
+
+    @Override
+    public Void visit(AttributeExpressionPart expression) {
+        expression.expression.accept(this);
         return null;
     }
 }

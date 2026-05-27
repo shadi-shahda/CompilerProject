@@ -1,24 +1,4 @@
-import TemplatesAST.BinaryExpression;
-import TemplatesAST.BoolExpression;
-import TemplatesAST.DictionaryAccessExpression;
-import TemplatesAST.HtmlAttribute;
-import TemplatesAST.HtmlElement;
-import TemplatesAST.HtmlText;
-import TemplatesAST.IntExpression;
-import TemplatesAST.JinjaForStatement;
-import TemplatesAST.JinjaIfStatement;
-import TemplatesAST.JinjaPrint;
-import TemplatesAST.JinjaSet;
-import TemplatesAST.KeyValueAttribute;
-import TemplatesAST.LogicalExpression;
-import TemplatesAST.MathExpression;
-import TemplatesAST.MemberAccessExpression;
-import TemplatesAST.NotExpression;
-import TemplatesAST.OnlyKeyAttribute;
-import TemplatesAST.StringExpression;
-import TemplatesAST.TemplatesASTNode;
-import TemplatesAST.TemplatesProgram;
-import TemplatesAST.VarExpression;
+import TemplatesAST.*;
 import TemplatesVisitor.TemplatesASTVisitor;
 
 public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
@@ -67,6 +47,7 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
   // ================= HTML TEXT =================
   @Override
   public String visit(HtmlText text) {
+    if(text.text == null) return "";
     return line("HtmlText: " + text.text, text.getLine());
   }
 
@@ -107,7 +88,9 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     inc();
 
     sb.append(indent()).append("Key: ").append(attribute.getKey()).append("\n");
-    sb.append(indent()).append("Value: ").append(attribute.value).append("\n");
+    if (attribute.value != null) {
+      sb.append(attribute.value.accept(this));
+    }
 
     dec();
     return sb.toString();
@@ -321,5 +304,35 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
   @Override
   public String visit(BoolExpression expr) {
     return line("Bool: " + expr.value, expr.getLine());
+  }
+  @Override
+  public String visit(AttributeValue attributeValue) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(line("AttributeValue", attributeValue.getLine()));
+    inc();
+    for (AttributePart part : attributeValue.parts) {
+      sb.append(part.accept(this));
+    }
+    dec();
+    return sb.toString();
+  }
+
+  @Override
+  public String visit(AttributeTextPart textPart) {
+    return line(
+            "AttributeText: " + textPart.text,
+            textPart.getLine());
+  }
+
+  @Override
+  public String visit(AttributeExpressionPart expressionPart) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(line(
+            "AttributeExpression",
+            expressionPart.getLine()));
+    inc();
+    sb.append(expressionPart.expression.accept(this));
+    dec();
+    return sb.toString();
   }
 }
