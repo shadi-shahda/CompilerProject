@@ -1,9 +1,30 @@
 package TemplatesSymbolTable;
 
-import TemplatesAST.*;
+import TemplatesAST.AttributeExpressionPart;
+import TemplatesAST.AttributePart;
+import TemplatesAST.AttributeTextPart;
+import TemplatesAST.AttributeValue;
+import TemplatesAST.BinaryExpression;
+import TemplatesAST.BoolExpression;
+import TemplatesAST.DictionaryAccessExpression;
+import TemplatesAST.HtmlElement;
+import TemplatesAST.HtmlText;
+import TemplatesAST.IntExpression;
+import TemplatesAST.JinjaForStatement;
+import TemplatesAST.JinjaIfStatement;
+import TemplatesAST.JinjaPrint;
+import TemplatesAST.JinjaSet;
+import TemplatesAST.KeyValueAttribute;
+import TemplatesAST.LogicalExpression;
+import TemplatesAST.MathExpression;
+import TemplatesAST.MemberAccessExpression;
+import TemplatesAST.NotExpression;
+import TemplatesAST.OnlyKeyAttribute;
+import TemplatesAST.StringExpression;
+import TemplatesAST.TemplatesASTNode;
+import TemplatesAST.TemplatesProgram;
+import TemplatesAST.VarExpression;
 import TemplatesVisitor.TemplatesASTVisitor;
-
-import java.util.Arrays;
 
 public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     private TemplatesSymbolTable symbolTable;
@@ -120,16 +141,6 @@ public class TemplatesSymbolTableVisitor implements TemplatesASTVisitor<Void> {
     @Override
     public Void visit(MemberAccessExpression memberAccessExpr) {
         memberAccessExpr.expression.accept(this);
-        if (memberAccessExpr.expression instanceof VarExpression expression) {
-            TemplatesSymbol symbol =
-                    symbolTable.resolveVariable(expression.name);
-//            if (symbol == null) {
-//                symbolTable.reportError(
-//                        "Undefined variable '" + expression.name + "'",
-//                        memberAccessExpr.getLine());
-//                return null;
-//            }
-        }
         return null;
     }
 

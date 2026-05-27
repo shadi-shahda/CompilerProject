@@ -27,10 +27,6 @@ import generated.TemplatesParser.TextContentContext;
 import generated.TemplatesParser.VarExprContext;
 import generated.TemplatesParser.VoidElementContext;
 import generated.TemplatesParserBaseVisitor;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<TemplatesASTNode> {
   @Override
   public TemplatesASTNode visitTemplate(TemplateContext ctx) {
