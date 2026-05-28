@@ -113,6 +113,78 @@ public interface TemplatesParserListener extends ParseTreeListener {
 	 */
 	void exitOnlyKeyAttribute(TemplatesParser.OnlyKeyAttributeContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code DoubleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleQuotedAttribute(TemplatesParser.DoubleQuotedAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DoubleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleQuotedAttribute(TemplatesParser.DoubleQuotedAttributeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SingleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleQuotedAttribute(TemplatesParser.SingleQuotedAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SingleQuotedAttribute}
+	 * labeled alternative in {@link TemplatesParser#attributeValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleQuotedAttribute(TemplatesParser.SingleQuotedAttributeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttributeTextPart(TemplatesParser.AttributeTextPartContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttributeTextPart(TemplatesParser.AttributeTextPartContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttributeExpressionPart(TemplatesParser.AttributeExpressionPartContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#attributePart}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttributeExpressionPart(TemplatesParser.AttributeExpressionPartContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SingleAttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleAttributeTextPart(TemplatesParser.SingleAttributeTextPartContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SingleAttributeTextPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleAttributeTextPart(TemplatesParser.SingleAttributeTextPartContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SingleAttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleAttributeExpressionPart(TemplatesParser.SingleAttributeExpressionPartContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SingleAttributeExpressionPart}
+	 * labeled alternative in {@link TemplatesParser#singleAttributePart}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleAttributeExpressionPart(TemplatesParser.SingleAttributeExpressionPartContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TemplatesParser#jinjaElement}.
 	 * @param ctx the parse tree
 	 */

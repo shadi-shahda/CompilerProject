@@ -62,7 +62,12 @@ public class AntlrToTemplatesVisitor extends TemplatesParserBaseVisitor<Template
     String tagName = ctx.TAG_ID(0).getText();
     HtmlElement element = new HtmlElement(tagName, line);
     for (TemplatesParser.AttributeContext attribute : ctx.attribute()) {
-      KeyValueAttribute node = (TemplatesAST.KeyValueAttribute) visit(attribute);
+      HtmlAttribute node = (TemplatesAST.HtmlAttribute) visit(attribute);
+      if (node.value != null) {
+        node = new KeyValueAttribute(node.getKey(), node.getLine(), node.value);
+      } else {
+        node = new OnlyKeyAttribute(node.getKey(), node.getLine());
+      }
       element.addAttribute(node);
     }
 

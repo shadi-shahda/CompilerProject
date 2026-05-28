@@ -16,7 +16,7 @@
                 <img src="{{ product.image }}" alt="image">
                 <h3>{{ product.name }}</h3>
                 <p>price: {{ product.price }} $</p>
-                <a href="/product/{{ product.id }}" class="btn-view">details</a>
+                <a href="/product/{{ product.id }}" class="btn-view" required>details</a>
                 <a href="/delete/{{ product.id }}" class="btn-delete">delete</a>
             </div>
             {% endfor %}
