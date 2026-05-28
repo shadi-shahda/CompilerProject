@@ -3,12 +3,11 @@ package TemplatesAST;
 import TemplatesVisitor.TemplatesASTVisitor;
 
 public class KeyValueAttribute extends HtmlAttribute {
-    public AttributeValue value;
 
 
     public KeyValueAttribute(String key, int line, AttributeValue value) {
         super(key, line);
-        this.value = value;
+        super.value = value;
     }
 
     public String buildAttributeValue(AttributeValue value) {

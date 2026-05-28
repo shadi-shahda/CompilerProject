@@ -127,6 +127,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_template; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterTemplate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitTemplate(this);
+		}
 	}
 
 	public final TemplateContext template() throws RecognitionException {
@@ -183,11 +191,27 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(HtmlElementContext.class,0);
 		}
 		public HtmlContentContext(ContentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterHtmlContent(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitHtmlContent(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class TextContentContext extends ContentContext {
 		public TerminalNode TEXT() { return getToken(TemplatesParser.TEXT, 0); }
 		public TextContentContext(ContentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterTextContent(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitTextContent(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class JinjaContentContext extends ContentContext {
@@ -195,6 +219,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(JinjaElementContext.class,0);
 		}
 		public JinjaContentContext(ContentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaContent(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaContent(this);
+		}
 	}
 
 	public final ContentContext content() throws RecognitionException {
@@ -268,6 +300,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(AttributeContext.class,i);
 		}
 		public VoidElementContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterVoidElement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitVoidElement(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SelfClosingTagContext extends HtmlElementContext {
@@ -282,6 +322,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(AttributeContext.class,i);
 		}
 		public SelfClosingTagContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterSelfClosingTag(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitSelfClosingTag(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NormalTagContext extends HtmlElementContext {
@@ -308,6 +356,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(ContentContext.class,i);
 		}
 		public NormalTagContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterNormalTag(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitNormalTag(this);
+		}
 	}
 
 	public final HtmlElementContext htmlElement() throws RecognitionException {
@@ -454,6 +510,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode TAG_ID() { return getToken(TemplatesParser.TAG_ID, 0); }
 		public TerminalNode VOID_TAG_ID() { return getToken(TemplatesParser.VOID_TAG_ID, 0); }
 		public OnlyKeyAttributeContext(AttributeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterOnlyKeyAttribute(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitOnlyKeyAttribute(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class KeyValueAttributeContext extends AttributeContext {
@@ -464,6 +528,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode TAG_ID() { return getToken(TemplatesParser.TAG_ID, 0); }
 		public TerminalNode VOID_TAG_ID() { return getToken(TemplatesParser.VOID_TAG_ID, 0); }
 		public KeyValueAttributeContext(AttributeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterKeyValueAttribute(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitKeyValueAttribute(this);
+		}
 	}
 
 	public final AttributeContext attribute() throws RecognitionException {
@@ -546,6 +618,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(AttributePartContext.class,i);
 		}
 		public DoubleQuotedAttributeContext(AttributeValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterDoubleQuotedAttribute(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitDoubleQuotedAttribute(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SingleQuotedAttributeContext extends AttributeValueContext {
@@ -558,6 +638,14 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(SingleAttributePartContext.class,i);
 		}
 		public SingleQuotedAttributeContext(AttributeValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterSingleQuotedAttribute(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitSingleQuotedAttribute(this);
+		}
 	}
 
 	public final AttributeValueContext attributeValue() throws RecognitionException {
@@ -651,11 +739,27 @@ public class TemplatesParser extends Parser {
 		}
 		public TerminalNode J_EXPR_CLOSE() { return getToken(TemplatesParser.J_EXPR_CLOSE, 0); }
 		public AttributeExpressionPartContext(AttributePartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterAttributeExpressionPart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitAttributeExpressionPart(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AttributeTextPartContext extends AttributePartContext {
 		public TerminalNode ATTR_TEXT() { return getToken(TemplatesParser.ATTR_TEXT, 0); }
 		public AttributeTextPartContext(AttributePartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterAttributeTextPart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitAttributeTextPart(this);
+		}
 	}
 
 	public final AttributePartContext attributePart() throws RecognitionException {
@@ -716,6 +820,14 @@ public class TemplatesParser extends Parser {
 	public static class SingleAttributeTextPartContext extends SingleAttributePartContext {
 		public TerminalNode ATTR_TEXT_SINGLE() { return getToken(TemplatesParser.ATTR_TEXT_SINGLE, 0); }
 		public SingleAttributeTextPartContext(SingleAttributePartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterSingleAttributeTextPart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitSingleAttributeTextPart(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SingleAttributeExpressionPartContext extends SingleAttributePartContext {
@@ -725,6 +837,14 @@ public class TemplatesParser extends Parser {
 		}
 		public TerminalNode J_EXPR_CLOSE() { return getToken(TemplatesParser.J_EXPR_CLOSE, 0); }
 		public SingleAttributeExpressionPartContext(SingleAttributePartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterSingleAttributeExpressionPart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitSingleAttributeExpressionPart(this);
+		}
 	}
 
 	public final SingleAttributePartContext singleAttributePart() throws RecognitionException {
@@ -787,6 +907,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jinjaElement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaElement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaElement(this);
+		}
 	}
 
 	public final JinjaElementContext jinjaElement() throws RecognitionException {
@@ -848,6 +976,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jinjaPrint; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaPrint(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaPrint(this);
+		}
 	}
 
 	public final JinjaPrintContext jinjaPrint() throws RecognitionException {
@@ -904,6 +1040,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jinjaIf; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaIf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaIf(this);
+		}
 	}
 
 	public final JinjaIfContext jinjaIf() throws RecognitionException {
@@ -1015,6 +1159,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jinjaFor; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaFor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaFor(this);
+		}
 	}
 
 	public final JinjaForContext jinjaFor() throws RecognitionException {
@@ -1085,6 +1237,14 @@ public class TemplatesParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jinjaSet; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterJinjaSet(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitJinjaSet(this);
+		}
 	}
 
 	public final JinjaSetContext jinjaSet() throws RecognitionException {
@@ -1134,12 +1294,28 @@ public class TemplatesParser extends Parser {
 	public static class StringExprContext extends ExpressionContext {
 		public TerminalNode J_STRING() { return getToken(TemplatesParser.J_STRING, 0); }
 		public StringExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterStringExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitStringExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BoolExprContext extends ExpressionContext {
 		public TerminalNode J_TRUE() { return getToken(TemplatesParser.J_TRUE, 0); }
 		public TerminalNode J_FALSE() { return getToken(TemplatesParser.J_FALSE, 0); }
 		public BoolExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterBoolExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitBoolExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BinaryExprContext extends ExpressionContext {
@@ -1156,11 +1332,27 @@ public class TemplatesParser extends Parser {
 		public TerminalNode J_GTE() { return getToken(TemplatesParser.J_GTE, 0); }
 		public TerminalNode J_LTE() { return getToken(TemplatesParser.J_LTE, 0); }
 		public BinaryExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitBinaryExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarExprContext extends ExpressionContext {
 		public TerminalNode J_ID() { return getToken(TemplatesParser.J_ID, 0); }
 		public VarExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterVarExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitVarExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NotExprContext extends ExpressionContext {
@@ -1169,11 +1361,27 @@ public class TemplatesParser extends Parser {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public NotExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterNotExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitNotExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IntExprContext extends ExpressionContext {
 		public TerminalNode J_INT() { return getToken(TemplatesParser.J_INT, 0); }
 		public IntExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterIntExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitIntExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class DictAccessExprContext extends ExpressionContext {
@@ -1184,6 +1392,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode J_STRING() { return getToken(TemplatesParser.J_STRING, 0); }
 		public TerminalNode J_RBRACK() { return getToken(TemplatesParser.J_RBRACK, 0); }
 		public DictAccessExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterDictAccessExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitDictAccessExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExpressionContext {
@@ -1193,6 +1409,14 @@ public class TemplatesParser extends Parser {
 		}
 		public TerminalNode J_RPAREN() { return getToken(TemplatesParser.J_RPAREN, 0); }
 		public ParenExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterParenExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitParenExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MemberAccessExprContext extends ExpressionContext {
@@ -1202,6 +1426,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode J_DOT() { return getToken(TemplatesParser.J_DOT, 0); }
 		public TerminalNode J_ID() { return getToken(TemplatesParser.J_ID, 0); }
 		public MemberAccessExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterMemberAccessExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitMemberAccessExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class LogicalExprContext extends ExpressionContext {
@@ -1214,6 +1446,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode J_AND() { return getToken(TemplatesParser.J_AND, 0); }
 		public TerminalNode J_OR() { return getToken(TemplatesParser.J_OR, 0); }
 		public LogicalExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterLogicalExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitLogicalExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MathExprContext extends ExpressionContext {
@@ -1228,6 +1468,14 @@ public class TemplatesParser extends Parser {
 		public TerminalNode PLUS() { return getToken(TemplatesParser.PLUS, 0); }
 		public TerminalNode MINUS() { return getToken(TemplatesParser.MINUS, 0); }
 		public MathExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).enterMathExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TemplatesParserListener ) ((TemplatesParserListener)listener).exitMathExpr(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
