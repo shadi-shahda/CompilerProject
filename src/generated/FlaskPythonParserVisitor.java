@@ -83,6 +83,18 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintStmt(FlaskPythonParser.PrintStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#breakStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBreakStmt(FlaskPythonParser.BreakStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#continueStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContinueStmt(FlaskPythonParser.ContinueStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#ifStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -127,6 +139,12 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignment(FlaskPythonParser.AssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#globalStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#expressionStmt}.
 	 * @param ctx the parse tree

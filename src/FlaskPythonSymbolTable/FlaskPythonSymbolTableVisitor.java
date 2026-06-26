@@ -3,26 +3,7 @@ package FlaskPythonSymbolTable;
 import java.util.HashSet;
 import java.util.Set;
 
-import FlaskPythonAST.FLaskPythonForStatement;
-import FlaskPythonAST.FlaskPythonAssignmentStatement;
-import FlaskPythonAST.FlaskPythonBinaryExpression;
-import FlaskPythonAST.FlaskPythonBooleanLiteral;
-import FlaskPythonAST.FlaskPythonDictionaryExpression;
-import FlaskPythonAST.FlaskPythonExpression;
-import FlaskPythonAST.FlaskPythonFunctionCall;
-import FlaskPythonAST.FlaskPythonFunctionDeclaration;
-import FlaskPythonAST.FlaskPythonIdentifier;
-import FlaskPythonAST.FlaskPythonIfStatement;
-import FlaskPythonAST.FlaskPythonImportStatement;
-import FlaskPythonAST.FlaskPythonIntegerLiteral;
-import FlaskPythonAST.FlaskPythonListExpression;
-import FlaskPythonAST.FlaskPythonMemberAccess;
-import FlaskPythonAST.FlaskPythonMethodCall;
-import FlaskPythonAST.FlaskPythonPrintStatement;
-import FlaskPythonAST.FlaskPythonProgram;
-import FlaskPythonAST.FlaskPythonReturnStatement;
-import FlaskPythonAST.FlaskPythonStatement;
-import FlaskPythonAST.FlaskPythonStringLiteral;
+import FlaskPythonAST.*;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<FlaskPythonType> {
@@ -137,18 +118,25 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
     if ("render_template".equals(funcCall.functionName)) {
       if (funcCall.arguments != null && !funcCall.arguments.isEmpty()) {
-        FlaskPythonExpression firstArg = funcCall.arguments.get(0);
+        FlaskPythonArgument firstArgument = funcCall.arguments.get(0);
+        FlaskPythonExpression firstArgValue = firstArgument.value;
 
-        if (firstArg instanceof FlaskPythonStringLiteral) {
-          String templateName = stripQuotes(((FlaskPythonStringLiteral) firstArg).value);
+        if (firstArgValue instanceof FlaskPythonStringLiteral) {
+          String templateName = stripQuotes(((FlaskPythonStringLiteral) firstArgValue).value);
+
           if (!this.symbolTable.isTemplateExists(templateName)) {
-            this.symbolTable.reportError("Template file not found: '" + templateName + "'",
-                funcCall.getLineNumber());
+            this.symbolTable.reportError(
+                    "Template file not found: '" + templateName + "'",
+                    funcCall.getLineNumber()
+            );
           } else {
             for (int i = 1; i < funcCall.arguments.size(); i++) {
-              FlaskPythonExpression arg = funcCall.arguments.get(i);
-              if (arg instanceof FlaskPythonIdentifier) {
-                String varName = ((FlaskPythonIdentifier) arg).name;
+              FlaskPythonArgument arg = funcCall.arguments.get(i);
+
+              if (arg.isKeywordArgument()) {
+                this.symbolTable.addTemplateVariable(arg.keywordName, templateName);
+              } else if (arg.value instanceof FlaskPythonIdentifier) {
+                String varName = ((FlaskPythonIdentifier) arg.value).name;
                 this.symbolTable.addTemplateVariable(varName, templateName);
               }
             }
@@ -156,7 +144,8 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
         }
       }
     }
-    for (FlaskPythonExpression arg : funcCall.arguments) {
+    assert funcCall.arguments != null;
+    for (FlaskPythonArgument arg : funcCall.arguments) {
       arg.accept(this);
     }
 
@@ -253,6 +242,77 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
   @Override
   public FlaskPythonType visit(FlaskPythonBooleanLiteral booleanLiteral) {
     return FlaskPythonType.BOOLEAN;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonExpressionStatement expressionStatement) {
+    if(expressionStatement.expression != null) {
+      expressionStatement.expression.accept(this);
+    }
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonGlobalStatement globalStatement) {
+    for (String variableName : globalStatement.variableNames) {
+      if (!symbolTable.isVariableDefined(variableName)) {
+        symbolTable.reportError(
+                "Global variable '" + variableName + "' is not defined.",
+                globalStatement.getLineNumber()
+        );
+      }
+    }
+
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonBreakStatement breakStatement) {
+
+    return FlaskPythonType.VOID;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonListComprehensionExpression expression) {
+    if (expression.iterableExpression != null) {
+      FlaskPythonType iterableType = expression.iterableExpression.accept(this);
+
+      if (iterableType != FlaskPythonType.LIST
+              && iterableType != FlaskPythonType.DICT
+              && iterableType != FlaskPythonType.STRING
+              && iterableType != FlaskPythonType.UNKNOWN) {
+        symbolTable.reportError(
+                "Type Error: Object of type '" + iterableType + "' is not iterable.",
+                expression.getLineNumber()
+        );
+      }
+    }
+
+    symbolTable.enterScope();
+
+    if (expression.loopVariable != null) {
+      symbolTable.defineVariable(expression.loopVariable, FlaskPythonType.UNKNOWN);
+    }
+
+    if (expression.elementExpression != null) {
+      expression.elementExpression.accept(this);
+    }
+
+    if (expression.conditionExpression != null) {
+      expression.conditionExpression.accept(this);
+    }
+
+    symbolTable.exitScope();
+
+    return FlaskPythonType.LIST;
+  }
+
+  @Override
+  public FlaskPythonType visit(FlaskPythonArgument argument) {
+    if(argument.value != null) {
+      return argument.value.accept(this);
+    }
+    return FlaskPythonType.UNKNOWN;
   }
 
   @Override
@@ -359,9 +419,7 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
 
   @Override
   public FlaskPythonType visit(FlaskPythonMethodCall methCall) {
-    if (methCall.object != null)
-
-    {
+    if (methCall.object != null) {
       methCall.object.accept(this);
     }
 

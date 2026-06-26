@@ -7,9 +7,9 @@ import FlaskPythonVisitor.FlaskPythonASTVisitor;
 public class FlaskPythonMethodCall extends FlaskPythonExpression {
   public FlaskPythonExpression object;
   public String methodName;
-  public List<FlaskPythonExpression> arguments;
+  public List<FlaskPythonArgument> arguments;
 
-  public FlaskPythonMethodCall(FlaskPythonExpression object, String methodName, List<FlaskPythonExpression> arguments, int line) {
+  public FlaskPythonMethodCall(FlaskPythonExpression object, String methodName, List<FlaskPythonArgument> arguments, int line) {
     super(line);
     this.object = object;
     this.methodName = methodName;

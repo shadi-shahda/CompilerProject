@@ -169,7 +169,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     public FlaskPythonMethodCall visitMethodCallExpr(FlaskPythonParser.MethodCallExprContext ctx) {
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
         String methodName = ctx.ID().getText();
-        List<FlaskPythonExpression> args = getArguments(ctx.argList());
+        List<FlaskPythonArgument> args = getArguments(ctx.argList());
 
         return new FlaskPythonMethodCall(object, methodName, args, ctx.getStart().getLine());
     }
@@ -190,8 +190,26 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
+    public FlaskPythonASTNode visitGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx) {
+        int line = ctx.getStart().getLine();
+        List<String> variableNames = new ArrayList<>();
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            variableNames.add(ctx.ID(i).getText());
+        }
+        return new FlaskPythonGlobalStatement(variableNames, line);
+    }
+
+    @Override
+    public FlaskPythonASTNode visitBreakStmt(FlaskPythonParser.BreakStmtContext ctx) {
+        int line = ctx.getStart().getLine();
+        return new FlaskPythonBreakStatement(line);
+    }
+
+    @Override
     public FlaskPythonASTNode visitExpressionStmt(FlaskPythonParser.ExpressionStmtContext ctx) {
-        return visit(ctx.expression());
+        int line = ctx.getStart().getLine();
+        FlaskPythonExpression expression = (FlaskPythonExpression) visit(ctx.expression());
+        return new FlaskPythonExpressionStatement(expression, line);
     }
 
     @Override
@@ -206,7 +224,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     public FlaskPythonFunctionCall visitFunctionCallExpr(FlaskPythonParser.FunctionCallExprContext ctx) {
         int line = ctx.getStart().getLine();
         String functionName = ctx.ID().getText();
-        List<FlaskPythonExpression> arguments = getArguments(ctx.argList());
+        List<FlaskPythonArgument> arguments = getArguments(ctx.argList());
         return new FlaskPythonFunctionCall(functionName, arguments, false, line);
     }
 
@@ -230,7 +248,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     public FlaskPythonFunctionCall visitFlaskCallExpr(FlaskPythonParser.FlaskCallExprContext ctx) {
         int line = ctx.getStart().getLine();
         String functionName = ctx.flaskFunc().getText();
-        List<FlaskPythonExpression> arguments = new ArrayList<>();
+        List<FlaskPythonArgument> arguments = new ArrayList<>();
         if (ctx.argList() != null) {
             arguments = getArguments(ctx.argList());
         }
@@ -243,7 +261,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
         Map<FlaskPythonExpression, FlaskPythonExpression> entries = new HashMap<>();
         for (var entry : ctx.dictionary().dictEntry()) {
             FlaskPythonExpression key = (FlaskPythonExpression) visit(entry.expression(0));
-            
+
             FlaskPythonExpression value = (FlaskPythonExpression) visit(entry.expression(1));
             entries.put(key, value);
         }
@@ -259,16 +277,39 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
-    public FlaskPythonListExpression visitListExpr(FlaskPythonParser.ListExprContext ctx) {
+    public FlaskPythonExpression visitListExpr(FlaskPythonParser.ListExprContext ctx) {
         int line = ctx.getStart().getLine();
+        if (ctx.list().listComp() != null) {
+            FlaskPythonParser.ListCompContext listCompCtx = ctx.list().listComp();
+
+            FlaskPythonExpression elementExpression =
+                    (FlaskPythonExpression) visit(listCompCtx.expression(0));
+
+            String loopVariable =
+                    listCompCtx.ID().getText();
+
+            FlaskPythonExpression iterableExpression =
+                    (FlaskPythonExpression) visit(listCompCtx.expression(1));
+
+            FlaskPythonExpression conditionExpression = null;
+
+            if (listCompCtx.expression().size() > 2) {
+                conditionExpression =
+                        (FlaskPythonExpression) visit(listCompCtx.expression(2));
+            }
+
+            return new FlaskPythonListComprehensionExpression(elementExpression, loopVariable,
+                    iterableExpression, conditionExpression, line);
+        }
+
         List<FlaskPythonExpression> elements = new ArrayList<>();
+
         if (ctx.list().elements() != null) {
             for (var exprCtx : ctx.list().elements().expression()) {
                 elements.add((FlaskPythonExpression) visit(exprCtx));
             }
-        } else if (ctx.list().listComp() != null) {
-            elements.add(new FlaskPythonStringLiteral("List_Comprehension_Structure", line));
         }
+
         return new FlaskPythonListExpression(elements, line);
     }
 
@@ -303,11 +344,6 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
-    public FlaskPythonASTNode visitList(FlaskPythonParser.ListContext ctx) {
-        return super.visitList(ctx);
-    }
-
-    @Override
     public FlaskPythonASTNode visitElements(FlaskPythonParser.ElementsContext ctx) {
         return super.visitElements(ctx);
     }
@@ -338,13 +374,30 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
         return stats;
     }
 
-    private List<FlaskPythonExpression> getArguments(FlaskPythonParser.ArgListContext ctx) {
-        List<FlaskPythonExpression> args = new ArrayList<>();
-        if (ctx != null) {
-            for (var arg : ctx.argument()) {
-                args.add((FlaskPythonExpression) visit(arg.expression()));
-            }
+    private List<FlaskPythonArgument> getArguments(FlaskPythonParser.ArgListContext ctx) {
+        List<FlaskPythonArgument> args = new ArrayList<>();
+
+        if (ctx == null) {
+            return args;
         }
+
+        for (FlaskPythonParser.ArgumentContext argCtx : ctx.argument()) {
+            String keywordName = null;
+
+            if (argCtx.keyword != null) {
+                keywordName = argCtx.keyword.getText();
+            }
+
+            FlaskPythonExpression value =
+                    (FlaskPythonExpression) visit(argCtx.value);
+
+            args.add(new FlaskPythonArgument(
+                    keywordName,
+                    value,
+                    argCtx.getStart().getLine()
+            ));
+        }
+
         return args;
     }
 }

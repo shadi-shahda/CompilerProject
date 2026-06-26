@@ -16,6 +16,9 @@ REDIRECT: 'redirect';
 URL_FOR: 'url_for';
 METHODS: 'methods';
 PRINT: 'print';
+GLOBAL: 'global';
+BREAK: 'break';
+CONTINUE: 'continue';
 
 LBRACE: '{';
 RBRACE: '}';

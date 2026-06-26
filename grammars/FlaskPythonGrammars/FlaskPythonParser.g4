@@ -37,10 +37,17 @@ statement:
 	| forStmt
 	| returnStmt
 	| assignment
+	| globalStmt
 	| expressionStmt
-	| printStmt;
+	| printStmt
+	| breakStmt
+	| continueStmt;
 
 printStmt: PRINT LPAREN expression RPAREN;
+
+breakStmt: BREAK;
+
+continueStmt: CONTINUE;
 
 ifStmt: IF condition COLON block (ELSE COLON block)?;
 
@@ -54,6 +61,8 @@ forStmt: FOR ID IN ID COLON block;
 returnStmt: RETURN expression;
 
 assignment: ID ASSIGN expression;
+
+globalStmt: GLOBAL ID (COMMA ID)*;
 
 expressionStmt: expression;
 
@@ -77,7 +86,9 @@ flaskFunc: RENDER_TEMPLATE | REDIRECT | URL_FOR | FLASK_CLASS;
 
 argList: argument (COMMA argument)*;
 
-argument: expression | ID ASSIGN expression;
+argument:
+	value=expression
+	| keyword=ID ASSIGN value=expression;
 
 list: LBRACKET (elements | listComp)? RBRACKET;
 

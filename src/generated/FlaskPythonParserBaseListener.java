@@ -161,6 +161,30 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBreakStmt(FlaskPythonParser.BreakStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBreakStmt(FlaskPythonParser.BreakStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterContinueStmt(FlaskPythonParser.ContinueStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitContinueStmt(FlaskPythonParser.ContinueStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfStmt(FlaskPythonParser.IfStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -240,6 +264,18 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignment(FlaskPythonParser.AssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
