@@ -1,22 +1,4 @@
-import FlaskPythonAST.FLaskPythonForStatement;
-import FlaskPythonAST.FlaskPythonAssignmentStatement;
-import FlaskPythonAST.FlaskPythonBinaryExpression;
-import FlaskPythonAST.FlaskPythonBooleanLiteral;
-import FlaskPythonAST.FlaskPythonDictionaryExpression;
-import FlaskPythonAST.FlaskPythonFunctionCall;
-import FlaskPythonAST.FlaskPythonFunctionDeclaration;
-import FlaskPythonAST.FlaskPythonIdentifier;
-import FlaskPythonAST.FlaskPythonIfStatement;
-import FlaskPythonAST.FlaskPythonImportStatement;
-import FlaskPythonAST.FlaskPythonIntegerLiteral;
-import FlaskPythonAST.FlaskPythonListExpression;
-import FlaskPythonAST.FlaskPythonMemberAccess;
-import FlaskPythonAST.FlaskPythonMethodCall;
-import FlaskPythonAST.FlaskPythonPrintStatement;
-import FlaskPythonAST.FlaskPythonProgram;
-import FlaskPythonAST.FlaskPythonReturnStatement;
-import FlaskPythonAST.FlaskPythonStatement;
-import FlaskPythonAST.FlaskPythonStringLiteral;
+import FlaskPythonAST.*;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
@@ -93,6 +75,21 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     return line("Boolean: " + lit.value, lit.getLineNumber());
   }
 
+  @Override
+  public String visit(FlaskPythonExpressionStatement stmt) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("ExpressionStatement", stmt.getLineNumber()));
+
+    if (stmt.expression != null) {
+      indentLevel++;
+      sb.append(stmt.expression.accept(this));
+      indentLevel--;
+    }
+
+    return sb.toString();
+  }
+
   // ================= ASSIGNMENT =================
   @Override
   public String visit(FlaskPythonAssignmentStatement stmt) {
@@ -104,6 +101,85 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     sb.append(line("Identifier: " + stmt.variableName, stmt.getLineNumber()));
     sb.append(stmt.expression.accept(this));
     indentLevel--;
+
+    return sb.toString();
+  }
+
+  // ================= FUNCTION CALL =================
+
+
+  @Override
+  public String visit(FlaskPythonGlobalStatement globalStatement) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(line("GlobalStatement", globalStatement.getLineNumber()));
+    for (int i = 0; i < globalStatement.variableNames.size(); i++){
+      indentLevel++;
+      sb.append(line(globalStatement.variableNames.get(i), globalStatement.getLineNumber()));
+      indentLevel--;
+    }
+    return sb.toString();
+  }
+
+  @Override
+  public String visit(FlaskPythonBreakStatement breakStatement) {
+    return line("BreakStatement", breakStatement.getLineNumber());
+  }
+
+  @Override
+  public String visit(FlaskPythonListComprehensionExpression expression) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(line("ListComprehensionExpression", expression.getLineNumber()));
+
+    indentLevel++;
+    sb.append(line("Element:", expression.getLineNumber()));
+    indentLevel++;
+
+    if (expression.elementExpression != null) {
+      sb.append(expression.elementExpression.accept(this));
+    }
+
+    indentLevel--;
+    sb.append(line("LoopVariable: " + expression.loopVariable, expression.getLineNumber()));
+
+    sb.append(line("Iterable:", expression.getLineNumber()));
+    indentLevel++;
+
+    if (expression.iterableExpression != null) {
+      sb.append(expression.iterableExpression.accept(this));
+    }
+
+    indentLevel--;
+
+    if (expression.conditionExpression != null) {
+      sb.append(line("Condition:", expression.getLineNumber()));
+      indentLevel++;
+
+      sb.append(expression.conditionExpression.accept(this));
+
+      indentLevel--;
+    }
+
+    indentLevel--;
+
+    return sb.toString();
+  }
+
+  @Override
+  public String visit(FlaskPythonArgument argument) {
+    StringBuilder sb = new StringBuilder();
+
+    if (argument.isKeywordArgument()) {
+      sb.append(line("Argument: " + argument.keywordName, argument.getLineNumber()));
+    } else {
+      sb.append(line("Argument", argument.getLineNumber()));
+    }
+
+    if (argument.value != null) {
+      indentLevel++;
+      sb.append(argument.value.accept(this));
+      indentLevel--;
+    }
 
     return sb.toString();
   }

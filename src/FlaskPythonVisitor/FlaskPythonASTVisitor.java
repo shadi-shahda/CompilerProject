@@ -23,4 +23,9 @@ public interface FlaskPythonASTVisitor<T> {
     T visit(FlaskPythonMemberAccess memberAccess);
     T visit(FlaskPythonMethodCall methCall);
     T visit(FlaskPythonBooleanLiteral booleanLiteral);
+    T visit(FlaskPythonExpressionStatement expressionStatement);
+    T visit(FlaskPythonGlobalStatement globalStatement);
+    T visit(FlaskPythonBreakStatement breakStatement);
+    T visit(FlaskPythonListComprehensionExpression expression);
+    T visit(FlaskPythonArgument argument);
 }

@@ -128,6 +128,26 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitPrintStmt(FlaskPythonParser.PrintStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#breakStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreakStmt(FlaskPythonParser.BreakStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#breakStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreakStmt(FlaskPythonParser.BreakStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#continueStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterContinueStmt(FlaskPythonParser.ContinueStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#continueStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitContinueStmt(FlaskPythonParser.ContinueStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#ifStmt}.
 	 * @param ctx the parse tree
 	 */
@@ -203,6 +223,16 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignment(FlaskPythonParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#globalStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#globalStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitGlobalStmt(FlaskPythonParser.GlobalStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#expressionStmt}.
 	 * @param ctx the parse tree

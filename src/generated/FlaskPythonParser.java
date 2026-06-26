@@ -19,25 +19,27 @@ public class FlaskPythonParser extends Parser {
 	public static final int
 		DEF=1, RETURN=2, IF=3, ELSE=4, FOR=5, IN=6, FROM=7, IMPORT=8, FLASK_CLASS=9, 
 		ROUTE=10, RENDER_TEMPLATE=11, REDIRECT=12, URL_FOR=13, METHODS=14, PRINT=15, 
-		LBRACE=16, RBRACE=17, LPAREN=18, RPAREN=19, LBRACKET=20, RBRACKET=21, 
-		COLON=22, COMMA=23, DOT=24, AT=25, ASSIGN=26, EQUALS=27, NOT_EQUALS=28, 
-		PLUS=29, MINUS=30, MUL=31, DIV=32, BLOCK_END=33, ID=34, INT=35, STRING=36, 
-		BOOLEAN=37, COMMENT=38, WS=39;
+		GLOBAL=16, BREAK=17, CONTINUE=18, LBRACE=19, RBRACE=20, LPAREN=21, RPAREN=22, 
+		LBRACKET=23, RBRACKET=24, COLON=25, COMMA=26, DOT=27, AT=28, ASSIGN=29, 
+		EQUALS=30, NOT_EQUALS=31, PLUS=32, MINUS=33, MUL=34, DIV=35, BLOCK_END=36, 
+		ID=37, INT=38, STRING=39, BOOLEAN=40, COMMENT=41, WS=42;
 	public static final int
 		RULE_program = 0, RULE_line = 1, RULE_importStmt = 2, RULE_importList = 3, 
 		RULE_importItem = 4, RULE_functionDecl = 5, RULE_routeDecorator = 6, RULE_methodsParam = 7, 
 		RULE_paramList = 8, RULE_block = 9, RULE_statement = 10, RULE_printStmt = 11, 
-		RULE_ifStmt = 12, RULE_condition = 13, RULE_forStmt = 14, RULE_returnStmt = 15, 
-		RULE_assignment = 16, RULE_expressionStmt = 17, RULE_expression = 18, 
-		RULE_flaskFunc = 19, RULE_argList = 20, RULE_argument = 21, RULE_list = 22, 
-		RULE_elements = 23, RULE_listComp = 24, RULE_dictionary = 25, RULE_dictEntry = 26;
+		RULE_breakStmt = 12, RULE_continueStmt = 13, RULE_ifStmt = 14, RULE_condition = 15, 
+		RULE_forStmt = 16, RULE_returnStmt = 17, RULE_assignment = 18, RULE_globalStmt = 19, 
+		RULE_expressionStmt = 20, RULE_expression = 21, RULE_flaskFunc = 22, RULE_argList = 23, 
+		RULE_argument = 24, RULE_list = 25, RULE_elements = 26, RULE_listComp = 27, 
+		RULE_dictionary = 28, RULE_dictEntry = 29;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "line", "importStmt", "importList", "importItem", "functionDecl", 
 			"routeDecorator", "methodsParam", "paramList", "block", "statement", 
-			"printStmt", "ifStmt", "condition", "forStmt", "returnStmt", "assignment", 
-			"expressionStmt", "expression", "flaskFunc", "argList", "argument", "list", 
-			"elements", "listComp", "dictionary", "dictEntry"
+			"printStmt", "breakStmt", "continueStmt", "ifStmt", "condition", "forStmt", 
+			"returnStmt", "assignment", "globalStmt", "expressionStmt", "expression", 
+			"flaskFunc", "argList", "argument", "list", "elements", "listComp", "dictionary", 
+			"dictEntry"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -46,9 +48,9 @@ public class FlaskPythonParser extends Parser {
 		return new String[] {
 			null, "'def'", "'return'", "'if'", "'else'", "'for'", "'in'", "'from'", 
 			"'import'", "'Flask'", "'route'", "'render_template'", "'redirect'", 
-			"'url_for'", "'methods'", "'print'", "'{'", "'}'", "'('", "')'", "'['", 
-			"']'", "':'", "','", "'.'", "'@'", "'='", "'=='", "'!='", "'+'", "'-'", 
-			"'*'", "'/'"
+			"'url_for'", "'methods'", "'print'", "'global'", "'break'", "'continue'", 
+			"'{'", "'}'", "'('", "')'", "'['", "']'", "':'", "','", "'.'", "'@'", 
+			"'='", "'=='", "'!='", "'+'", "'-'", "'*'", "'/'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -56,10 +58,10 @@ public class FlaskPythonParser extends Parser {
 		return new String[] {
 			null, "DEF", "RETURN", "IF", "ELSE", "FOR", "IN", "FROM", "IMPORT", "FLASK_CLASS", 
 			"ROUTE", "RENDER_TEMPLATE", "REDIRECT", "URL_FOR", "METHODS", "PRINT", 
-			"LBRACE", "RBRACE", "LPAREN", "RPAREN", "LBRACKET", "RBRACKET", "COLON", 
-			"COMMA", "DOT", "AT", "ASSIGN", "EQUALS", "NOT_EQUALS", "PLUS", "MINUS", 
-			"MUL", "DIV", "BLOCK_END", "ID", "INT", "STRING", "BOOLEAN", "COMMENT", 
-			"WS"
+			"GLOBAL", "BREAK", "CONTINUE", "LBRACE", "RBRACE", "LPAREN", "RPAREN", 
+			"LBRACKET", "RBRACKET", "COLON", "COMMA", "DOT", "AT", "ASSIGN", "EQUALS", 
+			"NOT_EQUALS", "PLUS", "MINUS", "MUL", "DIV", "BLOCK_END", "ID", "INT", 
+			"STRING", "BOOLEAN", "COMMENT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -148,21 +150,21 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(57);
+			setState(63);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 257732754094L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2061862156974L) != 0)) {
 				{
 				{
-				setState(54);
+				setState(60);
 				line();
 				}
 				}
-				setState(59);
+				setState(65);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(60);
+			setState(66);
 			match(EOF);
 			}
 		}
@@ -214,34 +216,34 @@ public class FlaskPythonParser extends Parser {
 		LineContext _localctx = new LineContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_line);
 		try {
-			setState(66);
+			setState(72);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(62);
+				setState(68);
 				importStmt();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(63);
+				setState(69);
 				assignment();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(64);
+				setState(70);
 				functionDecl();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(65);
+				setState(71);
 				statement();
 				}
 				break;
@@ -291,13 +293,13 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(74);
 			match(FROM);
-			setState(69);
+			setState(75);
 			match(ID);
-			setState(70);
+			setState(76);
 			match(IMPORT);
-			setState(71);
+			setState(77);
 			importList();
 			}
 		}
@@ -350,21 +352,21 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(73);
+			setState(79);
 			importItem();
-			setState(78);
+			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(74);
+				setState(80);
 				match(COMMA);
-				setState(75);
+				setState(81);
 				importItem();
 				}
 				}
-				setState(80);
+				setState(86);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -414,9 +416,9 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
+			setState(87);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 17179884032L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 137438968320L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -479,37 +481,37 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84);
+			setState(90);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==AT) {
 				{
-				setState(83);
+				setState(89);
 				routeDecorator();
 				}
 			}
 
-			setState(86);
+			setState(92);
 			match(DEF);
-			setState(87);
+			setState(93);
 			match(ID);
-			setState(88);
+			setState(94);
 			match(LPAREN);
-			setState(90);
+			setState(96);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ID) {
 				{
-				setState(89);
+				setState(95);
 				paramList();
 				}
 			}
 
-			setState(92);
+			setState(98);
 			match(RPAREN);
-			setState(93);
+			setState(99);
 			match(COLON);
-			setState(94);
+			setState(100);
 			block();
 			}
 		}
@@ -563,31 +565,31 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(96);
+			setState(102);
 			match(AT);
-			setState(97);
+			setState(103);
 			match(ID);
-			setState(98);
-			match(DOT);
-			setState(99);
-			match(ROUTE);
-			setState(100);
-			match(LPAREN);
-			setState(101);
-			match(STRING);
 			setState(104);
+			match(DOT);
+			setState(105);
+			match(ROUTE);
+			setState(106);
+			match(LPAREN);
+			setState(107);
+			match(STRING);
+			setState(110);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(102);
+				setState(108);
 				match(COMMA);
-				setState(103);
+				setState(109);
 				methodsParam();
 				}
 			}
 
-			setState(106);
+			setState(112);
 			match(RPAREN);
 			}
 		}
@@ -642,39 +644,39 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
+			setState(114);
 			match(METHODS);
-			setState(109);
+			setState(115);
 			match(ASSIGN);
-			setState(110);
+			setState(116);
 			match(LBRACKET);
-			setState(119);
+			setState(125);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==STRING) {
 				{
-				setState(111);
+				setState(117);
 				match(STRING);
-				setState(116);
+				setState(122);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(112);
+					setState(118);
 					match(COMMA);
-					setState(113);
+					setState(119);
 					match(STRING);
 					}
 					}
-					setState(118);
+					setState(124);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(121);
+			setState(127);
 			match(RBRACKET);
 			}
 		}
@@ -725,21 +727,21 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(123);
+			setState(129);
 			match(ID);
-			setState(128);
+			setState(134);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(124);
+				setState(130);
 				match(COMMA);
-				setState(125);
+				setState(131);
 				match(ID);
 				}
 				}
-				setState(130);
+				setState(136);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -791,21 +793,21 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(134);
+			setState(140);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 257699199532L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2061593721388L) != 0)) {
 				{
 				{
-				setState(131);
+				setState(137);
 				statement();
 				}
 				}
-				setState(136);
+				setState(142);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(137);
+			setState(143);
 			match(BLOCK_END);
 			}
 		}
@@ -834,11 +836,20 @@ public class FlaskPythonParser extends Parser {
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
 		}
+		public GlobalStmtContext globalStmt() {
+			return getRuleContext(GlobalStmtContext.class,0);
+		}
 		public ExpressionStmtContext expressionStmt() {
 			return getRuleContext(ExpressionStmtContext.class,0);
 		}
 		public PrintStmtContext printStmt() {
 			return getRuleContext(PrintStmtContext.class,0);
+		}
+		public BreakStmtContext breakStmt() {
+			return getRuleContext(BreakStmtContext.class,0);
+		}
+		public ContinueStmtContext continueStmt() {
+			return getRuleContext(ContinueStmtContext.class,0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -863,49 +874,70 @@ public class FlaskPythonParser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_statement);
 		try {
-			setState(145);
+			setState(154);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(139);
+				setState(145);
 				ifStmt();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(140);
+				setState(146);
 				forStmt();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(141);
+				setState(147);
 				returnStmt();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(142);
+				setState(148);
 				assignment();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(143);
-				expressionStmt();
+				setState(149);
+				globalStmt();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(144);
+				setState(150);
+				expressionStmt();
+				}
+				break;
+			case 7:
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(151);
 				printStmt();
+				}
+				break;
+			case 8:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(152);
+				breakStmt();
+				}
+				break;
+			case 9:
+				enterOuterAlt(_localctx, 9);
+				{
+				setState(153);
+				continueStmt();
 				}
 				break;
 			}
@@ -954,14 +986,100 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147);
+			setState(156);
 			match(PRINT);
-			setState(148);
+			setState(157);
 			match(LPAREN);
-			setState(149);
+			setState(158);
 			expression(0);
-			setState(150);
+			setState(159);
 			match(RPAREN);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class BreakStmtContext extends ParserRuleContext {
+		public TerminalNode BREAK() { return getToken(FlaskPythonParser.BREAK, 0); }
+		public BreakStmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_breakStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).enterBreakStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).exitBreakStmt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FlaskPythonParserVisitor ) return ((FlaskPythonParserVisitor<? extends T>)visitor).visitBreakStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final BreakStmtContext breakStmt() throws RecognitionException {
+		BreakStmtContext _localctx = new BreakStmtContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_breakStmt);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(161);
+			match(BREAK);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ContinueStmtContext extends ParserRuleContext {
+		public TerminalNode CONTINUE() { return getToken(FlaskPythonParser.CONTINUE, 0); }
+		public ContinueStmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_continueStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).enterContinueStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).exitContinueStmt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FlaskPythonParserVisitor ) return ((FlaskPythonParserVisitor<? extends T>)visitor).visitContinueStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ContinueStmtContext continueStmt() throws RecognitionException {
+		ContinueStmtContext _localctx = new ContinueStmtContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_continueStmt);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(163);
+			match(CONTINUE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1013,29 +1131,29 @@ public class FlaskPythonParser extends Parser {
 
 	public final IfStmtContext ifStmt() throws RecognitionException {
 		IfStmtContext _localctx = new IfStmtContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_ifStmt);
+		enterRule(_localctx, 28, RULE_ifStmt);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(152);
+			setState(165);
 			match(IF);
-			setState(153);
+			setState(166);
 			condition();
-			setState(154);
+			setState(167);
 			match(COLON);
-			setState(155);
+			setState(168);
 			block();
-			setState(159);
+			setState(172);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ELSE) {
 				{
-				setState(156);
+				setState(169);
 				match(ELSE);
-				setState(157);
+				setState(170);
 				match(COLON);
-				setState(158);
+				setState(171);
 				block();
 				}
 			}
@@ -1129,19 +1247,19 @@ public class FlaskPythonParser extends Parser {
 
 	public final ConditionContext condition() throws RecognitionException {
 		ConditionContext _localctx = new ConditionContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_condition);
+		enterRule(_localctx, 30, RULE_condition);
 		int _la;
 		try {
-			setState(167);
+			setState(180);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				_localctx = new CompareCondContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(161);
+				setState(174);
 				expression(0);
-				setState(162);
+				setState(175);
 				_la = _input.LA(1);
 				if ( !(_la==EQUALS || _la==NOT_EQUALS) ) {
 				_errHandler.recoverInline(this);
@@ -1151,7 +1269,7 @@ public class FlaskPythonParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(163);
+				setState(176);
 				expression(0);
 				}
 				break;
@@ -1159,7 +1277,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new VarCondContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(165);
+				setState(178);
 				match(ID);
 				}
 				break;
@@ -1167,7 +1285,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new BoolCondContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(166);
+				setState(179);
 				match(BOOLEAN);
 				}
 				break;
@@ -1217,21 +1335,21 @@ public class FlaskPythonParser extends Parser {
 
 	public final ForStmtContext forStmt() throws RecognitionException {
 		ForStmtContext _localctx = new ForStmtContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_forStmt);
+		enterRule(_localctx, 32, RULE_forStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(169);
+			setState(182);
 			match(FOR);
-			setState(170);
+			setState(183);
 			match(ID);
-			setState(171);
+			setState(184);
 			match(IN);
-			setState(172);
+			setState(185);
 			match(ID);
-			setState(173);
+			setState(186);
 			match(COLON);
-			setState(174);
+			setState(187);
 			block();
 			}
 		}
@@ -1273,13 +1391,13 @@ public class FlaskPythonParser extends Parser {
 
 	public final ReturnStmtContext returnStmt() throws RecognitionException {
 		ReturnStmtContext _localctx = new ReturnStmtContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_returnStmt);
+		enterRule(_localctx, 34, RULE_returnStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(176);
+			setState(189);
 			match(RETURN);
-			setState(177);
+			setState(190);
 			expression(0);
 			}
 		}
@@ -1322,16 +1440,86 @@ public class FlaskPythonParser extends Parser {
 
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_assignment);
+		enterRule(_localctx, 36, RULE_assignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(179);
+			setState(192);
 			match(ID);
-			setState(180);
+			setState(193);
 			match(ASSIGN);
-			setState(181);
+			setState(194);
 			expression(0);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class GlobalStmtContext extends ParserRuleContext {
+		public TerminalNode GLOBAL() { return getToken(FlaskPythonParser.GLOBAL, 0); }
+		public List<TerminalNode> ID() { return getTokens(FlaskPythonParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(FlaskPythonParser.ID, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(FlaskPythonParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(FlaskPythonParser.COMMA, i);
+		}
+		public GlobalStmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_globalStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).enterGlobalStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FlaskPythonParserListener ) ((FlaskPythonParserListener)listener).exitGlobalStmt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FlaskPythonParserVisitor ) return ((FlaskPythonParserVisitor<? extends T>)visitor).visitGlobalStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final GlobalStmtContext globalStmt() throws RecognitionException {
+		GlobalStmtContext _localctx = new GlobalStmtContext(_ctx, getState());
+		enterRule(_localctx, 38, RULE_globalStmt);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(196);
+			match(GLOBAL);
+			setState(197);
+			match(ID);
+			setState(202);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==COMMA) {
+				{
+				{
+				setState(198);
+				match(COMMA);
+				setState(199);
+				match(ID);
+				}
+				}
+				setState(204);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1371,11 +1559,11 @@ public class FlaskPythonParser extends Parser {
 
 	public final ExpressionStmtContext expressionStmt() throws RecognitionException {
 		ExpressionStmtContext _localctx = new ExpressionStmtContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_expressionStmt);
+		enterRule(_localctx, 40, RULE_expressionStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(183);
+			setState(205);
 			expression(0);
 			}
 		}
@@ -1698,37 +1886,37 @@ public class FlaskPythonParser extends Parser {
 		int _parentState = getState();
 		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 36;
-		enterRecursionRule(_localctx, 36, RULE_expression, _p);
+		int _startState = 42;
+		enterRecursionRule(_localctx, 42, RULE_expression, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(205);
+			setState(227);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 			case 1:
 				{
 				_localctx = new FunctionCallExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(186);
+				setState(208);
 				match(ID);
-				setState(187);
+				setState(209);
 				match(LPAREN);
-				setState(189);
+				setState(211);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 257699166720L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2061593229824L) != 0)) {
 					{
-					setState(188);
+					setState(210);
 					argList();
 					}
 				}
 
-				setState(191);
+				setState(213);
 				match(RPAREN);
 				}
 				break;
@@ -1737,21 +1925,21 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new FlaskCallExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(192);
+				setState(214);
 				flaskFunc();
-				setState(193);
+				setState(215);
 				match(LPAREN);
-				setState(195);
+				setState(217);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 257699166720L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2061593229824L) != 0)) {
 					{
-					setState(194);
+					setState(216);
 					argList();
 					}
 				}
 
-				setState(197);
+				setState(219);
 				match(RPAREN);
 				}
 				break;
@@ -1760,7 +1948,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new ListExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(199);
+				setState(221);
 				list();
 				}
 				break;
@@ -1769,7 +1957,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new DictExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(200);
+				setState(222);
 				dictionary();
 				}
 				break;
@@ -1778,7 +1966,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new IdExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(201);
+				setState(223);
 				match(ID);
 				}
 				break;
@@ -1787,7 +1975,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new IntExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(202);
+				setState(224);
 				match(INT);
 				}
 				break;
@@ -1796,7 +1984,7 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new BoolExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(203);
+				setState(225);
 				match(BOOLEAN);
 				}
 				break;
@@ -1805,30 +1993,30 @@ public class FlaskPythonParser extends Parser {
 				_localctx = new StringExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(204);
+				setState(226);
 				match(STRING);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(234);
+			setState(256);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(232);
+					setState(254);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MathExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(207);
+						setState(229);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(208);
+						setState(230);
 						_la = _input.LA(1);
 						if ( !(_la==MUL || _la==DIV) ) {
 						_errHandler.recoverInline(this);
@@ -1838,7 +2026,7 @@ public class FlaskPythonParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(209);
+						setState(231);
 						expression(10);
 						}
 						break;
@@ -1846,9 +2034,9 @@ public class FlaskPythonParser extends Parser {
 						{
 						_localctx = new MathExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(210);
+						setState(232);
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(211);
+						setState(233);
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						_errHandler.recoverInline(this);
@@ -1858,7 +2046,7 @@ public class FlaskPythonParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(212);
+						setState(234);
 						expression(9);
 						}
 						break;
@@ -1866,9 +2054,9 @@ public class FlaskPythonParser extends Parser {
 						{
 						_localctx = new ComparisonExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(213);
+						setState(235);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(214);
+						setState(236);
 						_la = _input.LA(1);
 						if ( !(_la==EQUALS || _la==NOT_EQUALS) ) {
 						_errHandler.recoverInline(this);
@@ -1878,7 +2066,7 @@ public class FlaskPythonParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(215);
+						setState(237);
 						expression(8);
 						}
 						break;
@@ -1886,25 +2074,25 @@ public class FlaskPythonParser extends Parser {
 						{
 						_localctx = new MethodCallExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(216);
+						setState(238);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-						setState(217);
+						setState(239);
 						match(DOT);
-						setState(218);
+						setState(240);
 						match(ID);
-						setState(219);
+						setState(241);
 						match(LPAREN);
-						setState(221);
+						setState(243);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 257699166720L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2061593229824L) != 0)) {
 							{
-							setState(220);
+							setState(242);
 							argList();
 							}
 						}
 
-						setState(223);
+						setState(245);
 						match(RPAREN);
 						}
 						break;
@@ -1912,13 +2100,13 @@ public class FlaskPythonParser extends Parser {
 						{
 						_localctx = new ListAccessExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(224);
+						setState(246);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-						setState(225);
+						setState(247);
 						match(LBRACKET);
-						setState(226);
+						setState(248);
 						expression(0);
-						setState(227);
+						setState(249);
 						match(RBRACKET);
 						}
 						break;
@@ -1926,20 +2114,20 @@ public class FlaskPythonParser extends Parser {
 						{
 						_localctx = new MemberAccessExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(229);
+						setState(251);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
-						setState(230);
+						setState(252);
 						match(DOT);
-						setState(231);
+						setState(253);
 						match(ID);
 						}
 						break;
 					}
 					} 
 				}
-				setState(236);
+				setState(258);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
 			}
 			}
 		}
@@ -1981,12 +2169,12 @@ public class FlaskPythonParser extends Parser {
 
 	public final FlaskFuncContext flaskFunc() throws RecognitionException {
 		FlaskFuncContext _localctx = new FlaskFuncContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_flaskFunc);
+		enterRule(_localctx, 44, RULE_flaskFunc);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(237);
+			setState(259);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 14848L) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2042,26 +2230,26 @@ public class FlaskPythonParser extends Parser {
 
 	public final ArgListContext argList() throws RecognitionException {
 		ArgListContext _localctx = new ArgListContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_argList);
+		enterRule(_localctx, 46, RULE_argList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(239);
+			setState(261);
 			argument();
-			setState(244);
+			setState(266);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(240);
+				setState(262);
 				match(COMMA);
-				setState(241);
+				setState(263);
 				argument();
 				}
 				}
-				setState(246);
+				setState(268);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2080,11 +2268,13 @@ public class FlaskPythonParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArgumentContext extends ParserRuleContext {
+		public ExpressionContext value;
+		public Token keyword;
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode ID() { return getToken(FlaskPythonParser.ID, 0); }
 		public TerminalNode ASSIGN() { return getToken(FlaskPythonParser.ASSIGN, 0); }
+		public TerminalNode ID() { return getToken(FlaskPythonParser.ID, 0); }
 		public ArgumentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2106,27 +2296,27 @@ public class FlaskPythonParser extends Parser {
 
 	public final ArgumentContext argument() throws RecognitionException {
 		ArgumentContext _localctx = new ArgumentContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_argument);
+		enterRule(_localctx, 48, RULE_argument);
 		try {
-			setState(251);
+			setState(273);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(247);
-				expression(0);
+				setState(269);
+				((ArgumentContext)_localctx).value = expression(0);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(248);
-				match(ID);
-				setState(249);
+				setState(270);
+				((ArgumentContext)_localctx).keyword = match(ID);
+				setState(271);
 				match(ASSIGN);
-				setState(250);
-				expression(0);
+				setState(272);
+				((ArgumentContext)_localctx).value = expression(0);
 				}
 				break;
 			}
@@ -2173,29 +2363,29 @@ public class FlaskPythonParser extends Parser {
 
 	public final ListContext list() throws RecognitionException {
 		ListContext _localctx = new ListContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_list);
+		enterRule(_localctx, 50, RULE_list);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(253);
+			setState(275);
 			match(LBRACKET);
-			setState(256);
+			setState(278);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				{
-				setState(254);
+				setState(276);
 				elements();
 				}
 				break;
 			case 2:
 				{
-				setState(255);
+				setState(277);
 				listComp();
 				}
 				break;
 			}
-			setState(258);
+			setState(280);
 			match(RBRACKET);
 			}
 		}
@@ -2243,26 +2433,26 @@ public class FlaskPythonParser extends Parser {
 
 	public final ElementsContext elements() throws RecognitionException {
 		ElementsContext _localctx = new ElementsContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_elements);
+		enterRule(_localctx, 52, RULE_elements);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(260);
+			setState(282);
 			expression(0);
-			setState(265);
+			setState(287);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(261);
+				setState(283);
 				match(COMMA);
-				setState(262);
+				setState(284);
 				expression(0);
 				}
 				}
-				setState(267);
+				setState(289);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2312,29 +2502,29 @@ public class FlaskPythonParser extends Parser {
 
 	public final ListCompContext listComp() throws RecognitionException {
 		ListCompContext _localctx = new ListCompContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_listComp);
+		enterRule(_localctx, 54, RULE_listComp);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(268);
+			setState(290);
 			expression(0);
-			setState(269);
+			setState(291);
 			match(FOR);
-			setState(270);
+			setState(292);
 			match(ID);
-			setState(271);
+			setState(293);
 			match(IN);
-			setState(272);
+			setState(294);
 			expression(0);
-			setState(275);
+			setState(297);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
-				setState(273);
+				setState(295);
 				match(IF);
-				setState(274);
+				setState(296);
 				expression(0);
 				}
 			}
@@ -2387,32 +2577,32 @@ public class FlaskPythonParser extends Parser {
 
 	public final DictionaryContext dictionary() throws RecognitionException {
 		DictionaryContext _localctx = new DictionaryContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_dictionary);
+		enterRule(_localctx, 56, RULE_dictionary);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(277);
+			setState(299);
 			match(LBRACE);
-			setState(278);
+			setState(300);
 			dictEntry();
-			setState(283);
+			setState(305);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(279);
+				setState(301);
 				match(COMMA);
-				setState(280);
+				setState(302);
 				dictEntry();
 				}
 				}
-				setState(285);
+				setState(307);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(286);
+			setState(308);
 			match(RBRACE);
 			}
 		}
@@ -2457,15 +2647,15 @@ public class FlaskPythonParser extends Parser {
 
 	public final DictEntryContext dictEntry() throws RecognitionException {
 		DictEntryContext _localctx = new DictEntryContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_dictEntry);
+		enterRule(_localctx, 58, RULE_dictEntry);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(288);
+			setState(310);
 			expression(0);
-			setState(289);
+			setState(311);
 			match(COLON);
-			setState(290);
+			setState(312);
 			expression(0);
 			}
 		}
@@ -2482,7 +2672,7 @@ public class FlaskPythonParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 18:
+		case 21:
 			return expression_sempred((ExpressionContext)_localctx, predIndex);
 		}
 		return true;
@@ -2506,7 +2696,7 @@ public class FlaskPythonParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\'\u0125\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001*\u013b\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2514,184 +2704,200 @@ public class FlaskPythonParser extends Parser {
 		"\u0002\u0010\u0007\u0010\u0002\u0011\u0007\u0011\u0002\u0012\u0007\u0012"+
 		"\u0002\u0013\u0007\u0013\u0002\u0014\u0007\u0014\u0002\u0015\u0007\u0015"+
 		"\u0002\u0016\u0007\u0016\u0002\u0017\u0007\u0017\u0002\u0018\u0007\u0018"+
-		"\u0002\u0019\u0007\u0019\u0002\u001a\u0007\u001a\u0001\u0000\u0005\u0000"+
-		"8\b\u0000\n\u0000\f\u0000;\t\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001C\b\u0001\u0001\u0002"+
+		"\u0002\u0019\u0007\u0019\u0002\u001a\u0007\u001a\u0002\u001b\u0007\u001b"+
+		"\u0002\u001c\u0007\u001c\u0002\u001d\u0007\u001d\u0001\u0000\u0005\u0000"+
+		">\b\u0000\n\u0000\f\u0000A\t\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001I\b\u0001\u0001\u0002"+
 		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003"+
-		"\u0001\u0003\u0005\u0003M\b\u0003\n\u0003\f\u0003P\t\u0003\u0001\u0004"+
-		"\u0001\u0004\u0001\u0005\u0003\u0005U\b\u0005\u0001\u0005\u0001\u0005"+
-		"\u0001\u0005\u0001\u0005\u0003\u0005[\b\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0003\u0005\u0003S\b\u0003\n\u0003\f\u0003V\t\u0003\u0001\u0004"+
+		"\u0001\u0004\u0001\u0005\u0003\u0005[\b\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0005\u0001\u0005\u0003\u0005a\b\u0005\u0001\u0005\u0001\u0005"+
 		"\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
-		"\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006i\b\u0006"+
+		"\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006o\b\u0006"+
 		"\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007"+
-		"\u0001\u0007\u0001\u0007\u0005\u0007s\b\u0007\n\u0007\f\u0007v\t\u0007"+
-		"\u0003\u0007x\b\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b"+
-		"\u0005\b\u007f\b\b\n\b\f\b\u0082\t\b\u0001\t\u0005\t\u0085\b\t\n\t\f\t"+
-		"\u0088\t\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001"+
-		"\n\u0003\n\u0092\b\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001"+
-		"\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0003\f"+
-		"\u00a0\b\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0003\r\u00a8"+
-		"\b\r\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001"+
-		"\u000e\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u0010\u0001"+
-		"\u0010\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0003\u0012\u00be\b\u0012\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0003\u0012\u00c4\b\u0012\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001"+
-		"\u0012\u0003\u0012\u00ce\b\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0003\u0012\u00de"+
-		"\b\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001"+
-		"\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0005\u0012\u00e9\b\u0012\n"+
-		"\u0012\f\u0012\u00ec\t\u0012\u0001\u0013\u0001\u0013\u0001\u0014\u0001"+
-		"\u0014\u0001\u0014\u0005\u0014\u00f3\b\u0014\n\u0014\f\u0014\u00f6\t\u0014"+
-		"\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0003\u0015\u00fc\b\u0015"+
-		"\u0001\u0016\u0001\u0016\u0001\u0016\u0003\u0016\u0101\b\u0016\u0001\u0016"+
-		"\u0001\u0016\u0001\u0017\u0001\u0017\u0001\u0017\u0005\u0017\u0108\b\u0017"+
-		"\n\u0017\f\u0017\u010b\t\u0017\u0001\u0018\u0001\u0018\u0001\u0018\u0001"+
-		"\u0018\u0001\u0018\u0001\u0018\u0001\u0018\u0003\u0018\u0114\b\u0018\u0001"+
-		"\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0005\u0019\u011a\b\u0019\n"+
-		"\u0019\f\u0019\u011d\t\u0019\u0001\u0019\u0001\u0019\u0001\u001a\u0001"+
-		"\u001a\u0001\u001a\u0001\u001a\u0001\u001a\u0000\u0001$\u001b\u0000\u0002"+
+		"\u0001\u0007\u0001\u0007\u0005\u0007y\b\u0007\n\u0007\f\u0007|\t\u0007"+
+		"\u0003\u0007~\b\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b"+
+		"\u0005\b\u0085\b\b\n\b\f\b\u0088\t\b\u0001\t\u0005\t\u008b\b\t\n\t\f\t"+
+		"\u008e\t\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001"+
+		"\n\u0001\n\u0001\n\u0001\n\u0003\n\u009b\b\n\u0001\u000b\u0001\u000b\u0001"+
+		"\u000b\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\u000e"+
+		"\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e"+
+		"\u0003\u000e\u00ad\b\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f"+
+		"\u0001\u000f\u0001\u000f\u0003\u000f\u00b5\b\u000f\u0001\u0010\u0001\u0010"+
+		"\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0011"+
+		"\u0001\u0011\u0001\u0011\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012"+
+		"\u0001\u0013\u0001\u0013\u0001\u0013\u0001\u0013\u0005\u0013\u00c9\b\u0013"+
+		"\n\u0013\f\u0013\u00cc\t\u0013\u0001\u0014\u0001\u0014\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0003\u0015\u00d4\b\u0015\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0003\u0015\u00da\b\u0015\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001"+
+		"\u0015\u0003\u0015\u00e4\b\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0003\u0015\u00f4"+
+		"\b\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001"+
+		"\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0005\u0015\u00ff\b\u0015\n"+
+		"\u0015\f\u0015\u0102\t\u0015\u0001\u0016\u0001\u0016\u0001\u0017\u0001"+
+		"\u0017\u0001\u0017\u0005\u0017\u0109\b\u0017\n\u0017\f\u0017\u010c\t\u0017"+
+		"\u0001\u0018\u0001\u0018\u0001\u0018\u0001\u0018\u0003\u0018\u0112\b\u0018"+
+		"\u0001\u0019\u0001\u0019\u0001\u0019\u0003\u0019\u0117\b\u0019\u0001\u0019"+
+		"\u0001\u0019\u0001\u001a\u0001\u001a\u0001\u001a\u0005\u001a\u011e\b\u001a"+
+		"\n\u001a\f\u001a\u0121\t\u001a\u0001\u001b\u0001\u001b\u0001\u001b\u0001"+
+		"\u001b\u0001\u001b\u0001\u001b\u0001\u001b\u0003\u001b\u012a\b\u001b\u0001"+
+		"\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0005\u001c\u0130\b\u001c\n"+
+		"\u001c\f\u001c\u0133\t\u001c\u0001\u001c\u0001\u001c\u0001\u001d\u0001"+
+		"\u001d\u0001\u001d\u0001\u001d\u0001\u001d\u0000\u0001*\u001e\u0000\u0002"+
 		"\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e"+
-		" \"$&(*,.024\u0000\u0005\u0003\u0000\t\t\u000b\r\"\"\u0001\u0000\u001b"+
-		"\u001c\u0001\u0000\u001f \u0001\u0000\u001d\u001e\u0002\u0000\t\t\u000b"+
-		"\r\u0134\u00009\u0001\u0000\u0000\u0000\u0002B\u0001\u0000\u0000\u0000"+
-		"\u0004D\u0001\u0000\u0000\u0000\u0006I\u0001\u0000\u0000\u0000\bQ\u0001"+
-		"\u0000\u0000\u0000\nT\u0001\u0000\u0000\u0000\f`\u0001\u0000\u0000\u0000"+
-		"\u000el\u0001\u0000\u0000\u0000\u0010{\u0001\u0000\u0000\u0000\u0012\u0086"+
-		"\u0001\u0000\u0000\u0000\u0014\u0091\u0001\u0000\u0000\u0000\u0016\u0093"+
-		"\u0001\u0000\u0000\u0000\u0018\u0098\u0001\u0000\u0000\u0000\u001a\u00a7"+
-		"\u0001\u0000\u0000\u0000\u001c\u00a9\u0001\u0000\u0000\u0000\u001e\u00b0"+
-		"\u0001\u0000\u0000\u0000 \u00b3\u0001\u0000\u0000\u0000\"\u00b7\u0001"+
-		"\u0000\u0000\u0000$\u00cd\u0001\u0000\u0000\u0000&\u00ed\u0001\u0000\u0000"+
-		"\u0000(\u00ef\u0001\u0000\u0000\u0000*\u00fb\u0001\u0000\u0000\u0000,"+
-		"\u00fd\u0001\u0000\u0000\u0000.\u0104\u0001\u0000\u0000\u00000\u010c\u0001"+
-		"\u0000\u0000\u00002\u0115\u0001\u0000\u0000\u00004\u0120\u0001\u0000\u0000"+
-		"\u000068\u0003\u0002\u0001\u000076\u0001\u0000\u0000\u00008;\u0001\u0000"+
-		"\u0000\u000097\u0001\u0000\u0000\u00009:\u0001\u0000\u0000\u0000:<\u0001"+
-		"\u0000\u0000\u0000;9\u0001\u0000\u0000\u0000<=\u0005\u0000\u0000\u0001"+
-		"=\u0001\u0001\u0000\u0000\u0000>C\u0003\u0004\u0002\u0000?C\u0003 \u0010"+
-		"\u0000@C\u0003\n\u0005\u0000AC\u0003\u0014\n\u0000B>\u0001\u0000\u0000"+
-		"\u0000B?\u0001\u0000\u0000\u0000B@\u0001\u0000\u0000\u0000BA\u0001\u0000"+
-		"\u0000\u0000C\u0003\u0001\u0000\u0000\u0000DE\u0005\u0007\u0000\u0000"+
-		"EF\u0005\"\u0000\u0000FG\u0005\b\u0000\u0000GH\u0003\u0006\u0003\u0000"+
-		"H\u0005\u0001\u0000\u0000\u0000IN\u0003\b\u0004\u0000JK\u0005\u0017\u0000"+
-		"\u0000KM\u0003\b\u0004\u0000LJ\u0001\u0000\u0000\u0000MP\u0001\u0000\u0000"+
-		"\u0000NL\u0001\u0000\u0000\u0000NO\u0001\u0000\u0000\u0000O\u0007\u0001"+
-		"\u0000\u0000\u0000PN\u0001\u0000\u0000\u0000QR\u0007\u0000\u0000\u0000"+
-		"R\t\u0001\u0000\u0000\u0000SU\u0003\f\u0006\u0000TS\u0001\u0000\u0000"+
-		"\u0000TU\u0001\u0000\u0000\u0000UV\u0001\u0000\u0000\u0000VW\u0005\u0001"+
-		"\u0000\u0000WX\u0005\"\u0000\u0000XZ\u0005\u0012\u0000\u0000Y[\u0003\u0010"+
-		"\b\u0000ZY\u0001\u0000\u0000\u0000Z[\u0001\u0000\u0000\u0000[\\\u0001"+
-		"\u0000\u0000\u0000\\]\u0005\u0013\u0000\u0000]^\u0005\u0016\u0000\u0000"+
-		"^_\u0003\u0012\t\u0000_\u000b\u0001\u0000\u0000\u0000`a\u0005\u0019\u0000"+
-		"\u0000ab\u0005\"\u0000\u0000bc\u0005\u0018\u0000\u0000cd\u0005\n\u0000"+
-		"\u0000de\u0005\u0012\u0000\u0000eh\u0005$\u0000\u0000fg\u0005\u0017\u0000"+
-		"\u0000gi\u0003\u000e\u0007\u0000hf\u0001\u0000\u0000\u0000hi\u0001\u0000"+
-		"\u0000\u0000ij\u0001\u0000\u0000\u0000jk\u0005\u0013\u0000\u0000k\r\u0001"+
-		"\u0000\u0000\u0000lm\u0005\u000e\u0000\u0000mn\u0005\u001a\u0000\u0000"+
-		"nw\u0005\u0014\u0000\u0000ot\u0005$\u0000\u0000pq\u0005\u0017\u0000\u0000"+
-		"qs\u0005$\u0000\u0000rp\u0001\u0000\u0000\u0000sv\u0001\u0000\u0000\u0000"+
-		"tr\u0001\u0000\u0000\u0000tu\u0001\u0000\u0000\u0000ux\u0001\u0000\u0000"+
-		"\u0000vt\u0001\u0000\u0000\u0000wo\u0001\u0000\u0000\u0000wx\u0001\u0000"+
-		"\u0000\u0000xy\u0001\u0000\u0000\u0000yz\u0005\u0015\u0000\u0000z\u000f"+
-		"\u0001\u0000\u0000\u0000{\u0080\u0005\"\u0000\u0000|}\u0005\u0017\u0000"+
-		"\u0000}\u007f\u0005\"\u0000\u0000~|\u0001\u0000\u0000\u0000\u007f\u0082"+
-		"\u0001\u0000\u0000\u0000\u0080~\u0001\u0000\u0000\u0000\u0080\u0081\u0001"+
-		"\u0000\u0000\u0000\u0081\u0011\u0001\u0000\u0000\u0000\u0082\u0080\u0001"+
-		"\u0000\u0000\u0000\u0083\u0085\u0003\u0014\n\u0000\u0084\u0083\u0001\u0000"+
-		"\u0000\u0000\u0085\u0088\u0001\u0000\u0000\u0000\u0086\u0084\u0001\u0000"+
-		"\u0000\u0000\u0086\u0087\u0001\u0000\u0000\u0000\u0087\u0089\u0001\u0000"+
-		"\u0000\u0000\u0088\u0086\u0001\u0000\u0000\u0000\u0089\u008a\u0005!\u0000"+
-		"\u0000\u008a\u0013\u0001\u0000\u0000\u0000\u008b\u0092\u0003\u0018\f\u0000"+
-		"\u008c\u0092\u0003\u001c\u000e\u0000\u008d\u0092\u0003\u001e\u000f\u0000"+
-		"\u008e\u0092\u0003 \u0010\u0000\u008f\u0092\u0003\"\u0011\u0000\u0090"+
-		"\u0092\u0003\u0016\u000b\u0000\u0091\u008b\u0001\u0000\u0000\u0000\u0091"+
-		"\u008c\u0001\u0000\u0000\u0000\u0091\u008d\u0001\u0000\u0000\u0000\u0091"+
-		"\u008e\u0001\u0000\u0000\u0000\u0091\u008f\u0001\u0000\u0000\u0000\u0091"+
-		"\u0090\u0001\u0000\u0000\u0000\u0092\u0015\u0001\u0000\u0000\u0000\u0093"+
-		"\u0094\u0005\u000f\u0000\u0000\u0094\u0095\u0005\u0012\u0000\u0000\u0095"+
-		"\u0096\u0003$\u0012\u0000\u0096\u0097\u0005\u0013\u0000\u0000\u0097\u0017"+
-		"\u0001\u0000\u0000\u0000\u0098\u0099\u0005\u0003\u0000\u0000\u0099\u009a"+
-		"\u0003\u001a\r\u0000\u009a\u009b\u0005\u0016\u0000\u0000\u009b\u009f\u0003"+
-		"\u0012\t\u0000\u009c\u009d\u0005\u0004\u0000\u0000\u009d\u009e\u0005\u0016"+
-		"\u0000\u0000\u009e\u00a0\u0003\u0012\t\u0000\u009f\u009c\u0001\u0000\u0000"+
-		"\u0000\u009f\u00a0\u0001\u0000\u0000\u0000\u00a0\u0019\u0001\u0000\u0000"+
-		"\u0000\u00a1\u00a2\u0003$\u0012\u0000\u00a2\u00a3\u0007\u0001\u0000\u0000"+
-		"\u00a3\u00a4\u0003$\u0012\u0000\u00a4\u00a8\u0001\u0000\u0000\u0000\u00a5"+
-		"\u00a8\u0005\"\u0000\u0000\u00a6\u00a8\u0005%\u0000\u0000\u00a7\u00a1"+
-		"\u0001\u0000\u0000\u0000\u00a7\u00a5\u0001\u0000\u0000\u0000\u00a7\u00a6"+
-		"\u0001\u0000\u0000\u0000\u00a8\u001b\u0001\u0000\u0000\u0000\u00a9\u00aa"+
-		"\u0005\u0005\u0000\u0000\u00aa\u00ab\u0005\"\u0000\u0000\u00ab\u00ac\u0005"+
-		"\u0006\u0000\u0000\u00ac\u00ad\u0005\"\u0000\u0000\u00ad\u00ae\u0005\u0016"+
-		"\u0000\u0000\u00ae\u00af\u0003\u0012\t\u0000\u00af\u001d\u0001\u0000\u0000"+
-		"\u0000\u00b0\u00b1\u0005\u0002\u0000\u0000\u00b1\u00b2\u0003$\u0012\u0000"+
-		"\u00b2\u001f\u0001\u0000\u0000\u0000\u00b3\u00b4\u0005\"\u0000\u0000\u00b4"+
-		"\u00b5\u0005\u001a\u0000\u0000\u00b5\u00b6\u0003$\u0012\u0000\u00b6!\u0001"+
-		"\u0000\u0000\u0000\u00b7\u00b8\u0003$\u0012\u0000\u00b8#\u0001\u0000\u0000"+
-		"\u0000\u00b9\u00ba\u0006\u0012\uffff\uffff\u0000\u00ba\u00bb\u0005\"\u0000"+
-		"\u0000\u00bb\u00bd\u0005\u0012\u0000\u0000\u00bc\u00be\u0003(\u0014\u0000"+
-		"\u00bd\u00bc\u0001\u0000\u0000\u0000\u00bd\u00be\u0001\u0000\u0000\u0000"+
-		"\u00be\u00bf\u0001\u0000\u0000\u0000\u00bf\u00ce\u0005\u0013\u0000\u0000"+
-		"\u00c0\u00c1\u0003&\u0013\u0000\u00c1\u00c3\u0005\u0012\u0000\u0000\u00c2"+
-		"\u00c4\u0003(\u0014\u0000\u00c3\u00c2\u0001\u0000\u0000\u0000\u00c3\u00c4"+
-		"\u0001\u0000\u0000\u0000\u00c4\u00c5\u0001\u0000\u0000\u0000\u00c5\u00c6"+
-		"\u0005\u0013\u0000\u0000\u00c6\u00ce\u0001\u0000\u0000\u0000\u00c7\u00ce"+
-		"\u0003,\u0016\u0000\u00c8\u00ce\u00032\u0019\u0000\u00c9\u00ce\u0005\""+
-		"\u0000\u0000\u00ca\u00ce\u0005#\u0000\u0000\u00cb\u00ce\u0005%\u0000\u0000"+
-		"\u00cc\u00ce\u0005$\u0000\u0000\u00cd\u00b9\u0001\u0000\u0000\u0000\u00cd"+
-		"\u00c0\u0001\u0000\u0000\u0000\u00cd\u00c7\u0001\u0000\u0000\u0000\u00cd"+
-		"\u00c8\u0001\u0000\u0000\u0000\u00cd\u00c9\u0001\u0000\u0000\u0000\u00cd"+
-		"\u00ca\u0001\u0000\u0000\u0000\u00cd\u00cb\u0001\u0000\u0000\u0000\u00cd"+
-		"\u00cc\u0001\u0000\u0000\u0000\u00ce\u00ea\u0001\u0000\u0000\u0000\u00cf"+
-		"\u00d0\n\t\u0000\u0000\u00d0\u00d1\u0007\u0002\u0000\u0000\u00d1\u00e9"+
-		"\u0003$\u0012\n\u00d2\u00d3\n\b\u0000\u0000\u00d3\u00d4\u0007\u0003\u0000"+
-		"\u0000\u00d4\u00e9\u0003$\u0012\t\u00d5\u00d6\n\u0007\u0000\u0000\u00d6"+
-		"\u00d7\u0007\u0001\u0000\u0000\u00d7\u00e9\u0003$\u0012\b\u00d8\u00d9"+
-		"\n\u000e\u0000\u0000\u00d9\u00da\u0005\u0018\u0000\u0000\u00da\u00db\u0005"+
-		"\"\u0000\u0000\u00db\u00dd\u0005\u0012\u0000\u0000\u00dc\u00de\u0003("+
-		"\u0014\u0000\u00dd\u00dc\u0001\u0000\u0000\u0000\u00dd\u00de\u0001\u0000"+
-		"\u0000\u0000\u00de\u00df\u0001\u0000\u0000\u0000\u00df\u00e9\u0005\u0013"+
-		"\u0000\u0000\u00e0\u00e1\n\r\u0000\u0000\u00e1\u00e2\u0005\u0014\u0000"+
-		"\u0000\u00e2\u00e3\u0003$\u0012\u0000\u00e3\u00e4\u0005\u0015\u0000\u0000"+
-		"\u00e4\u00e9\u0001\u0000\u0000\u0000\u00e5\u00e6\n\f\u0000\u0000\u00e6"+
-		"\u00e7\u0005\u0018\u0000\u0000\u00e7\u00e9\u0005\"\u0000\u0000\u00e8\u00cf"+
-		"\u0001\u0000\u0000\u0000\u00e8\u00d2\u0001\u0000\u0000\u0000\u00e8\u00d5"+
-		"\u0001\u0000\u0000\u0000\u00e8\u00d8\u0001\u0000\u0000\u0000\u00e8\u00e0"+
-		"\u0001\u0000\u0000\u0000\u00e8\u00e5\u0001\u0000\u0000\u0000\u00e9\u00ec"+
-		"\u0001\u0000\u0000\u0000\u00ea\u00e8\u0001\u0000\u0000\u0000\u00ea\u00eb"+
-		"\u0001\u0000\u0000\u0000\u00eb%\u0001\u0000\u0000\u0000\u00ec\u00ea\u0001"+
-		"\u0000\u0000\u0000\u00ed\u00ee\u0007\u0004\u0000\u0000\u00ee\'\u0001\u0000"+
-		"\u0000\u0000\u00ef\u00f4\u0003*\u0015\u0000\u00f0\u00f1\u0005\u0017\u0000"+
-		"\u0000\u00f1\u00f3\u0003*\u0015\u0000\u00f2\u00f0\u0001\u0000\u0000\u0000"+
-		"\u00f3\u00f6\u0001\u0000\u0000\u0000\u00f4\u00f2\u0001\u0000\u0000\u0000"+
-		"\u00f4\u00f5\u0001\u0000\u0000\u0000\u00f5)\u0001\u0000\u0000\u0000\u00f6"+
-		"\u00f4\u0001\u0000\u0000\u0000\u00f7\u00fc\u0003$\u0012\u0000\u00f8\u00f9"+
-		"\u0005\"\u0000\u0000\u00f9\u00fa\u0005\u001a\u0000\u0000\u00fa\u00fc\u0003"+
-		"$\u0012\u0000\u00fb\u00f7\u0001\u0000\u0000\u0000\u00fb\u00f8\u0001\u0000"+
-		"\u0000\u0000\u00fc+\u0001\u0000\u0000\u0000\u00fd\u0100\u0005\u0014\u0000"+
-		"\u0000\u00fe\u0101\u0003.\u0017\u0000\u00ff\u0101\u00030\u0018\u0000\u0100"+
-		"\u00fe\u0001\u0000\u0000\u0000\u0100\u00ff\u0001\u0000\u0000\u0000\u0100"+
-		"\u0101\u0001\u0000\u0000\u0000\u0101\u0102\u0001\u0000\u0000\u0000\u0102"+
-		"\u0103\u0005\u0015\u0000\u0000\u0103-\u0001\u0000\u0000\u0000\u0104\u0109"+
-		"\u0003$\u0012\u0000\u0105\u0106\u0005\u0017\u0000\u0000\u0106\u0108\u0003"+
-		"$\u0012\u0000\u0107\u0105\u0001\u0000\u0000\u0000\u0108\u010b\u0001\u0000"+
-		"\u0000\u0000\u0109\u0107\u0001\u0000\u0000\u0000\u0109\u010a\u0001\u0000"+
-		"\u0000\u0000\u010a/\u0001\u0000\u0000\u0000\u010b\u0109\u0001\u0000\u0000"+
-		"\u0000\u010c\u010d\u0003$\u0012\u0000\u010d\u010e\u0005\u0005\u0000\u0000"+
-		"\u010e\u010f\u0005\"\u0000\u0000\u010f\u0110\u0005\u0006\u0000\u0000\u0110"+
-		"\u0113\u0003$\u0012\u0000\u0111\u0112\u0005\u0003\u0000\u0000\u0112\u0114"+
-		"\u0003$\u0012\u0000\u0113\u0111\u0001\u0000\u0000\u0000\u0113\u0114\u0001"+
-		"\u0000\u0000\u0000\u01141\u0001\u0000\u0000\u0000\u0115\u0116\u0005\u0010"+
-		"\u0000\u0000\u0116\u011b\u00034\u001a\u0000\u0117\u0118\u0005\u0017\u0000"+
-		"\u0000\u0118\u011a\u00034\u001a\u0000\u0119\u0117\u0001\u0000\u0000\u0000"+
-		"\u011a\u011d\u0001\u0000\u0000\u0000\u011b\u0119\u0001\u0000\u0000\u0000"+
-		"\u011b\u011c\u0001\u0000\u0000\u0000\u011c\u011e\u0001\u0000\u0000\u0000"+
-		"\u011d\u011b\u0001\u0000\u0000\u0000\u011e\u011f\u0005\u0011\u0000\u0000"+
-		"\u011f3\u0001\u0000\u0000\u0000\u0120\u0121\u0003$\u0012\u0000\u0121\u0122"+
-		"\u0005\u0016\u0000\u0000\u0122\u0123\u0003$\u0012\u0000\u01235\u0001\u0000"+
-		"\u0000\u0000\u00199BNTZhtw\u0080\u0086\u0091\u009f\u00a7\u00bd\u00c3\u00cd"+
-		"\u00dd\u00e8\u00ea\u00f4\u00fb\u0100\u0109\u0113\u011b";
+		" \"$&(*,.02468:\u0000\u0005\u0003\u0000\t\t\u000b\r%%\u0001\u0000\u001e"+
+		"\u001f\u0001\u0000\"#\u0001\u0000 !\u0002\u0000\t\t\u000b\r\u014b\u0000"+
+		"?\u0001\u0000\u0000\u0000\u0002H\u0001\u0000\u0000\u0000\u0004J\u0001"+
+		"\u0000\u0000\u0000\u0006O\u0001\u0000\u0000\u0000\bW\u0001\u0000\u0000"+
+		"\u0000\nZ\u0001\u0000\u0000\u0000\ff\u0001\u0000\u0000\u0000\u000er\u0001"+
+		"\u0000\u0000\u0000\u0010\u0081\u0001\u0000\u0000\u0000\u0012\u008c\u0001"+
+		"\u0000\u0000\u0000\u0014\u009a\u0001\u0000\u0000\u0000\u0016\u009c\u0001"+
+		"\u0000\u0000\u0000\u0018\u00a1\u0001\u0000\u0000\u0000\u001a\u00a3\u0001"+
+		"\u0000\u0000\u0000\u001c\u00a5\u0001\u0000\u0000\u0000\u001e\u00b4\u0001"+
+		"\u0000\u0000\u0000 \u00b6\u0001\u0000\u0000\u0000\"\u00bd\u0001\u0000"+
+		"\u0000\u0000$\u00c0\u0001\u0000\u0000\u0000&\u00c4\u0001\u0000\u0000\u0000"+
+		"(\u00cd\u0001\u0000\u0000\u0000*\u00e3\u0001\u0000\u0000\u0000,\u0103"+
+		"\u0001\u0000\u0000\u0000.\u0105\u0001\u0000\u0000\u00000\u0111\u0001\u0000"+
+		"\u0000\u00002\u0113\u0001\u0000\u0000\u00004\u011a\u0001\u0000\u0000\u0000"+
+		"6\u0122\u0001\u0000\u0000\u00008\u012b\u0001\u0000\u0000\u0000:\u0136"+
+		"\u0001\u0000\u0000\u0000<>\u0003\u0002\u0001\u0000=<\u0001\u0000\u0000"+
+		"\u0000>A\u0001\u0000\u0000\u0000?=\u0001\u0000\u0000\u0000?@\u0001\u0000"+
+		"\u0000\u0000@B\u0001\u0000\u0000\u0000A?\u0001\u0000\u0000\u0000BC\u0005"+
+		"\u0000\u0000\u0001C\u0001\u0001\u0000\u0000\u0000DI\u0003\u0004\u0002"+
+		"\u0000EI\u0003$\u0012\u0000FI\u0003\n\u0005\u0000GI\u0003\u0014\n\u0000"+
+		"HD\u0001\u0000\u0000\u0000HE\u0001\u0000\u0000\u0000HF\u0001\u0000\u0000"+
+		"\u0000HG\u0001\u0000\u0000\u0000I\u0003\u0001\u0000\u0000\u0000JK\u0005"+
+		"\u0007\u0000\u0000KL\u0005%\u0000\u0000LM\u0005\b\u0000\u0000MN\u0003"+
+		"\u0006\u0003\u0000N\u0005\u0001\u0000\u0000\u0000OT\u0003\b\u0004\u0000"+
+		"PQ\u0005\u001a\u0000\u0000QS\u0003\b\u0004\u0000RP\u0001\u0000\u0000\u0000"+
+		"SV\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000\u0000TU\u0001\u0000\u0000"+
+		"\u0000U\u0007\u0001\u0000\u0000\u0000VT\u0001\u0000\u0000\u0000WX\u0007"+
+		"\u0000\u0000\u0000X\t\u0001\u0000\u0000\u0000Y[\u0003\f\u0006\u0000ZY"+
+		"\u0001\u0000\u0000\u0000Z[\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000"+
+		"\u0000\\]\u0005\u0001\u0000\u0000]^\u0005%\u0000\u0000^`\u0005\u0015\u0000"+
+		"\u0000_a\u0003\u0010\b\u0000`_\u0001\u0000\u0000\u0000`a\u0001\u0000\u0000"+
+		"\u0000ab\u0001\u0000\u0000\u0000bc\u0005\u0016\u0000\u0000cd\u0005\u0019"+
+		"\u0000\u0000de\u0003\u0012\t\u0000e\u000b\u0001\u0000\u0000\u0000fg\u0005"+
+		"\u001c\u0000\u0000gh\u0005%\u0000\u0000hi\u0005\u001b\u0000\u0000ij\u0005"+
+		"\n\u0000\u0000jk\u0005\u0015\u0000\u0000kn\u0005\'\u0000\u0000lm\u0005"+
+		"\u001a\u0000\u0000mo\u0003\u000e\u0007\u0000nl\u0001\u0000\u0000\u0000"+
+		"no\u0001\u0000\u0000\u0000op\u0001\u0000\u0000\u0000pq\u0005\u0016\u0000"+
+		"\u0000q\r\u0001\u0000\u0000\u0000rs\u0005\u000e\u0000\u0000st\u0005\u001d"+
+		"\u0000\u0000t}\u0005\u0017\u0000\u0000uz\u0005\'\u0000\u0000vw\u0005\u001a"+
+		"\u0000\u0000wy\u0005\'\u0000\u0000xv\u0001\u0000\u0000\u0000y|\u0001\u0000"+
+		"\u0000\u0000zx\u0001\u0000\u0000\u0000z{\u0001\u0000\u0000\u0000{~\u0001"+
+		"\u0000\u0000\u0000|z\u0001\u0000\u0000\u0000}u\u0001\u0000\u0000\u0000"+
+		"}~\u0001\u0000\u0000\u0000~\u007f\u0001\u0000\u0000\u0000\u007f\u0080"+
+		"\u0005\u0018\u0000\u0000\u0080\u000f\u0001\u0000\u0000\u0000\u0081\u0086"+
+		"\u0005%\u0000\u0000\u0082\u0083\u0005\u001a\u0000\u0000\u0083\u0085\u0005"+
+		"%\u0000\u0000\u0084\u0082\u0001\u0000\u0000\u0000\u0085\u0088\u0001\u0000"+
+		"\u0000\u0000\u0086\u0084\u0001\u0000\u0000\u0000\u0086\u0087\u0001\u0000"+
+		"\u0000\u0000\u0087\u0011\u0001\u0000\u0000\u0000\u0088\u0086\u0001\u0000"+
+		"\u0000\u0000\u0089\u008b\u0003\u0014\n\u0000\u008a\u0089\u0001\u0000\u0000"+
+		"\u0000\u008b\u008e\u0001\u0000\u0000\u0000\u008c\u008a\u0001\u0000\u0000"+
+		"\u0000\u008c\u008d\u0001\u0000\u0000\u0000\u008d\u008f\u0001\u0000\u0000"+
+		"\u0000\u008e\u008c\u0001\u0000\u0000\u0000\u008f\u0090\u0005$\u0000\u0000"+
+		"\u0090\u0013\u0001\u0000\u0000\u0000\u0091\u009b\u0003\u001c\u000e\u0000"+
+		"\u0092\u009b\u0003 \u0010\u0000\u0093\u009b\u0003\"\u0011\u0000\u0094"+
+		"\u009b\u0003$\u0012\u0000\u0095\u009b\u0003&\u0013\u0000\u0096\u009b\u0003"+
+		"(\u0014\u0000\u0097\u009b\u0003\u0016\u000b\u0000\u0098\u009b\u0003\u0018"+
+		"\f\u0000\u0099\u009b\u0003\u001a\r\u0000\u009a\u0091\u0001\u0000\u0000"+
+		"\u0000\u009a\u0092\u0001\u0000\u0000\u0000\u009a\u0093\u0001\u0000\u0000"+
+		"\u0000\u009a\u0094\u0001\u0000\u0000\u0000\u009a\u0095\u0001\u0000\u0000"+
+		"\u0000\u009a\u0096\u0001\u0000\u0000\u0000\u009a\u0097\u0001\u0000\u0000"+
+		"\u0000\u009a\u0098\u0001\u0000\u0000\u0000\u009a\u0099\u0001\u0000\u0000"+
+		"\u0000\u009b\u0015\u0001\u0000\u0000\u0000\u009c\u009d\u0005\u000f\u0000"+
+		"\u0000\u009d\u009e\u0005\u0015\u0000\u0000\u009e\u009f\u0003*\u0015\u0000"+
+		"\u009f\u00a0\u0005\u0016\u0000\u0000\u00a0\u0017\u0001\u0000\u0000\u0000"+
+		"\u00a1\u00a2\u0005\u0011\u0000\u0000\u00a2\u0019\u0001\u0000\u0000\u0000"+
+		"\u00a3\u00a4\u0005\u0012\u0000\u0000\u00a4\u001b\u0001\u0000\u0000\u0000"+
+		"\u00a5\u00a6\u0005\u0003\u0000\u0000\u00a6\u00a7\u0003\u001e\u000f\u0000"+
+		"\u00a7\u00a8\u0005\u0019\u0000\u0000\u00a8\u00ac\u0003\u0012\t\u0000\u00a9"+
+		"\u00aa\u0005\u0004\u0000\u0000\u00aa\u00ab\u0005\u0019\u0000\u0000\u00ab"+
+		"\u00ad\u0003\u0012\t\u0000\u00ac\u00a9\u0001\u0000\u0000\u0000\u00ac\u00ad"+
+		"\u0001\u0000\u0000\u0000\u00ad\u001d\u0001\u0000\u0000\u0000\u00ae\u00af"+
+		"\u0003*\u0015\u0000\u00af\u00b0\u0007\u0001\u0000\u0000\u00b0\u00b1\u0003"+
+		"*\u0015\u0000\u00b1\u00b5\u0001\u0000\u0000\u0000\u00b2\u00b5\u0005%\u0000"+
+		"\u0000\u00b3\u00b5\u0005(\u0000\u0000\u00b4\u00ae\u0001\u0000\u0000\u0000"+
+		"\u00b4\u00b2\u0001\u0000\u0000\u0000\u00b4\u00b3\u0001\u0000\u0000\u0000"+
+		"\u00b5\u001f\u0001\u0000\u0000\u0000\u00b6\u00b7\u0005\u0005\u0000\u0000"+
+		"\u00b7\u00b8\u0005%\u0000\u0000\u00b8\u00b9\u0005\u0006\u0000\u0000\u00b9"+
+		"\u00ba\u0005%\u0000\u0000\u00ba\u00bb\u0005\u0019\u0000\u0000\u00bb\u00bc"+
+		"\u0003\u0012\t\u0000\u00bc!\u0001\u0000\u0000\u0000\u00bd\u00be\u0005"+
+		"\u0002\u0000\u0000\u00be\u00bf\u0003*\u0015\u0000\u00bf#\u0001\u0000\u0000"+
+		"\u0000\u00c0\u00c1\u0005%\u0000\u0000\u00c1\u00c2\u0005\u001d\u0000\u0000"+
+		"\u00c2\u00c3\u0003*\u0015\u0000\u00c3%\u0001\u0000\u0000\u0000\u00c4\u00c5"+
+		"\u0005\u0010\u0000\u0000\u00c5\u00ca\u0005%\u0000\u0000\u00c6\u00c7\u0005"+
+		"\u001a\u0000\u0000\u00c7\u00c9\u0005%\u0000\u0000\u00c8\u00c6\u0001\u0000"+
+		"\u0000\u0000\u00c9\u00cc\u0001\u0000\u0000\u0000\u00ca\u00c8\u0001\u0000"+
+		"\u0000\u0000\u00ca\u00cb\u0001\u0000\u0000\u0000\u00cb\'\u0001\u0000\u0000"+
+		"\u0000\u00cc\u00ca\u0001\u0000\u0000\u0000\u00cd\u00ce\u0003*\u0015\u0000"+
+		"\u00ce)\u0001\u0000\u0000\u0000\u00cf\u00d0\u0006\u0015\uffff\uffff\u0000"+
+		"\u00d0\u00d1\u0005%\u0000\u0000\u00d1\u00d3\u0005\u0015\u0000\u0000\u00d2"+
+		"\u00d4\u0003.\u0017\u0000\u00d3\u00d2\u0001\u0000\u0000\u0000\u00d3\u00d4"+
+		"\u0001\u0000\u0000\u0000\u00d4\u00d5\u0001\u0000\u0000\u0000\u00d5\u00e4"+
+		"\u0005\u0016\u0000\u0000\u00d6\u00d7\u0003,\u0016\u0000\u00d7\u00d9\u0005"+
+		"\u0015\u0000\u0000\u00d8\u00da\u0003.\u0017\u0000\u00d9\u00d8\u0001\u0000"+
+		"\u0000\u0000\u00d9\u00da\u0001\u0000\u0000\u0000\u00da\u00db\u0001\u0000"+
+		"\u0000\u0000\u00db\u00dc\u0005\u0016\u0000\u0000\u00dc\u00e4\u0001\u0000"+
+		"\u0000\u0000\u00dd\u00e4\u00032\u0019\u0000\u00de\u00e4\u00038\u001c\u0000"+
+		"\u00df\u00e4\u0005%\u0000\u0000\u00e0\u00e4\u0005&\u0000\u0000\u00e1\u00e4"+
+		"\u0005(\u0000\u0000\u00e2\u00e4\u0005\'\u0000\u0000\u00e3\u00cf\u0001"+
+		"\u0000\u0000\u0000\u00e3\u00d6\u0001\u0000\u0000\u0000\u00e3\u00dd\u0001"+
+		"\u0000\u0000\u0000\u00e3\u00de\u0001\u0000\u0000\u0000\u00e3\u00df\u0001"+
+		"\u0000\u0000\u0000\u00e3\u00e0\u0001\u0000\u0000\u0000\u00e3\u00e1\u0001"+
+		"\u0000\u0000\u0000\u00e3\u00e2\u0001\u0000\u0000\u0000\u00e4\u0100\u0001"+
+		"\u0000\u0000\u0000\u00e5\u00e6\n\t\u0000\u0000\u00e6\u00e7\u0007\u0002"+
+		"\u0000\u0000\u00e7\u00ff\u0003*\u0015\n\u00e8\u00e9\n\b\u0000\u0000\u00e9"+
+		"\u00ea\u0007\u0003\u0000\u0000\u00ea\u00ff\u0003*\u0015\t\u00eb\u00ec"+
+		"\n\u0007\u0000\u0000\u00ec\u00ed\u0007\u0001\u0000\u0000\u00ed\u00ff\u0003"+
+		"*\u0015\b\u00ee\u00ef\n\u000e\u0000\u0000\u00ef\u00f0\u0005\u001b\u0000"+
+		"\u0000\u00f0\u00f1\u0005%\u0000\u0000\u00f1\u00f3\u0005\u0015\u0000\u0000"+
+		"\u00f2\u00f4\u0003.\u0017\u0000\u00f3\u00f2\u0001\u0000\u0000\u0000\u00f3"+
+		"\u00f4\u0001\u0000\u0000\u0000\u00f4\u00f5\u0001\u0000\u0000\u0000\u00f5"+
+		"\u00ff\u0005\u0016\u0000\u0000\u00f6\u00f7\n\r\u0000\u0000\u00f7\u00f8"+
+		"\u0005\u0017\u0000\u0000\u00f8\u00f9\u0003*\u0015\u0000\u00f9\u00fa\u0005"+
+		"\u0018\u0000\u0000\u00fa\u00ff\u0001\u0000\u0000\u0000\u00fb\u00fc\n\f"+
+		"\u0000\u0000\u00fc\u00fd\u0005\u001b\u0000\u0000\u00fd\u00ff\u0005%\u0000"+
+		"\u0000\u00fe\u00e5\u0001\u0000\u0000\u0000\u00fe\u00e8\u0001\u0000\u0000"+
+		"\u0000\u00fe\u00eb\u0001\u0000\u0000\u0000\u00fe\u00ee\u0001\u0000\u0000"+
+		"\u0000\u00fe\u00f6\u0001\u0000\u0000\u0000\u00fe\u00fb\u0001\u0000\u0000"+
+		"\u0000\u00ff\u0102\u0001\u0000\u0000\u0000\u0100\u00fe\u0001\u0000\u0000"+
+		"\u0000\u0100\u0101\u0001\u0000\u0000\u0000\u0101+\u0001\u0000\u0000\u0000"+
+		"\u0102\u0100\u0001\u0000\u0000\u0000\u0103\u0104\u0007\u0004\u0000\u0000"+
+		"\u0104-\u0001\u0000\u0000\u0000\u0105\u010a\u00030\u0018\u0000\u0106\u0107"+
+		"\u0005\u001a\u0000\u0000\u0107\u0109\u00030\u0018\u0000\u0108\u0106\u0001"+
+		"\u0000\u0000\u0000\u0109\u010c\u0001\u0000\u0000\u0000\u010a\u0108\u0001"+
+		"\u0000\u0000\u0000\u010a\u010b\u0001\u0000\u0000\u0000\u010b/\u0001\u0000"+
+		"\u0000\u0000\u010c\u010a\u0001\u0000\u0000\u0000\u010d\u0112\u0003*\u0015"+
+		"\u0000\u010e\u010f\u0005%\u0000\u0000\u010f\u0110\u0005\u001d\u0000\u0000"+
+		"\u0110\u0112\u0003*\u0015\u0000\u0111\u010d\u0001\u0000\u0000\u0000\u0111"+
+		"\u010e\u0001\u0000\u0000\u0000\u01121\u0001\u0000\u0000\u0000\u0113\u0116"+
+		"\u0005\u0017\u0000\u0000\u0114\u0117\u00034\u001a\u0000\u0115\u0117\u0003"+
+		"6\u001b\u0000\u0116\u0114\u0001\u0000\u0000\u0000\u0116\u0115\u0001\u0000"+
+		"\u0000\u0000\u0116\u0117\u0001\u0000\u0000\u0000\u0117\u0118\u0001\u0000"+
+		"\u0000\u0000\u0118\u0119\u0005\u0018\u0000\u0000\u01193\u0001\u0000\u0000"+
+		"\u0000\u011a\u011f\u0003*\u0015\u0000\u011b\u011c\u0005\u001a\u0000\u0000"+
+		"\u011c\u011e\u0003*\u0015\u0000\u011d\u011b\u0001\u0000\u0000\u0000\u011e"+
+		"\u0121\u0001\u0000\u0000\u0000\u011f\u011d\u0001\u0000\u0000\u0000\u011f"+
+		"\u0120\u0001\u0000\u0000\u0000\u01205\u0001\u0000\u0000\u0000\u0121\u011f"+
+		"\u0001\u0000\u0000\u0000\u0122\u0123\u0003*\u0015\u0000\u0123\u0124\u0005"+
+		"\u0005\u0000\u0000\u0124\u0125\u0005%\u0000\u0000\u0125\u0126\u0005\u0006"+
+		"\u0000\u0000\u0126\u0129\u0003*\u0015\u0000\u0127\u0128\u0005\u0003\u0000"+
+		"\u0000\u0128\u012a\u0003*\u0015\u0000\u0129\u0127\u0001\u0000\u0000\u0000"+
+		"\u0129\u012a\u0001\u0000\u0000\u0000\u012a7\u0001\u0000\u0000\u0000\u012b"+
+		"\u012c\u0005\u0013\u0000\u0000\u012c\u0131\u0003:\u001d\u0000\u012d\u012e"+
+		"\u0005\u001a\u0000\u0000\u012e\u0130\u0003:\u001d\u0000\u012f\u012d\u0001"+
+		"\u0000\u0000\u0000\u0130\u0133\u0001\u0000\u0000\u0000\u0131\u012f\u0001"+
+		"\u0000\u0000\u0000\u0131\u0132\u0001\u0000\u0000\u0000\u0132\u0134\u0001"+
+		"\u0000\u0000\u0000\u0133\u0131\u0001\u0000\u0000\u0000\u0134\u0135\u0005"+
+		"\u0014\u0000\u0000\u01359\u0001\u0000\u0000\u0000\u0136\u0137\u0003*\u0015"+
+		"\u0000\u0137\u0138\u0005\u0019\u0000\u0000\u0138\u0139\u0003*\u0015\u0000"+
+		"\u0139;\u0001\u0000\u0000\u0000\u001a?HTZ`nz}\u0086\u008c\u009a\u00ac"+
+		"\u00b4\u00ca\u00d3\u00d9\u00e3\u00f3\u00fe\u0100\u010a\u0111\u0116\u011f"+
+		"\u0129\u0131";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

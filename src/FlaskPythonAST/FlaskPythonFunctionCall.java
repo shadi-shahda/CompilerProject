@@ -6,10 +6,10 @@ import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
 public class FlaskPythonFunctionCall extends FlaskPythonExpression {
   public String functionName;
-  public List<FlaskPythonExpression> arguments;
+  public List<FlaskPythonArgument> arguments;
   public boolean isFlaskFunction;
 
-  public FlaskPythonFunctionCall(String functionName, List<FlaskPythonExpression> arguments, boolean isFlaskFunction, int line) {
+  public FlaskPythonFunctionCall(String functionName, List<FlaskPythonArgument> arguments, boolean isFlaskFunction, int line) {
         super(line);
         this.functionName = functionName;
         this.arguments = arguments;
