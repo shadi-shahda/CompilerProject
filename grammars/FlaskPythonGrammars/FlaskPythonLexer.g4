@@ -40,10 +40,10 @@ DIV: '/';
 
 BLOCK_END: '#' [ \t]+ 'end';
 
+BOOLEAN: 'True' | 'False';
 ID: [a-zA-Z_] [a-zA-Z0-9_]*;
 INT: [0-9]+;
 STRING: '"' .*? '"' | '\'' .*? '\'';
-BOOLEAN: 'True' | 'False';
 
 COMMENT: '#' ~[\r\n]* -> skip;
 WS: [ \t\r\n]+ -> skip;
