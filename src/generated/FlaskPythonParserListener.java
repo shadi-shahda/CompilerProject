@@ -18,15 +18,41 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitProgram(FlaskPythonParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FlaskPythonParser#line}.
+	 * Enter a parse tree produced by the {@code importStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
 	 * @param ctx the parse tree
 	 */
-	void enterLine(FlaskPythonParser.LineContext ctx);
+	void enterImportStatement(FlaskPythonParser.ImportStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FlaskPythonParser#line}.
+	 * Exit a parse tree produced by the {@code importStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
 	 * @param ctx the parse tree
 	 */
-	void exitLine(FlaskPythonParser.LineContext ctx);
+	void exitImportStatement(FlaskPythonParser.ImportStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code functionDeclarationStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code functionDeclarationStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code regularStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void enterRegularStatement(FlaskPythonParser.RegularStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code regularStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void exitRegularStatement(FlaskPythonParser.RegularStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#importStmt}.
 	 * @param ctx the parse tree
@@ -108,15 +134,51 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitBlock(FlaskPythonParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FlaskPythonParser#statement}.
+	 * Enter a parse tree produced by the {@code simpleStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatement(FlaskPythonParser.StatementContext ctx);
+	void enterSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FlaskPythonParser#statement}.
+	 * Exit a parse tree produced by the {@code simpleStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatement(FlaskPythonParser.StatementContext ctx);
+	void exitSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ifStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfStatement(FlaskPythonParser.IfStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ifStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfStatement(FlaskPythonParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code forStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStatement(FlaskPythonParser.ForStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code forStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStatement(FlaskPythonParser.ForStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FlaskPythonParser#simpleStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FlaskPythonParser#simpleStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#printStmt}.
 	 * @param ctx the parse tree
@@ -158,41 +220,15 @@ public interface FlaskPythonParserListener extends ParseTreeListener {
 	 */
 	void exitIfStmt(FlaskPythonParser.IfStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code CompareCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * Enter a parse tree produced by {@link FlaskPythonParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void enterCompareCond(FlaskPythonParser.CompareCondContext ctx);
+	void enterCondition(FlaskPythonParser.ConditionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code CompareCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * Exit a parse tree produced by {@link FlaskPythonParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void exitCompareCond(FlaskPythonParser.CompareCondContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code VarCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterVarCond(FlaskPythonParser.VarCondContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code VarCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitVarCond(FlaskPythonParser.VarCondContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code BoolCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolCond(FlaskPythonParser.BoolCondContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BoolCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolCond(FlaskPythonParser.BoolCondContext ctx);
+	void exitCondition(FlaskPythonParser.ConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FlaskPythonParser#forStmt}.
 	 * @param ctx the parse tree

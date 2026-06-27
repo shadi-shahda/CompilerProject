@@ -34,11 +34,11 @@ public class App {
         try {
             FlaskPythonSymbolTable pythonSymbolTable = printPython(pythonSourceFile, "index.html", "add.html",
                     "detail.html");
-            printHtml(indexSourceFile, pythonSymbolTable);
-            printHtml(detailsSourceFile, pythonSymbolTable);
-            printHtml(addSourceFile, pythonSymbolTable);
-            printCss(cssSourceFile);
-            CssSymbolTable.instance.performCrossCheck();
+//            printHtml(indexSourceFile, pythonSymbolTable);
+//            printHtml(detailsSourceFile, pythonSymbolTable);
+//            printHtml(addSourceFile, pythonSymbolTable);
+//            printCss(cssSourceFile);
+//            CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
             e.printStackTrace();
         }

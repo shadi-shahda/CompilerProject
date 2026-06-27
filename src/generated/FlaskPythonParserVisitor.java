@@ -17,11 +17,26 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(FlaskPythonParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FlaskPythonParser#line}.
+	 * Visit a parse tree produced by the {@code importStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLine(FlaskPythonParser.LineContext ctx);
+	T visitImportStatement(FlaskPythonParser.ImportStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code functionDeclarationStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code regularStatement}
+	 * labeled alternative in {@link FlaskPythonParser#line}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRegularStatement(FlaskPythonParser.RegularStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#importStmt}.
 	 * @param ctx the parse tree
@@ -71,11 +86,32 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(FlaskPythonParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FlaskPythonParser#statement}.
+	 * Visit a parse tree produced by the {@code simpleStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(FlaskPythonParser.StatementContext ctx);
+	T visitSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(FlaskPythonParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code forStatement}
+	 * labeled alternative in {@link FlaskPythonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStatement(FlaskPythonParser.ForStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FlaskPythonParser#simpleStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#printStmt}.
 	 * @param ctx the parse tree
@@ -101,26 +137,11 @@ public interface FlaskPythonParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfStmt(FlaskPythonParser.IfStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CompareCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
+	 * Visit a parse tree produced by {@link FlaskPythonParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompareCond(FlaskPythonParser.CompareCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code VarCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVarCond(FlaskPythonParser.VarCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BoolCond}
-	 * labeled alternative in {@link FlaskPythonParser#condition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolCond(FlaskPythonParser.BoolCondContext ctx);
+	T visitCondition(FlaskPythonParser.ConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FlaskPythonParser#forStmt}.
 	 * @param ctx the parse tree

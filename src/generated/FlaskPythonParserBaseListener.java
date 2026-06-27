@@ -29,13 +29,37 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLine(FlaskPythonParser.LineContext ctx) { }
+	@Override public void enterImportStatement(FlaskPythonParser.ImportStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLine(FlaskPythonParser.LineContext ctx) { }
+	@Override public void exitImportStatement(FlaskPythonParser.ImportStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRegularStatement(FlaskPythonParser.RegularStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRegularStatement(FlaskPythonParser.RegularStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -137,13 +161,49 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatement(FlaskPythonParser.StatementContext ctx) { }
+	@Override public void enterSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStatement(FlaskPythonParser.StatementContext ctx) { }
+	@Override public void exitSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfStatement(FlaskPythonParser.IfStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfStatement(FlaskPythonParser.IfStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForStatement(FlaskPythonParser.ForStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForStatement(FlaskPythonParser.ForStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -197,37 +257,13 @@ public class FlaskPythonParserBaseListener implements FlaskPythonParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCompareCond(FlaskPythonParser.CompareCondContext ctx) { }
+	@Override public void enterCondition(FlaskPythonParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCompareCond(FlaskPythonParser.CompareCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVarCond(FlaskPythonParser.VarCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVarCond(FlaskPythonParser.VarCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolCond(FlaskPythonParser.BoolCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolCond(FlaskPythonParser.BoolCondContext ctx) { }
+	@Override public void exitCondition(FlaskPythonParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

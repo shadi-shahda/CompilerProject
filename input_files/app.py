@@ -23,7 +23,7 @@ products = [
 @app.route('/')
 def index():
     return render_template('index.html', products=products)
-# end
+
 
 # 2. صفحة عرض التفاصيل
 @app.route('/product/<int:id>')
@@ -33,10 +33,7 @@ def product_detail(id):
         if p["id"] == id:
             product = p
             break
-        # end
-    # end
     return render_template('detail.html', product=product)
-# end
 
 # 3. صفحة إضافة منتج
 @app.route('/add', methods=['GET', 'POST'])
@@ -57,9 +54,7 @@ def add_product():
         }
         products.append(new_product)
         return redirect(url_for('index'))
-    # end
     return render_template('add.html')
-# end
 
 # 4. حذف منتج (الميزة الإضافية)
 @app.route('/delete/<int:id>')
@@ -67,8 +62,6 @@ def delete_product(id):
     global products
     products = [p for p in products if p["id"] != id]
     return redirect(url_for('index'))
-# end
 
 if __name__ == '__main__':
     app.run(debug=True)
-# end
