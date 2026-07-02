@@ -4,12 +4,12 @@ import java.util.List;
 
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
-public class FLaskPythonForStatement extends FlaskPythonStatement {
+public class FlaskPythonForStatement extends FlaskPythonStatement {
   public String variableName;
   public FlaskPythonExpression iterable;
   public List<FlaskPythonStatement> body;
 
-  public FLaskPythonForStatement(String variableName, FlaskPythonExpression iterable, List<FlaskPythonStatement> body, int line) {
+  public FlaskPythonForStatement(String variableName, FlaskPythonExpression iterable, List<FlaskPythonStatement> body, int line) {
     super(line);
     this.variableName = variableName;
     this.iterable = iterable;

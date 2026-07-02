@@ -1,6 +1,8 @@
 import FlaskPythonAST.*;
 import FlaskPythonVisitor.FlaskPythonASTVisitor;
 
+import java.util.Objects;
+
 public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
 
   private int indentLevel = 0;
@@ -247,7 +249,7 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
 
   // ================= FOR (FIXED) =================
   @Override
-  public String visit(FLaskPythonForStatement stmt) {
+  public String visit(FlaskPythonForStatement stmt) {
     StringBuilder sb = new StringBuilder();
 
     sb.append(line("For: " + stmt.variableName + " in", stmt.getLineNumber()));
@@ -318,15 +320,18 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= MEMBER ACCESS (FIXED) =================
   @Override
   public String visit(FlaskPythonMemberAccess access) {
+    if(access.memberName.charAt(0) == '['){
+      return line("MemberAccess: " + access.object.accept(this).trim() + access.memberName,
+              access.getLineNumber());
+    }
+
     return line(
         "MemberAccess: " + access.object.accept(this).trim() + "." + access.memberName,
         access.getLineNumber());
   }
 
-  // ================= PRINT =================
   @Override
   public String visit(FlaskPythonPrintStatement stmt) {
     StringBuilder sb = new StringBuilder();
@@ -340,7 +345,6 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= FUNCTION =================
   @Override
   public String visit(FlaskPythonFunctionDeclaration func) {
     StringBuilder sb = new StringBuilder();
@@ -364,7 +368,6 @@ public class FlaskPythonASTPrinter implements FlaskPythonASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= METHOD CALL =================
   @Override
   public String visit(FlaskPythonMethodCall call) {
     StringBuilder sb = new StringBuilder();

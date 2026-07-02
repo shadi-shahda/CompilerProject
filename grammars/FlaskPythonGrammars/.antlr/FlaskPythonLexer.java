@@ -111,27 +111,21 @@ public class FlaskPythonLexer extends Lexer {
 	    @Override
 	    public Token nextToken() {
 	        if (_input.LA(1) == EOF && !this.indents.isEmpty()) {
-	            for (int i = tokens.size() - 1; i >= 0; i--) {
-	                if (tokens.get(i).getType() == EOF) {
-	                    tokens.remove(i);
-	                }
-	            }
-
-	            this.emit(commonToken(FlaskPythonParser.NEWLINE, "\n"));
+	            emit(commonToken(NEWLINE, "\n"));
 
 	            while (!indents.isEmpty()) {
-	                this.emit(createDedent());
+	                emit(createDedent());
 	                indents.pop();
 	            }
 
-	            this.emit(commonToken(FlaskPythonParser.EOF, "<EOF>"));
+	            emit(commonToken(EOF, "<EOF>"));
+	        }
+
+	        if (!tokens.isEmpty()) {
+	            return tokens.poll();
 	        }
 
 	        Token next = super.nextToken();
-
-	        if (next.getChannel() == Token.DEFAULT_CHANNEL) {
-	            return next;
-	        }
 
 	        if (!tokens.isEmpty()) {
 	            return tokens.poll();
@@ -141,7 +135,7 @@ public class FlaskPythonLexer extends Lexer {
 	    }
 
 	    private Token createDedent() {
-	        CommonToken dedent = commonToken(FlaskPythonParser.DEDENT, "");
+	        CommonToken dedent = commonToken(DEDENT, "");
 	        dedent.setLine(this.getLine());
 	        return dedent;
 	    }
@@ -283,7 +277,7 @@ public class FlaskPythonLexer extends Lexer {
 			                  skip();
 			              } else if (indent > previous) {
 			                  indents.push(indent);
-			                  emit(commonToken(FlaskPythonParser.INDENT, spaces));
+			                  emit(commonToken(INDENT, spaces));
 			              } else {
 			                  while (!indents.isEmpty() && indents.peek() > indent) {
 			                      emit(createDedent());

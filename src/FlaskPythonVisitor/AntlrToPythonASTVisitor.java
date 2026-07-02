@@ -176,7 +176,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
-    public FLaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
+    public FlaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
         int line = ctx.getStart().getLine();
         String varName = ctx.ID().getText();
 
@@ -184,7 +184,7 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
 
         List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
 
-        return new FLaskPythonForStatement(varName, iterable, body, line);
+        return new FlaskPythonForStatement(varName, iterable, body, line);
     }
 
     @Override
@@ -201,7 +201,6 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
         String methodName = ctx.ID().getText();
         List<FlaskPythonArgument> args = getArguments(ctx.argList());
-
         return new FlaskPythonMethodCall(object, methodName, args, ctx.getStart().getLine());
     }
 
@@ -310,8 +309,10 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     public FlaskPythonMemberAccess visitListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx) {
         int line = ctx.getStart().getLine();
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression(0));
-        String index = ctx.expression(1).getText();
-        return new FlaskPythonMemberAccess(object, "[" + index + "]", line);
+        FlaskPythonExpression index = (FlaskPythonExpression) visit(ctx.expression(1));
+        String memberName = index.toString();
+        if (index instanceof FlaskPythonStringLiteral) memberName = ((FlaskPythonStringLiteral) index).value;
+        return new FlaskPythonMemberAccess(object, "[" + memberName + "]", line);
     }
 
     @Override

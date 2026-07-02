@@ -1,5 +1,7 @@
 import java.io.IOException;
 
+import FlaskPythonGenerator.FlaskPythonGenerator;
+import FlaskPythonGenerator.GeneratedPythonWriter;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -85,6 +87,12 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         symbolTable.printTable();
+
+        FlaskPythonGenerator flaskPythonGenerator = new FlaskPythonGenerator();
+        String generatePython = astRoot.accept(flaskPythonGenerator);
+        System.out.println(generatePython);
+        GeneratedPythonWriter writer = new GeneratedPythonWriter();
+        writer.writeToFile(generatePython, "generated_output/app.py");
         return symbolTable;
     }
 
