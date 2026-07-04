@@ -1,8 +1,7 @@
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
+import CssGenerator.CssGenerator;
+import CssGenerator.GeneratedCssWriter;
 import FlaskPythonGenerator.FlaskPythonGenerator;
 import FlaskPythonGenerator.GeneratedPythonWriter;
 import TemplatesGenerator.TemplatesGenerator;
@@ -43,6 +42,7 @@ public class App {
         String indexOutputPath = "generated_output/templates/index.html";
         String addOutputPath = "generated_output/templates/add.html";
         String detailOutputPath = "generated_output/templates/detail.html";
+        String cssOutputPath = "generated_output/static/style.css";
 
         try {
             FlaskPythonSymbolTable pythonSymbolTable = printPython(pythonSourceFile, "index.html", "add.html",
@@ -50,8 +50,8 @@ public class App {
             printHtml(indexSourceFile, pythonSymbolTable, indexOutputPath);
             printHtml(detailsSourceFile, pythonSymbolTable, detailOutputPath);
             printHtml(addSourceFile, pythonSymbolTable, addOutputPath);
-//            printCss(cssSourceFile);
-//            CssSymbolTable.instance.performCrossCheck();
+            printCss(cssSourceFile, cssOutputPath);
+            CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,7 +107,7 @@ public class App {
         return symbolTable;
     }
 
-    private static void printCss(String cssSourceFile) throws IOException {
+    private static void printCss(String cssSourceFile, String outputPath) throws IOException {
         System.out.println("\n================ CSS ================\n");
         System.out.println(">>> 1. Reading Css File: " + cssSourceFile);
         CharStream cssInput = CharStreams.fromFileName(cssSourceFile);
@@ -140,6 +140,12 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         CssSymbolTable.instance.printTable();
+
+        CssGenerator cssGenerator = new CssGenerator();
+        String generateCss = astRoot.accept(cssGenerator);
+        System.out.println(generateCss);
+        GeneratedCssWriter writer = new GeneratedCssWriter();
+        writer.writeToFile(generateCss, outputPath);
     }
 
     private static void printHtml(String htmlSourceFile, FlaskPythonSymbolTable pythonSymbolTable,
