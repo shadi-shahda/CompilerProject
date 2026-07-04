@@ -1,7 +1,12 @@
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import FlaskPythonGenerator.FlaskPythonGenerator;
 import FlaskPythonGenerator.GeneratedPythonWriter;
+import TemplatesGenerator.TemplatesGenerator;
+import TemplatesGenerator.GeneratedTemplateWriter;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -33,12 +38,18 @@ public class App {
         String indexSourceFile = "input_files/templates/index.html";
         String addSourceFile = "input_files/templates/add.html";
         String detailsSourceFile = "input_files/templates/detail.html";
+
+        String pythonOutputPath = "generated_output/app.py";
+        String indexOutputPath = "generated_output/templates/index.html";
+        String addOutputPath = "generated_output/templates/add.html";
+        String detailOutputPath = "generated_output/templates/detail.html";
+
         try {
             FlaskPythonSymbolTable pythonSymbolTable = printPython(pythonSourceFile, "index.html", "add.html",
                     "detail.html");
-//            printHtml(indexSourceFile, pythonSymbolTable);
-//            printHtml(detailsSourceFile, pythonSymbolTable);
-//            printHtml(addSourceFile, pythonSymbolTable);
+            printHtml(indexSourceFile, pythonSymbolTable, indexOutputPath);
+            printHtml(detailsSourceFile, pythonSymbolTable, detailOutputPath);
+            printHtml(addSourceFile, pythonSymbolTable, addOutputPath);
 //            printCss(cssSourceFile);
 //            CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
@@ -132,7 +143,7 @@ public class App {
     }
 
     private static void printHtml(String htmlSourceFile, FlaskPythonSymbolTable pythonSymbolTable,
-            String... contextVars) throws IOException {
+                                  String outputPath, String... contextVars) throws IOException {
         System.out.println("\n================ Jinja2 & HTML ================\n");
         System.out.println(">>> 1. Reading Html File: " + htmlSourceFile);
         CharStream htmlInput = CharStreams.fromFileName(htmlSourceFile);
@@ -179,6 +190,11 @@ public class App {
 
         symbolTable.printTable();
 
+        TemplatesGenerator generator = new TemplatesGenerator();
+        String generatedTemplate = astRoot.accept(generator);
+
+        GeneratedTemplateWriter writer = new GeneratedTemplateWriter();
+        writer.writeToFile(generatedTemplate, outputPath);
     }
 
 }

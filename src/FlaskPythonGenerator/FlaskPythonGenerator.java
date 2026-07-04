@@ -64,25 +64,43 @@ public class FlaskPythonGenerator implements FlaskPythonASTVisitor<String> {
     @Override
     public String visit(FlaskPythonIfStatement ifStmt) {
         StringBuilder sb = new StringBuilder();
-        sb.append("if ").append(ifStmt.condition.accept(this)).append(":\n");
+
+        sb.append("if ")
+                .append(ifStmt.condition.accept(this))
+                .append(":\n");
+
         indentLevel++;
+
         for (int i = 0; i < ifStmt.thenBloc.size(); i++) {
-            sb.append(indent()).append(ifStmt.thenBloc.get(i).accept(this));
+            sb.append(indent())
+                    .append(ifStmt.thenBloc.get(i).accept(this));
+
             if (i != ifStmt.thenBloc.size() - 1) {
                 sb.append('\n');
             }
         }
+
         indentLevel--;
-        if (ifStmt.elseBloc != null && ifStmt.elseBloc.size() > 0) {
+
+        if (ifStmt.elseBloc != null && !ifStmt.elseBloc.isEmpty()) {
+            sb.append('\n')
+                    .append(indent())
+                    .append("else:\n");
+
             indentLevel++;
+
             for (int i = 0; i < ifStmt.elseBloc.size(); i++) {
-                sb.append(ifStmt.elseBloc.get(i).accept(this));
-                if (i != ifStmt.thenBloc.size() - 1) {
+                sb.append(indent())
+                        .append(ifStmt.elseBloc.get(i).accept(this));
+
+                if (i != ifStmt.elseBloc.size() - 1) {
                     sb.append('\n');
                 }
             }
+
             indentLevel--;
         }
+
         return sb.toString();
     }
 
@@ -150,7 +168,7 @@ public class FlaskPythonGenerator implements FlaskPythonASTVisitor<String> {
 
     @Override
     public String visit(FlaskPythonStringLiteral stringLit) {
-        return "\"" + stringLit.value + "\"";
+        return "\"" + escapeString(stringLit.value) + "\"";
     }
 
     @Override
@@ -215,16 +233,20 @@ public class FlaskPythonGenerator implements FlaskPythonASTVisitor<String> {
     @Override
     public String visit(FlaskPythonMethodCall methCall) {
         StringBuilder sb = new StringBuilder();
+
         sb.append(methCall.object.accept(this))
                 .append(".")
                 .append(methCall.methodName)
                 .append("(");
-        for (FlaskPythonArgument flaskPythonArgument : methCall.arguments) {
-            if (flaskPythonArgument.keywordName != null && !flaskPythonArgument.keywordName.isEmpty()) {
-                sb.append(flaskPythonArgument.keywordName).append("=");
+
+        for (int i = 0; i < methCall.arguments.size(); i++) {
+            sb.append(methCall.arguments.get(i).accept(this));
+
+            if (i != methCall.arguments.size() - 1) {
+                sb.append(", ");
             }
-            sb.append(flaskPythonArgument.value.accept(this));
         }
+
         sb.append(")");
         return sb.toString();
     }
@@ -241,12 +263,7 @@ public class FlaskPythonGenerator implements FlaskPythonASTVisitor<String> {
 
     @Override
     public String visit(FlaskPythonGlobalStatement globalStatement) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("global ");
-        for (String variable : globalStatement.variableNames) {
-            sb.append(variable);
-        }
-        return sb.toString();
+        return "global " + String.join(", ", globalStatement.variableNames);
     }
 
     @Override
@@ -284,5 +301,11 @@ public class FlaskPythonGenerator implements FlaskPythonASTVisitor<String> {
         if (argument.keywordName != null && argument.value != null) sb.append("=");
         if (argument.value != null) sb.append(argument.value.accept(this));
         return sb.toString();
+    }
+
+    private String escapeString(String value) {
+        return value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
     }
 }
