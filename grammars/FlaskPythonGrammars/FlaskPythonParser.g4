@@ -4,9 +4,12 @@ options {
 	tokenVocab = FlaskPythonLexer;
 }
 
-program: line* EOF;
+program: (NEWLINE | line)* EOF;
 
-line: importStmt | assignment | functionDecl | statement;
+line:
+	importStmt NEWLINE	# importStatement
+	| functionDecl		# functionDeclarationStatement
+	| statement			# regularStatement;
 
 importStmt: FROM ID IMPORT importList;
 
@@ -20,7 +23,7 @@ importItem:
 	| URL_FOR;
 
 functionDecl:
-	routeDecorator? DEF ID LPAREN paramList? RPAREN COLON block;
+	(routeDecorator NEWLINE)? DEF ID LPAREN paramList? RPAREN COLON block;
 
 routeDecorator:
 	AT ID DOT ROUTE LPAREN STRING (COMMA methodsParam)? RPAREN;
@@ -30,12 +33,15 @@ methodsParam:
 
 paramList: ID (COMMA ID)*;
 
-block: statement* BLOCK_END;
+block: NEWLINE INDENT statement+ DEDENT;
 
 statement:
-	ifStmt
-	| forStmt
-	| returnStmt
+	simpleStmt NEWLINE	# simpleStatement
+	| ifStmt			# ifStatement
+	| forStmt			# forStatement;
+
+simpleStmt:
+	returnStmt
 	| assignment
 	| globalStmt
 	| expressionStmt
@@ -51,12 +57,12 @@ continueStmt: CONTINUE;
 
 ifStmt: IF condition COLON block (ELSE COLON block)?;
 
-condition:
-	expression (EQUALS | NOT_EQUALS) expression	# CompareCond
-	| ID										# VarCond
-	| BOOLEAN									# BoolCond;
+condition: expression;
+//	expression (EQUALS | NOT_EQUALS) expression	# CompareCond
+//	| ID										# VarCond
+//	| BOOLEAN									# BoolCond;
 
-forStmt: FOR ID IN ID COLON block;
+forStmt: FOR ID IN expression COLON block;
 
 returnStmt: RETURN expression;
 
@@ -87,8 +93,8 @@ flaskFunc: RENDER_TEMPLATE | REDIRECT | URL_FOR | FLASK_CLASS;
 argList: argument (COMMA argument)*;
 
 argument:
-	value=expression
-	| keyword=ID ASSIGN value=expression;
+	value = expression
+	| keyword = ID ASSIGN value = expression;
 
 list: LBRACKET (elements | listComp)? RBRACKET;
 

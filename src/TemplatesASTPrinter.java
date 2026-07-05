@@ -27,7 +27,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     indentLevel--;
   }
 
-  // ================= PROGRAM =================
   @Override
   public String visit(TemplatesProgram program) {
     StringBuilder sb = new StringBuilder();
@@ -44,14 +43,12 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= HTML TEXT =================
   @Override
   public String visit(HtmlText text) {
     if(text.text == null) return "";
     return line("HtmlText: " + text.text, text.getLine());
   }
 
-  // ================= HTML ELEMENT =================
   @Override
   public String visit(HtmlElement element) {
     StringBuilder sb = new StringBuilder();
@@ -65,21 +62,21 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
 
     inc();
 
-    // Attributes
-    for (HtmlAttribute attr : element.attributes) {
-      sb.append(attr.accept(this));
+    if(element.attributes != null && !element.attributes.isEmpty()) {
+      for (HtmlAttribute attr : element.attributes) {
+        sb.append(attr.accept(this));
+      }
     }
 
-    // Children
-    for (TemplatesASTNode node : element.templates) {
-      sb.append(node.accept(this));
+    if(element.templates != null && !element.templates.isEmpty()) {
+      for (TemplatesASTNode node : element.templates) {
+        sb.append(node.accept(this));
+      }
     }
-
     dec();
     return sb.toString();
   }
 
-  // ================= KEY-VALUE ATTRIBUTE =================
   @Override
   public String visit(KeyValueAttribute attribute) {
     StringBuilder sb = new StringBuilder();
@@ -96,7 +93,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= ONLY KEY ATTRIBUTE =================
   @Override
   public String visit(OnlyKeyAttribute attribute) {
     StringBuilder sb = new StringBuilder();
@@ -110,7 +106,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= JINJA PRINT =================
   @Override
   public String visit(JinjaPrint jinjaPrint) {
     StringBuilder sb = new StringBuilder();
@@ -124,7 +119,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= JINJA SET =================
   @Override
   public String visit(JinjaSet jinjaSet) {
     StringBuilder sb = new StringBuilder();
@@ -137,7 +131,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= IF =================
   @Override
   public String visit(JinjaIfStatement ifStmt) {
     StringBuilder sb = new StringBuilder();
@@ -171,7 +164,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= FOR =================
   @Override
   public String visit(JinjaForStatement forStmt) {
     StringBuilder sb = new StringBuilder();
@@ -203,7 +195,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= EXPRESSIONS =================
   @Override
   public String visit(MemberAccessExpression expr) {
     StringBuilder sb = new StringBuilder();
@@ -212,6 +203,7 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
 
     inc();
     sb.append(expr.expression.accept(this));
+    sb.append(line("Attribute: " + expr.attribute, expr.getLine()));
     dec();
 
     return sb.toString();
@@ -285,7 +277,6 @@ public class TemplatesASTPrinter implements TemplatesASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= LITERALS =================
   @Override
   public String visit(VarExpression expr) {
     return line("Var: " + expr.name, expr.getLine());

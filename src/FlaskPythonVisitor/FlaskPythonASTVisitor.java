@@ -10,7 +10,7 @@ public interface FlaskPythonASTVisitor<T> {
     T visit(FlaskPythonReturnStatement returnStmt);
     T visit(FlaskPythonAssignmentStatement assignStmt);
     T visit(FlaskPythonImportStatement importStmt);
-    T visit(FLaskPythonForStatement forStmt);
+    T visit(FlaskPythonForStatement forStmt);
     T visit(FlaskPythonPrintStatement printStmt);
     
     T visit(FlaskPythonBinaryExpression binExpr);

@@ -1,5 +1,11 @@
 import java.io.IOException;
 
+import CssGenerator.CssGenerator;
+import CssGenerator.GeneratedCssWriter;
+import FlaskPythonGenerator.FlaskPythonGenerator;
+import FlaskPythonGenerator.GeneratedPythonWriter;
+import TemplatesGenerator.TemplatesGenerator;
+import TemplatesGenerator.GeneratedTemplateWriter;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -31,13 +37,20 @@ public class App {
         String indexSourceFile = "input_files/templates/index.html";
         String addSourceFile = "input_files/templates/add.html";
         String detailsSourceFile = "input_files/templates/detail.html";
+
+        String pythonOutputPath = "generated_output/app.py";
+        String indexOutputPath = "generated_output/templates/index.html";
+        String addOutputPath = "generated_output/templates/add.html";
+        String detailOutputPath = "generated_output/templates/detail.html";
+        String cssOutputPath = "generated_output/static/style.css";
+
         try {
             FlaskPythonSymbolTable pythonSymbolTable = printPython(pythonSourceFile, "index.html", "add.html",
                     "detail.html");
-            printHtml(indexSourceFile, pythonSymbolTable);
-            printHtml(detailsSourceFile, pythonSymbolTable);
-            printHtml(addSourceFile, pythonSymbolTable);
-            printCss(cssSourceFile);
+            printHtml(indexSourceFile, pythonSymbolTable, indexOutputPath);
+            printHtml(detailsSourceFile, pythonSymbolTable, detailOutputPath);
+            printHtml(addSourceFile, pythonSymbolTable, addOutputPath);
+            printCss(cssSourceFile, cssOutputPath);
             CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,10 +98,16 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         symbolTable.printTable();
+
+        FlaskPythonGenerator flaskPythonGenerator = new FlaskPythonGenerator();
+        String generatePython = astRoot.accept(flaskPythonGenerator);
+        System.out.println(generatePython);
+        GeneratedPythonWriter writer = new GeneratedPythonWriter();
+        writer.writeToFile(generatePython, "generated_output/app.py");
         return symbolTable;
     }
 
-    private static void printCss(String cssSourceFile) throws IOException {
+    private static void printCss(String cssSourceFile, String outputPath) throws IOException {
         System.out.println("\n================ CSS ================\n");
         System.out.println(">>> 1. Reading Css File: " + cssSourceFile);
         CharStream cssInput = CharStreams.fromFileName(cssSourceFile);
@@ -121,10 +140,16 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         CssSymbolTable.instance.printTable();
+
+        CssGenerator cssGenerator = new CssGenerator();
+        String generateCss = astRoot.accept(cssGenerator);
+        System.out.println(generateCss);
+        GeneratedCssWriter writer = new GeneratedCssWriter();
+        writer.writeToFile(generateCss, outputPath);
     }
 
     private static void printHtml(String htmlSourceFile, FlaskPythonSymbolTable pythonSymbolTable,
-            String... contextVars) throws IOException {
+                                  String outputPath, String... contextVars) throws IOException {
         System.out.println("\n================ Jinja2 & HTML ================\n");
         System.out.println(">>> 1. Reading Html File: " + htmlSourceFile);
         CharStream htmlInput = CharStreams.fromFileName(htmlSourceFile);
@@ -171,6 +196,11 @@ public class App {
 
         symbolTable.printTable();
 
+        TemplatesGenerator generator = new TemplatesGenerator();
+        String generatedTemplate = astRoot.accept(generator);
+
+        GeneratedTemplateWriter writer = new GeneratedTemplateWriter();
+        writer.writeToFile(generatedTemplate, outputPath);
     }
 
 }

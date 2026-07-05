@@ -153,7 +153,7 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
   }
 
   @Override
-  public FlaskPythonType visit(FLaskPythonForStatement forStmt) {
+  public FlaskPythonType visit(FlaskPythonForStatement forStmt) {
     FlaskPythonType iterableType = FlaskPythonType.UNKNOWN;
 
     if (forStmt.iterable != null) {

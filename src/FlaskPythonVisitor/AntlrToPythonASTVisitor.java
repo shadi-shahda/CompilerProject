@@ -23,8 +23,18 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
-    public FlaskPythonASTNode visitLine(FlaskPythonParser.LineContext ctx) {
-        return visit(ctx.getChild(0));
+    public FlaskPythonASTNode visitImportStatement(FlaskPythonParser.ImportStatementContext ctx) {
+        return visit(ctx.importStmt());
+    }
+
+    @Override
+    public FlaskPythonASTNode visitFunctionDeclarationStatement(FlaskPythonParser.FunctionDeclarationStatementContext ctx) {
+        return visit(ctx.functionDecl());
+    }
+
+    @Override
+    public FlaskPythonASTNode visitRegularStatement(FlaskPythonParser.RegularStatementContext ctx) {
+        return visit(ctx.statement());
     }
 
     @Override
@@ -97,8 +107,23 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     }
 
     @Override
-    public FlaskPythonASTNode visitStatement(FlaskPythonParser.StatementContext ctx) {
+    public FlaskPythonASTNode visitSimpleStatement(FlaskPythonParser.SimpleStatementContext ctx) {
+        return visit(ctx.simpleStmt());
+    }
+
+    @Override
+    public FlaskPythonASTNode visitForStatement(FlaskPythonParser.ForStatementContext ctx) {
+        return visit(ctx.forStmt());
+    }
+
+    @Override
+    public FlaskPythonASTNode visitSimpleStmt(FlaskPythonParser.SimpleStmtContext ctx) {
         return visit(ctx.getChild(0));
+    }
+
+    @Override
+    public FlaskPythonASTNode visitIfStatement(FlaskPythonParser.IfStatementContext ctx) {
+        return visit(ctx.ifStmt());
     }
 
     @Override
@@ -120,40 +145,46 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
         FlaskPythonExpression expression = (FlaskPythonExpression) visit(ctx.expression());
         return new FlaskPythonPrintStatement(expression, line);
     }
+//
+//    @Override
+//    public FlaskPythonASTNode visitCompareCond(FlaskPythonParser.CompareCondContext ctx) {
+//        int line = ctx.getStart().getLine();
+//        FlaskPythonExpression left = (FlaskPythonExpression) visit(ctx.expression(0));
+//        FlaskPythonExpression right = (FlaskPythonExpression) visit(ctx.expression(1));
+//        String op = ctx.getChild(1).getText();
+//        return new FlaskPythonBinaryExpression(left, op, right, line);
+//    }
+//
+//    @Override
+//    public FlaskPythonASTNode visitVarCond(FlaskPythonParser.VarCondContext ctx) {
+//        int line = ctx.getStart().getLine();
+//        String name = ctx.ID().getText();
+//        return new FlaskPythonIdentifier(name, line);
+//    }
+//
+//    @Override
+//    public FlaskPythonASTNode visitBoolCond(FlaskPythonParser.BoolCondContext ctx) {
+//        int line = ctx.getStart().getLine();
+//        boolean val = Boolean.parseBoolean(ctx.BOOLEAN().getText().toLowerCase());
+//        return new FlaskPythonBooleanLiteral(val, line);
+//    }
+
 
     @Override
-    public FlaskPythonASTNode visitCompareCond(FlaskPythonParser.CompareCondContext ctx) {
-        int line = ctx.getStart().getLine();
-        FlaskPythonExpression left = (FlaskPythonExpression) visit(ctx.expression(0));
-        FlaskPythonExpression right = (FlaskPythonExpression) visit(ctx.expression(1));
-        String op = ctx.getChild(1).getText();
-        return new FlaskPythonBinaryExpression(left, op, right, line);
+    public FlaskPythonASTNode visitCondition(FlaskPythonParser.ConditionContext ctx) {
+        return visit(ctx.expression());
     }
 
     @Override
-    public FlaskPythonASTNode visitVarCond(FlaskPythonParser.VarCondContext ctx) {
+    public FlaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
         int line = ctx.getStart().getLine();
-        String name = ctx.ID().getText();
-        return new FlaskPythonIdentifier(name, line);
-    }
+        String varName = ctx.ID().getText();
 
-    @Override
-    public FlaskPythonASTNode visitBoolCond(FlaskPythonParser.BoolCondContext ctx) {
-        int line = ctx.getStart().getLine();
-        boolean val = Boolean.parseBoolean(ctx.BOOLEAN().getText().toLowerCase());
-        return new FlaskPythonBooleanLiteral(val, line);
-    }
+        FlaskPythonExpression iterable = (FlaskPythonExpression) visit(ctx.expression());
 
-    @Override
-    public FLaskPythonForStatement visitForStmt(FlaskPythonParser.ForStmtContext ctx) {
-        int line = ctx.getStart().getLine();
-        String varName = ctx.ID(0).getText();
-
-        String listName = ctx.ID(1).getText();
-        FlaskPythonExpression iterable = new FlaskPythonIdentifier(listName, line);
         List<FlaskPythonStatement> body = getStatementsFromBlock(ctx.block());
 
-        return new FLaskPythonForStatement(varName, iterable, body, line);
+        return new FlaskPythonForStatement(varName, iterable, body, line);
     }
 
     @Override
@@ -170,8 +201,14 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression());
         String methodName = ctx.ID().getText();
         List<FlaskPythonArgument> args = getArguments(ctx.argList());
-
         return new FlaskPythonMethodCall(object, methodName, args, ctx.getStart().getLine());
+    }
+
+    @Override
+    public FlaskPythonASTNode visitBoolExpr(FlaskPythonParser.BoolExprContext ctx) {
+        int line = ctx.getStart().getLine();
+        boolean value = Boolean.parseBoolean(ctx.BOOLEAN().getText().toLowerCase());
+        return new FlaskPythonBooleanLiteral(value, line);
     }
 
     @Override
@@ -272,8 +309,10 @@ public class AntlrToPythonASTVisitor extends FlaskPythonParserBaseVisitor<FlaskP
     public FlaskPythonMemberAccess visitListAccessExpr(FlaskPythonParser.ListAccessExprContext ctx) {
         int line = ctx.getStart().getLine();
         FlaskPythonExpression object = (FlaskPythonExpression) visit(ctx.expression(0));
-        String index = ctx.expression(1).getText();
-        return new FlaskPythonMemberAccess(object, "[" + index + "]", line);
+        FlaskPythonExpression index = (FlaskPythonExpression) visit(ctx.expression(1));
+        String memberName = index.toString();
+        if (index instanceof FlaskPythonStringLiteral) memberName = ((FlaskPythonStringLiteral) index).value;
+        return new FlaskPythonMemberAccess(object, "[" + memberName + "]", line);
     }
 
     @Override
