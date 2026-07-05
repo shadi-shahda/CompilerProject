@@ -29,7 +29,7 @@ public class CssGenerator implements CssASTVisitor<String> {
                 sb.append(rule.selectors.get(i).accept(this)).append(" {\n");
                 break;
             }
-            sb.append(rule.selectors.get(i).accept(this)).append("\n");
+            sb.append(rule.selectors.get(i).accept(this)).append(",\n");
         }
         indentLevel++;
         for (int i = 0; i < rule.declarations.size(); i++) {
@@ -54,7 +54,7 @@ public class CssGenerator implements CssASTVisitor<String> {
                 sb.append(declaration.valueTerms.get(i).accept(this));
                 break;
             }
-            sb.append(declaration.valueTerms.get(i).accept(this)).append(", ");
+            sb.append(declaration.valueTerms.get(i).accept(this)).append(" ");
         }
         return sb.toString();
     }
@@ -107,7 +107,7 @@ public class CssGenerator implements CssASTVisitor<String> {
     @Override
     public String visit(CssFunction function) {
         StringBuilder sb = new StringBuilder();
-        sb.append(function.functionName).append("(");
+        sb.append(function.value).append("(");
         for (int i = 0; i < function.arguments.size(); i++) {
             if (i == function.arguments.size() - 1) {
                 sb.append(function.arguments.get(i).accept(this)).append(")");

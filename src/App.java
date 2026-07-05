@@ -99,6 +99,8 @@ public class App {
 
         symbolTable.printTable();
 
+        System.out.println("\n================ Generated Code ================\n");
+
         FlaskPythonGenerator flaskPythonGenerator = new FlaskPythonGenerator();
         String generatePython = astRoot.accept(flaskPythonGenerator);
         System.out.println(generatePython);
@@ -140,6 +142,8 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         CssSymbolTable.instance.printTable();
+
+        System.out.println("\n================ Generated Code ================\n");
 
         CssGenerator cssGenerator = new CssGenerator();
         String generateCss = astRoot.accept(cssGenerator);
@@ -196,6 +200,7 @@ public class App {
 
         symbolTable.printTable();
 
+        System.out.println("\n================ Generated Code ================\n");
         TemplatesGenerator generator = new TemplatesGenerator();
         String generatedTemplate = astRoot.accept(generator);
 
