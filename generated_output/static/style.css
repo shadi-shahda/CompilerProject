@@ -1,12 +1,12 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial sans-serif;
     background-color: #f4f4f4;
     direction: rtl
 }
 
 .container {
     width: 80%;
-    margin: 0, auto;
+    margin: 0 auto;
     text-align: center
 }
 
@@ -21,7 +21,7 @@ body {
     background: white;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0, 2px, 5px, null(0, 0, 0, null);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 200px
 }
 
@@ -35,11 +35,11 @@ img {
     border-radius: 4px
 }
 
-.btn
+.btn,
 button {
     background-color: #28a745;
     color: white;
-    padding: 10px, 20px;
+    padding: 10px 20px;
     text-decoration: none;
     border: none;
     border-radius: 5px;
@@ -50,7 +50,7 @@ button {
     background-color: #dc3545;
     color: white;
     text-decoration: none;
-    padding: 5px, 10px;
+    padding: 5px 10px;
     border-radius: 3px
 }
 
