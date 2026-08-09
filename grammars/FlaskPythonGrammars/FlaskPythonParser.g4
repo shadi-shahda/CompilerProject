@@ -98,10 +98,10 @@ argument:
 
 list: LBRACKET (elements | listComp)? RBRACKET;
 
-elements: expression (COMMA expression)*;
+elements: expression (COMMA expression)* COMMA?;
 
 listComp: expression FOR ID IN expression (IF expression)?;
 
-dictionary: LBRACE dictEntry (COMMA dictEntry)* RBRACE;
+dictionary: LBRACE dictEntry (COMMA dictEntry)* COMMA? RBRACE;
 
 dictEntry: expression COLON expression;

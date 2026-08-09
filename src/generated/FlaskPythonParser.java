@@ -2571,26 +2571,39 @@ public class FlaskPythonParser extends Parser {
 		enterRule(_localctx, 54, RULE_elements);
 		int _la;
 		try {
+			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(288);
 			expression(0);
 			setState(293);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==COMMA) {
-				{
-				{
-				setState(289);
-				match(COMMA);
-				setState(290);
-				expression(0);
-				}
+			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(289);
+					match(COMMA);
+					setState(290);
+					expression(0);
+					}
+					} 
 				}
 				setState(295);
 				_errHandler.sync(this);
-				_la = _input.LA(1);
+				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			}
+			setState(297);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==COMMA) {
+				{
+				setState(296);
+				match(COMMA);
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -2642,24 +2655,24 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(296);
-			expression(0);
-			setState(297);
-			match(FOR);
-			setState(298);
-			match(ID);
 			setState(299);
-			match(IN);
-			setState(300);
 			expression(0);
+			setState(300);
+			match(FOR);
+			setState(301);
+			match(ID);
+			setState(302);
+			match(IN);
 			setState(303);
+			expression(0);
+			setState(306);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
-				setState(301);
+				setState(304);
 				match(IF);
-				setState(302);
+				setState(305);
 				expression(0);
 				}
 			}
@@ -2715,29 +2728,42 @@ public class FlaskPythonParser extends Parser {
 		enterRule(_localctx, 58, RULE_dictionary);
 		int _la;
 		try {
+			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(305);
+			setState(308);
 			match(LBRACE);
-			setState(306);
+			setState(309);
 			dictEntry();
-			setState(311);
+			setState(314);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(310);
+					match(COMMA);
+					setState(311);
+					dictEntry();
+					}
+					} 
+				}
+				setState(316);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
+			}
+			setState(318);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==COMMA) {
+			if (_la==COMMA) {
 				{
-				{
-				setState(307);
+				setState(317);
 				match(COMMA);
-				setState(308);
-				dictEntry();
 				}
-				}
-				setState(313);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
 			}
-			setState(314);
+
+			setState(320);
 			match(RBRACE);
 			}
 		}
@@ -2786,11 +2812,11 @@ public class FlaskPythonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(316);
+			setState(322);
 			expression(0);
-			setState(317);
+			setState(323);
 			match(COLON);
-			setState(318);
+			setState(324);
 			expression(0);
 			}
 		}
@@ -2831,7 +2857,7 @@ public class FlaskPythonParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001,\u0141\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001,\u0147\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2877,29 +2903,30 @@ public class FlaskPythonParser extends Parser {
 		"\u0112\t\u0018\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0003\u0019"+
 		"\u0118\b\u0019\u0001\u001a\u0001\u001a\u0001\u001a\u0003\u001a\u011d\b"+
 		"\u001a\u0001\u001a\u0001\u001a\u0001\u001b\u0001\u001b\u0001\u001b\u0005"+
-		"\u001b\u0124\b\u001b\n\u001b\f\u001b\u0127\t\u001b\u0001\u001c\u0001\u001c"+
-		"\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0003\u001c"+
-		"\u0130\b\u001c\u0001\u001d\u0001\u001d\u0001\u001d\u0001\u001d\u0005\u001d"+
-		"\u0136\b\u001d\n\u001d\f\u001d\u0139\t\u001d\u0001\u001d\u0001\u001d\u0001"+
-		"\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0000\u0001,\u001f"+
-		"\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a"+
-		"\u001c\u001e \"$&(*,.02468:<\u0000\u0005\u0003\u0000\u000b\u000b\r\u000f"+
-		"((\u0001\u0000$%\u0001\u0000\"#\u0001\u0000 !\u0002\u0000\u000b\u000b"+
-		"\r\u000f\u014e\u0000B\u0001\u0000\u0000\u0000\u0002L\u0001\u0000\u0000"+
-		"\u0000\u0004N\u0001\u0000\u0000\u0000\u0006S\u0001\u0000\u0000\u0000\b"+
-		"[\u0001\u0000\u0000\u0000\n`\u0001\u0000\u0000\u0000\fl\u0001\u0000\u0000"+
-		"\u0000\u000ex\u0001\u0000\u0000\u0000\u0010\u0087\u0001\u0000\u0000\u0000"+
-		"\u0012\u008f\u0001\u0000\u0000\u0000\u0014\u009d\u0001\u0000\u0000\u0000"+
-		"\u0016\u00a6\u0001\u0000\u0000\u0000\u0018\u00a8\u0001\u0000\u0000\u0000"+
-		"\u001a\u00ad\u0001\u0000\u0000\u0000\u001c\u00af\u0001\u0000\u0000\u0000"+
-		"\u001e\u00b1\u0001\u0000\u0000\u0000 \u00ba\u0001\u0000\u0000\u0000\""+
-		"\u00bc\u0001\u0000\u0000\u0000$\u00c3\u0001\u0000\u0000\u0000&\u00c6\u0001"+
-		"\u0000\u0000\u0000(\u00ca\u0001\u0000\u0000\u0000*\u00d3\u0001\u0000\u0000"+
-		"\u0000,\u00e9\u0001\u0000\u0000\u0000.\u0109\u0001\u0000\u0000\u00000"+
-		"\u010b\u0001\u0000\u0000\u00002\u0117\u0001\u0000\u0000\u00004\u0119\u0001"+
-		"\u0000\u0000\u00006\u0120\u0001\u0000\u0000\u00008\u0128\u0001\u0000\u0000"+
-		"\u0000:\u0131\u0001\u0000\u0000\u0000<\u013c\u0001\u0000\u0000\u0000>"+
-		"A\u0005&\u0000\u0000?A\u0003\u0002\u0001\u0000@>\u0001\u0000\u0000\u0000"+
+		"\u001b\u0124\b\u001b\n\u001b\f\u001b\u0127\t\u001b\u0001\u001b\u0003\u001b"+
+		"\u012a\b\u001b\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c"+
+		"\u0001\u001c\u0001\u001c\u0003\u001c\u0133\b\u001c\u0001\u001d\u0001\u001d"+
+		"\u0001\u001d\u0001\u001d\u0005\u001d\u0139\b\u001d\n\u001d\f\u001d\u013c"+
+		"\t\u001d\u0001\u001d\u0003\u001d\u013f\b\u001d\u0001\u001d\u0001\u001d"+
+		"\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0000\u0001"+
+		",\u001f\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
+		"\u001a\u001c\u001e \"$&(*,.02468:<\u0000\u0005\u0003\u0000\u000b\u000b"+
+		"\r\u000f((\u0001\u0000$%\u0001\u0000\"#\u0001\u0000 !\u0002\u0000\u000b"+
+		"\u000b\r\u000f\u0156\u0000B\u0001\u0000\u0000\u0000\u0002L\u0001\u0000"+
+		"\u0000\u0000\u0004N\u0001\u0000\u0000\u0000\u0006S\u0001\u0000\u0000\u0000"+
+		"\b[\u0001\u0000\u0000\u0000\n`\u0001\u0000\u0000\u0000\fl\u0001\u0000"+
+		"\u0000\u0000\u000ex\u0001\u0000\u0000\u0000\u0010\u0087\u0001\u0000\u0000"+
+		"\u0000\u0012\u008f\u0001\u0000\u0000\u0000\u0014\u009d\u0001\u0000\u0000"+
+		"\u0000\u0016\u00a6\u0001\u0000\u0000\u0000\u0018\u00a8\u0001\u0000\u0000"+
+		"\u0000\u001a\u00ad\u0001\u0000\u0000\u0000\u001c\u00af\u0001\u0000\u0000"+
+		"\u0000\u001e\u00b1\u0001\u0000\u0000\u0000 \u00ba\u0001\u0000\u0000\u0000"+
+		"\"\u00bc\u0001\u0000\u0000\u0000$\u00c3\u0001\u0000\u0000\u0000&\u00c6"+
+		"\u0001\u0000\u0000\u0000(\u00ca\u0001\u0000\u0000\u0000*\u00d3\u0001\u0000"+
+		"\u0000\u0000,\u00e9\u0001\u0000\u0000\u0000.\u0109\u0001\u0000\u0000\u0000"+
+		"0\u010b\u0001\u0000\u0000\u00002\u0117\u0001\u0000\u0000\u00004\u0119"+
+		"\u0001\u0000\u0000\u00006\u0120\u0001\u0000\u0000\u00008\u012b\u0001\u0000"+
+		"\u0000\u0000:\u0134\u0001\u0000\u0000\u0000<\u0142\u0001\u0000\u0000\u0000"+
+		">A\u0005&\u0000\u0000?A\u0003\u0002\u0001\u0000@>\u0001\u0000\u0000\u0000"+
 		"@?\u0001\u0000\u0000\u0000AD\u0001\u0000\u0000\u0000B@\u0001\u0000\u0000"+
 		"\u0000BC\u0001\u0000\u0000\u0000CE\u0001\u0000\u0000\u0000DB\u0001\u0000"+
 		"\u0000\u0000EF\u0005\u0000\u0000\u0001F\u0001\u0001\u0000\u0000\u0000"+
@@ -3020,22 +3047,26 @@ public class FlaskPythonParser extends Parser {
 		"\u011f5\u0001\u0000\u0000\u0000\u0120\u0125\u0003,\u0016\u0000\u0121\u0122"+
 		"\u0005\u001c\u0000\u0000\u0122\u0124\u0003,\u0016\u0000\u0123\u0121\u0001"+
 		"\u0000\u0000\u0000\u0124\u0127\u0001\u0000\u0000\u0000\u0125\u0123\u0001"+
-		"\u0000\u0000\u0000\u0125\u0126\u0001\u0000\u0000\u0000\u01267\u0001\u0000"+
-		"\u0000\u0000\u0127\u0125\u0001\u0000\u0000\u0000\u0128\u0129\u0003,\u0016"+
-		"\u0000\u0129\u012a\u0005\u0007\u0000\u0000\u012a\u012b\u0005(\u0000\u0000"+
-		"\u012b\u012c\u0005\b\u0000\u0000\u012c\u012f\u0003,\u0016\u0000\u012d"+
-		"\u012e\u0005\u0005\u0000\u0000\u012e\u0130\u0003,\u0016\u0000\u012f\u012d"+
-		"\u0001\u0000\u0000\u0000\u012f\u0130\u0001\u0000\u0000\u0000\u01309\u0001"+
-		"\u0000\u0000\u0000\u0131\u0132\u0005\u0017\u0000\u0000\u0132\u0137\u0003"+
-		"<\u001e\u0000\u0133\u0134\u0005\u001c\u0000\u0000\u0134\u0136\u0003<\u001e"+
-		"\u0000\u0135\u0133\u0001\u0000\u0000\u0000\u0136\u0139\u0001\u0000\u0000"+
-		"\u0000\u0137\u0135\u0001\u0000\u0000\u0000\u0137\u0138\u0001\u0000\u0000"+
-		"\u0000\u0138\u013a\u0001\u0000\u0000\u0000\u0139\u0137\u0001\u0000\u0000"+
-		"\u0000\u013a\u013b\u0005\u0018\u0000\u0000\u013b;\u0001\u0000\u0000\u0000"+
-		"\u013c\u013d\u0003,\u0016\u0000\u013d\u013e\u0005\u001b\u0000\u0000\u013e"+
-		"\u013f\u0003,\u0016\u0000\u013f=\u0001\u0000\u0000\u0000\u001b@BLX`ft"+
+		"\u0000\u0000\u0000\u0125\u0126\u0001\u0000\u0000\u0000\u0126\u0129\u0001"+
+		"\u0000\u0000\u0000\u0127\u0125\u0001\u0000\u0000\u0000\u0128\u012a\u0005"+
+		"\u001c\u0000\u0000\u0129\u0128\u0001\u0000\u0000\u0000\u0129\u012a\u0001"+
+		"\u0000\u0000\u0000\u012a7\u0001\u0000\u0000\u0000\u012b\u012c\u0003,\u0016"+
+		"\u0000\u012c\u012d\u0005\u0007\u0000\u0000\u012d\u012e\u0005(\u0000\u0000"+
+		"\u012e\u012f\u0005\b\u0000\u0000\u012f\u0132\u0003,\u0016\u0000\u0130"+
+		"\u0131\u0005\u0005\u0000\u0000\u0131\u0133\u0003,\u0016\u0000\u0132\u0130"+
+		"\u0001\u0000\u0000\u0000\u0132\u0133\u0001\u0000\u0000\u0000\u01339\u0001"+
+		"\u0000\u0000\u0000\u0134\u0135\u0005\u0017\u0000\u0000\u0135\u013a\u0003"+
+		"<\u001e\u0000\u0136\u0137\u0005\u001c\u0000\u0000\u0137\u0139\u0003<\u001e"+
+		"\u0000\u0138\u0136\u0001\u0000\u0000\u0000\u0139\u013c\u0001\u0000\u0000"+
+		"\u0000\u013a\u0138\u0001\u0000\u0000\u0000\u013a\u013b\u0001\u0000\u0000"+
+		"\u0000\u013b\u013e\u0001\u0000\u0000\u0000\u013c\u013a\u0001\u0000\u0000"+
+		"\u0000\u013d\u013f\u0005\u001c\u0000\u0000\u013e\u013d\u0001\u0000\u0000"+
+		"\u0000\u013e\u013f\u0001\u0000\u0000\u0000\u013f\u0140\u0001\u0000\u0000"+
+		"\u0000\u0140\u0141\u0005\u0018\u0000\u0000\u0141;\u0001\u0000\u0000\u0000"+
+		"\u0142\u0143\u0003,\u0016\u0000\u0143\u0144\u0005\u001b\u0000\u0000\u0144"+
+		"\u0145\u0003,\u0016\u0000\u0145=\u0001\u0000\u0000\u0000\u001d@BLX`ft"+
 		"\u0080\u0083\u008c\u0094\u009d\u00a6\u00b8\u00d0\u00d9\u00df\u00e9\u00f9"+
-		"\u0104\u0106\u0110\u0117\u011c\u0125\u012f\u0137";
+		"\u0104\u0106\u0110\u0117\u011c\u0125\u0129\u0132\u013a\u013e";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
