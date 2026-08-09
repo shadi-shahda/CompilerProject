@@ -136,8 +136,8 @@ public class AntlrToCssASTVisitor extends CssParserBaseVisitor<CssASTNode> {
   @Override
   public CssASTNode visitFunction(FunctionContext ctx) {
     int line = ctx.getStart().getLine();
-    String funcationName = ctx.IDENTIFIER().getText();
-    CssFunction function = new CssFunction(funcationName, line);
+    String functionName = ctx.IDENTIFIER().getText();
+    CssFunction function = new CssFunction(functionName, line);
     for (CssParser.ValueTermContext value : ctx.valueTerm()) {
       function.addArgument((CssValueTerm) visit(value));
     }

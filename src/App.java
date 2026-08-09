@@ -1,9 +1,18 @@
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import CssGenerator.CssGenerator;
 import CssGenerator.GeneratedCssWriter;
+import FinalGeneration.FinalOutputWriter;
+import FinalGeneration.JinjaHtmlRenderer;
+import FinalGeneration.PythonContextExtractor;
+import FinalGeneration.PythonRuntimeContext;
+import FlaskPythonAST.FlaskPythonProgram;
 import FlaskPythonGenerator.FlaskPythonGenerator;
 import FlaskPythonGenerator.GeneratedPythonWriter;
+import TemplatesAST.TemplatesProgram;
 import TemplatesGenerator.TemplatesGenerator;
 import TemplatesGenerator.GeneratedTemplateWriter;
 import org.antlr.v4.runtime.CharStream;
@@ -31,6 +40,8 @@ import generated.TemplatesLexer;
 import generated.TemplatesParser;
 
 public class App {
+    private static PythonRuntimeContext runtimeContext;
+
     public static void main(String[] args) {
         String pythonSourceFile = "input_files/app.py";
         String cssSourceFile = "input_files/static/style.css";
@@ -49,9 +60,9 @@ public class App {
                     "detail.html");
             printHtml(indexSourceFile, pythonSymbolTable, indexOutputPath);
             printHtml(detailsSourceFile, pythonSymbolTable, detailOutputPath);
-            printHtml(addSourceFile, pythonSymbolTable, addOutputPath);
-            printCss(cssSourceFile, cssOutputPath);
-            CssSymbolTable.instance.performCrossCheck();
+//            printHtml(addSourceFile, pythonSymbolTable, addOutputPath);
+//            printCss(cssSourceFile, cssOutputPath);
+//            CssSymbolTable.instance.performCrossCheck();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,11 +110,16 @@ public class App {
 
         symbolTable.printTable();
 
+        System.out.println("\n================ Generated Code ================\n");
+
         FlaskPythonGenerator flaskPythonGenerator = new FlaskPythonGenerator();
         String generatePython = astRoot.accept(flaskPythonGenerator);
-        System.out.println(generatePython);
         GeneratedPythonWriter writer = new GeneratedPythonWriter();
         writer.writeToFile(generatePython, "generated_output/app.py");
+
+        PythonContextExtractor extractor = new PythonContextExtractor();
+        runtimeContext = extractor.extract((FlaskPythonProgram) astRoot);
+        System.out.println(runtimeContext.toString());
         return symbolTable;
     }
 
@@ -140,6 +156,8 @@ public class App {
         System.out.println("\n================ Symbot Table ================\n");
 
         CssSymbolTable.instance.printTable();
+
+        System.out.println("\n================ Generated Code ================\n");
 
         CssGenerator cssGenerator = new CssGenerator();
         String generateCss = astRoot.accept(cssGenerator);
@@ -196,11 +214,87 @@ public class App {
 
         symbolTable.printTable();
 
+        System.out.println("\n================ Generated Code ================\n");
         TemplatesGenerator generator = new TemplatesGenerator();
         String generatedTemplate = astRoot.accept(generator);
 
         GeneratedTemplateWriter writer = new GeneratedTemplateWriter();
         writer.writeToFile(generatedTemplate, outputPath);
+
+        if (astRoot instanceof TemplatesProgram templatesProgram) {
+            generateFinalHtmlOutput(htmlSourceFile, templatesProgram);
+        }
+    }
+
+    private static void generateFinalHtmlOutput(
+            String htmlSourceFile,
+            TemplatesProgram templatesProgram
+    ) {
+        if (runtimeContext == null) {
+            System.out.println("Runtime context is null. Make sure Python file is processed before templates.");
+            return;
+        }
+
+        Map<String, Object> globals = runtimeContext.getGlobals();
+        FinalOutputWriter writer = new FinalOutputWriter();
+
+        if (htmlSourceFile.endsWith("index.html")) {
+            System.out.println("\n================ Final HTML Rendering: index.html ================\n");
+
+            JinjaHtmlRenderer renderer = new JinjaHtmlRenderer(globals);
+            String finalHtml = templatesProgram.accept(renderer);
+
+            System.out.println(finalHtml);
+            writer.write("output/index.html", finalHtml);
+            return;
+        }
+
+        if (htmlSourceFile.endsWith("add.html")) {
+            System.out.println("\n================ Final HTML Rendering: add.html ================\n");
+
+            JinjaHtmlRenderer renderer = new JinjaHtmlRenderer(globals);
+            String finalHtml = templatesProgram.accept(renderer);
+
+            System.out.println(finalHtml);
+            writer.write("output/add.html", finalHtml);
+            return;
+        }
+
+        if (htmlSourceFile.endsWith("detail.html")) {
+            System.out.println("\n================ Final HTML Rendering: detail.html ================\n");
+
+            Object productsObject = globals.get("products");
+
+            if (!(productsObject instanceof List<?> products)) {
+                System.out.println("Cannot render detail pages. products list was not found in runtime context.");
+                return;
+            }
+
+            for (Object product : products) {
+                Map<String, Object> pageContext = new HashMap<>(globals);
+                pageContext.put("product", product);
+
+                JinjaHtmlRenderer renderer = new JinjaHtmlRenderer(pageContext);
+                String finalHtml = templatesProgram.accept(renderer);
+
+                String outputPath = buildDetailOutputPath(product);
+
+                System.out.println("Generated detail page: " + outputPath);
+                writer.write(outputPath, finalHtml);
+            }
+        }
+    }
+
+    private static String buildDetailOutputPath(Object product) {
+        if (product instanceof Map<?, ?> productMap) {
+            Object id = productMap.get("id");
+
+            if (id != null) {
+                return "output/detail_" + id + ".html";
+            }
+        }
+
+        return "output/detail.html";
     }
 
 }

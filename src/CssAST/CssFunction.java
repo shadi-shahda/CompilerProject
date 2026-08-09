@@ -7,7 +7,7 @@ import CssVisitor.CssASTVisitor;
 
 public class CssFunction extends CssValueTerm {
   public List<CssValueTerm> arguments;
-  public String functionName;
+
   public CssFunction(String functionName, int line) {
     super(functionName, line);
     this.arguments = new ArrayList<>();

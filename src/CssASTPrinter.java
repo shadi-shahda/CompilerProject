@@ -34,7 +34,6 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return indent() + "NodeId:" + (++nodeCounter) + " Type:" + node.getClass().getSimpleName() + "\n";
   }
 
-  // ================= PROGRAM =================
   @Override
   public String visit(CssProgram program) {
     StringBuilder sb = new StringBuilder();
@@ -50,7 +49,6 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= RULE =================
   @Override
   public String visit(CssRule rule) {
     StringBuilder sb = new StringBuilder();
@@ -72,7 +70,6 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= DECLARATION =================
   @Override
   public String visit(CssDeclaration declaration) {
     StringBuilder sb = new StringBuilder();
@@ -96,7 +93,6 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return sb.toString();
   }
 
-  // ================= SELECTORS =================
   @Override
   public String visit(CssTagSelector tagSelector) {
     return line("TagSelector: " + tagSelector.name, tagSelector.getLine());
@@ -112,7 +108,6 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return line("IdSelector: #" + idSelector.name, idSelector.getLine());
   }
 
-  // ================= VALUES (NO MODIFICATION) =================
   @Override
   public String visit(CssIdentValue v) {
     return line("IdentValue: " + v.value, v.getLine());
@@ -148,12 +143,11 @@ public class CssASTPrinter implements CssASTVisitor<String> {
     return line("HexValue: " + v.value, v.getLine());
   }
 
-  // ================= FUNCTION =================
   @Override
   public String visit(CssFunction function) {
     StringBuilder sb = new StringBuilder();
 
-    String name = (function.functionName != null) ? function.functionName : "unknown";
+    String name = (function.value != null) ? function.value : "unknown";
 
     sb.append(line("Function: " + name, function.getLine()));
 
