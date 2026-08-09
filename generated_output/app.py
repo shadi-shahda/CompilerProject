@@ -2,19 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 products = [
     {
-        "id": 1,
+        "image": "https://via.placeholder.com/150",
         "name": "Laptop",
         "details": "High performance laptop for coding.",
-        "image": "https://via.placeholder.com/150",
-        "price": 1500
+        "id": 1,
+        "price": 1500,
     },
     {
-        "name": "Phone",
-        "image": "https://via.placeholder.com/150",
         "details": "Smart phone with great camera.",
+        "price": 800,
+        "image": "https://via.placeholder.com/150",
+        "name": "Phone",
         "id": 2,
-        "price": 800
-    }
+    },
 ]
 @app.route('/')
 def index():
@@ -39,11 +39,11 @@ def add_product():
         details = request.form["details"]
         image = request.form["image"]
         new_product = {
-            "image": image,
-            "id": new_id,
             "price": price,
             "details": details,
-            "name": name
+            "image": image,
+            "name": name,
+            "id": new_id,
         }
         products.append(new_product)
         return redirect(url_for("index"))
