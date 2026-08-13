@@ -2,18 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 products = [
     {
-        "details": "High performance laptop for coding.",
-        "name": "Laptop",
-        "price": 1500,
         "image": "https://via.placeholder.com/150",
         "id": 1,
+        "details": "High performance laptop for coding.",
+        "price": 1500,
+        "name": "Laptop",
     },
     {
-        "image": "https://via.placeholder.com/150",
         "details": "Smart phone with great camera.",
         "id": 2,
-        "price": 800,
         "name": "Phone",
+        "price": 800,
+        "image": "https://via.placeholder.com/150",
     },
 ]
 @app.route('/')
@@ -33,7 +33,11 @@ def product_detail(id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_product():
     if request.method == "POST":
-        new_id = len(products) + 1
+        new_id = 1
+        for p in products:
+            if p["id"] == new_id:
+                new_id = new_id + 1
+
         name = request.form["name"]
         price = request.form["price"]
         details = request.form["details"]

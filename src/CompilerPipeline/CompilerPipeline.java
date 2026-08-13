@@ -58,6 +58,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import java.io.File;
 
 public class CompilerPipeline {
 
@@ -1003,7 +1004,7 @@ public class CompilerPipeline {
         // =========================================================
         // Dynamic Detail Pages
         // =========================================================
-
+        cleanOldDetailPages();
         generatedFiles.addAll(
                 renderDetailPages(
                         pythonResult,
@@ -1033,6 +1034,46 @@ public class CompilerPipeline {
         return generatedFiles;
     }
 
+
+
+    private void cleanOldDetailPages() {
+
+        File outputDirectory =
+                new File("output");
+
+        if (!outputDirectory.exists()) {
+            return;
+        }
+
+        File[] oldDetailFiles =
+                outputDirectory.listFiles(
+                        (dir, name) ->
+                                name.startsWith("detail_")
+                                        && name.endsWith(".html")
+                );
+
+        if (oldDetailFiles == null) {
+            return;
+        }
+
+        for (File file : oldDetailFiles) {
+
+            if (file.delete()) {
+
+                System.out.println(
+                        "Old generated detail page deleted: "
+                                + file.getPath()
+                );
+
+            } else {
+
+                System.out.println(
+                        "Could not delete old detail page: "
+                                + file.getPath()
+                );
+            }
+        }
+    }
 
     // =====================================================================
     // Render Dynamic Detail Pages

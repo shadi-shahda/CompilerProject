@@ -40,18 +40,6 @@
           {
             "type": "FlaskPythonDictionaryExpression",
             "entries": {
-              "details": {
-                "type": "FlaskPythonStringLiteral",
-                "value": "High performance laptop for coding."
-              },
-              "name": {
-                "type": "FlaskPythonStringLiteral",
-                "value": "Laptop"
-              },
-              "price": {
-                "type": "FlaskPythonIntegerLiteral",
-                "value": 1500
-              },
               "image": {
                 "type": "FlaskPythonStringLiteral",
                 "value": "https://via.placeholder.com/150"
@@ -59,16 +47,24 @@
               "id": {
                 "type": "FlaskPythonIntegerLiteral",
                 "value": 1
+              },
+              "details": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "High performance laptop for coding."
+              },
+              "price": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 1500
+              },
+              "name": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "Laptop"
               }
             }
           },
           {
             "type": "FlaskPythonDictionaryExpression",
             "entries": {
-              "image": {
-                "type": "FlaskPythonStringLiteral",
-                "value": "https://via.placeholder.com/150"
-              },
               "details": {
                 "type": "FlaskPythonStringLiteral",
                 "value": "Smart phone with great camera."
@@ -77,13 +73,17 @@
                 "type": "FlaskPythonIntegerLiteral",
                 "value": 2
               },
+              "name": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "Phone"
+              },
               "price": {
                 "type": "FlaskPythonIntegerLiteral",
                 "value": 800
               },
-              "name": {
+              "image": {
                 "type": "FlaskPythonStringLiteral",
-                "value": "Phone"
+                "value": "https://via.placeholder.com/150"
               }
             }
           }
@@ -245,28 +245,57 @@
               "type": "FlaskPythonAssignmentStatement",
               "variableName": "new_id",
               "expression": {
-                "type": "FlaskPythonBinaryExpression",
-                "left": {
-                  "type": "FlaskPythonFunctionCall",
-                  "functionName": "len",
-                  "arguments": [
-                    {
-                      "type": "FlaskPythonArgument",
-                      "keywordName": null,
-                      "value": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 1
+              }
+            },
+            {
+              "type": "FlaskPythonForStatement",
+              "variableName": "p",
+              "iterable": {
+                "type": "FlaskPythonIdentifier",
+                "name": "products"
+              },
+              "body": [
+                {
+                  "type": "FlaskPythonIfStatement",
+                  "condition": {
+                    "type": "FlaskPythonBinaryExpression",
+                    "left": {
+                      "type": "FlaskPythonMemberAccess",
+                      "object": {
                         "type": "FlaskPythonIdentifier",
-                        "name": "products"
+                        "name": "p"
+                      },
+                      "memberName": "[id]"
+                    },
+                    "right": {
+                      "type": "FlaskPythonIdentifier",
+                      "name": "new_id"
+                    },
+                    "operator": "=="
+                  },
+                  "thenBloc": [
+                    {
+                      "type": "FlaskPythonAssignmentStatement",
+                      "variableName": "new_id",
+                      "expression": {
+                        "type": "FlaskPythonBinaryExpression",
+                        "left": {
+                          "type": "FlaskPythonIdentifier",
+                          "name": "new_id"
+                        },
+                        "right": {
+                          "type": "FlaskPythonIntegerLiteral",
+                          "value": 1
+                        },
+                        "operator": "+"
                       }
                     }
                   ],
-                  "isFlaskFunction": false
-                },
-                "right": {
-                  "type": "FlaskPythonIntegerLiteral",
-                  "value": 1
-                },
-                "operator": "+"
-              }
+                  "elseBloc": null
+                }
+              ]
             },
             {
               "type": "FlaskPythonAssignmentStatement",

@@ -33,11 +33,18 @@ def product_detail(id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_product():
     if request.method == "POST":
-        new_id = len(products) + 1
+
+        new_id = 1
+
+        for p in products:
+            if p["id"] == new_id:
+                new_id = new_id + 1
+
         name = request.form["name"]
         price = request.form["price"]
         details = request.form["details"]
         image = request.form["image"]
+
         new_product = {
             "image": image,
             "id": new_id,
@@ -45,8 +52,11 @@ def add_product():
             "details": details,
             "name": name
         }
+
         products.append(new_product)
+
         return redirect(url_for("index"))
+
     return render_template("add.html")
 
 @app.route('/delete/<int:id>')
