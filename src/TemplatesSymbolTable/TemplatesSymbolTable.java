@@ -141,4 +141,14 @@ public class TemplatesSymbolTable {
         }
         System.out.println("=============================================================================");
     }
+
+    public List<TemplatesSymbol> getAllSymbols() {
+        List<TemplatesSymbol> result = new ArrayList<>();
+
+        for (Map<String, TemplatesSymbol> scope : scopes) {
+            result.addAll(scope.values());
+        }
+
+        return result;
+    }
 }

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GeneratedCssWriter {
+
     public void writeToFile(String generatedCode, String outputPath) {
         try {
             Path path = Path.of(outputPath);
@@ -14,13 +15,20 @@ public class GeneratedCssWriter {
                 Files.createDirectories(path.getParent());
             }
 
-            Files.writeString(path, generatedCode, StandardCharsets.UTF_8);
+            Files.writeString(
+                    path,
+                    generatedCode,
+                    StandardCharsets.UTF_8
+            );
 
-            System.out.println("Python file generated successfully:");
+            System.out.println("CSS file generated successfully:");
             System.out.println(path.toAbsolutePath());
 
         } catch (IOException e) {
-            System.err.println("Failed to generate Python file: " + e.getMessage());
+            System.err.println(
+                    "Failed to generate CSS file: "
+                            + e.getMessage()
+            );
         }
     }
 }

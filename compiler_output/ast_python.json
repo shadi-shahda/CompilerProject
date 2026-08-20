@@ -1,0 +1,598 @@
+{
+  "type": "FlaskPythonProgram",
+  "statements": [
+    {
+      "type": "FlaskPythonImportStatement",
+      "libraryName": "flask",
+      "importedItems": [
+        "Flask",
+        "render_template",
+        "request",
+        "redirect",
+        "url_for"
+      ]
+    },
+    {
+      "type": "FlaskPythonAssignmentStatement",
+      "variableName": "app",
+      "expression": {
+        "type": "FlaskPythonFunctionCall",
+        "functionName": "Flask",
+        "arguments": [
+          {
+            "type": "FlaskPythonArgument",
+            "keywordName": null,
+            "value": {
+              "type": "FlaskPythonIdentifier",
+              "name": "__name__"
+            }
+          }
+        ],
+        "isFlaskFunction": true
+      }
+    },
+    {
+      "type": "FlaskPythonAssignmentStatement",
+      "variableName": "products",
+      "expression": {
+        "type": "FlaskPythonListExpression",
+        "elements": [
+          {
+            "type": "FlaskPythonDictionaryExpression",
+            "entries": {
+              "image": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "https://via.placeholder.com/150"
+              },
+              "id": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 1
+              },
+              "details": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "High performance laptop for coding."
+              },
+              "price": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 1500
+              },
+              "name": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "Laptop"
+              }
+            }
+          },
+          {
+            "type": "FlaskPythonDictionaryExpression",
+            "entries": {
+              "details": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "Smart phone with great camera."
+              },
+              "id": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 2
+              },
+              "name": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "Phone"
+              },
+              "price": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 800
+              },
+              "image": {
+                "type": "FlaskPythonStringLiteral",
+                "value": "https://via.placeholder.com/150"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "FlaskPythonFunctionDeclaration",
+      "name": "index",
+      "parameters": [
+      ],
+      "body": [
+        {
+          "type": "FlaskPythonReturnStatement",
+          "expression": {
+            "type": "FlaskPythonFunctionCall",
+            "functionName": "render_template",
+            "arguments": [
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": null,
+                "value": {
+                  "type": "FlaskPythonStringLiteral",
+                  "value": "index.html"
+                }
+              },
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": "products",
+                "value": {
+                  "type": "FlaskPythonIdentifier",
+                  "name": "products"
+                }
+              }
+            ],
+            "isFlaskFunction": true
+          }
+        }
+      ],
+      "routePath": "/",
+      "methods": [
+      ]
+    },
+    {
+      "type": "FlaskPythonFunctionDeclaration",
+      "name": "product_detail",
+      "parameters": [
+        "id"
+      ],
+      "body": [
+        {
+          "type": "FlaskPythonAssignmentStatement",
+          "variableName": "product",
+          "expression": {
+            "type": "FlaskPythonIdentifier",
+            "name": "None"
+          }
+        },
+        {
+          "type": "FlaskPythonForStatement",
+          "variableName": "p",
+          "iterable": {
+            "type": "FlaskPythonIdentifier",
+            "name": "products"
+          },
+          "body": [
+            {
+              "type": "FlaskPythonIfStatement",
+              "condition": {
+                "type": "FlaskPythonBinaryExpression",
+                "left": {
+                  "type": "FlaskPythonMemberAccess",
+                  "object": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "p"
+                  },
+                  "memberName": "[id]"
+                },
+                "right": {
+                  "type": "FlaskPythonIdentifier",
+                  "name": "id"
+                },
+                "operator": "=="
+              },
+              "thenBloc": [
+                {
+                  "type": "FlaskPythonAssignmentStatement",
+                  "variableName": "product",
+                  "expression": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "p"
+                  }
+                },
+                {
+                  "type": "FlaskPythonBreakStatement"
+                }
+              ],
+              "elseBloc": null
+            }
+          ]
+        },
+        {
+          "type": "FlaskPythonReturnStatement",
+          "expression": {
+            "type": "FlaskPythonFunctionCall",
+            "functionName": "render_template",
+            "arguments": [
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": null,
+                "value": {
+                  "type": "FlaskPythonStringLiteral",
+                  "value": "detail.html"
+                }
+              },
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": "product",
+                "value": {
+                  "type": "FlaskPythonIdentifier",
+                  "name": "product"
+                }
+              }
+            ],
+            "isFlaskFunction": true
+          }
+        }
+      ],
+      "routePath": "/product/<int:id>",
+      "methods": [
+      ]
+    },
+    {
+      "type": "FlaskPythonFunctionDeclaration",
+      "name": "add_product",
+      "parameters": [
+      ],
+      "body": [
+        {
+          "type": "FlaskPythonIfStatement",
+          "condition": {
+            "type": "FlaskPythonBinaryExpression",
+            "left": {
+              "type": "FlaskPythonMemberAccess",
+              "object": {
+                "type": "FlaskPythonIdentifier",
+                "name": "request"
+              },
+              "memberName": "method"
+            },
+            "right": {
+              "type": "FlaskPythonStringLiteral",
+              "value": "POST"
+            },
+            "operator": "=="
+          },
+          "thenBloc": [
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "new_id",
+              "expression": {
+                "type": "FlaskPythonIntegerLiteral",
+                "value": 1
+              }
+            },
+            {
+              "type": "FlaskPythonForStatement",
+              "variableName": "p",
+              "iterable": {
+                "type": "FlaskPythonIdentifier",
+                "name": "products"
+              },
+              "body": [
+                {
+                  "type": "FlaskPythonIfStatement",
+                  "condition": {
+                    "type": "FlaskPythonBinaryExpression",
+                    "left": {
+                      "type": "FlaskPythonMemberAccess",
+                      "object": {
+                        "type": "FlaskPythonIdentifier",
+                        "name": "p"
+                      },
+                      "memberName": "[id]"
+                    },
+                    "right": {
+                      "type": "FlaskPythonIdentifier",
+                      "name": "new_id"
+                    },
+                    "operator": "=="
+                  },
+                  "thenBloc": [
+                    {
+                      "type": "FlaskPythonAssignmentStatement",
+                      "variableName": "new_id",
+                      "expression": {
+                        "type": "FlaskPythonBinaryExpression",
+                        "left": {
+                          "type": "FlaskPythonIdentifier",
+                          "name": "new_id"
+                        },
+                        "right": {
+                          "type": "FlaskPythonIntegerLiteral",
+                          "value": 1
+                        },
+                        "operator": "+"
+                      }
+                    }
+                  ],
+                  "elseBloc": null
+                }
+              ]
+            },
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "name",
+              "expression": {
+                "type": "FlaskPythonMemberAccess",
+                "object": {
+                  "type": "FlaskPythonMemberAccess",
+                  "object": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "request"
+                  },
+                  "memberName": "form"
+                },
+                "memberName": "[name]"
+              }
+            },
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "price",
+              "expression": {
+                "type": "FlaskPythonMemberAccess",
+                "object": {
+                  "type": "FlaskPythonMemberAccess",
+                  "object": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "request"
+                  },
+                  "memberName": "form"
+                },
+                "memberName": "[price]"
+              }
+            },
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "details",
+              "expression": {
+                "type": "FlaskPythonMemberAccess",
+                "object": {
+                  "type": "FlaskPythonMemberAccess",
+                  "object": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "request"
+                  },
+                  "memberName": "form"
+                },
+                "memberName": "[details]"
+              }
+            },
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "image",
+              "expression": {
+                "type": "FlaskPythonMemberAccess",
+                "object": {
+                  "type": "FlaskPythonMemberAccess",
+                  "object": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "request"
+                  },
+                  "memberName": "form"
+                },
+                "memberName": "[image]"
+              }
+            },
+            {
+              "type": "FlaskPythonAssignmentStatement",
+              "variableName": "new_product",
+              "expression": {
+                "type": "FlaskPythonDictionaryExpression",
+                "entries": {
+                  "name": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "name"
+                  },
+                  "price": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "price"
+                  },
+                  "details": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "details"
+                  },
+                  "image": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "image"
+                  },
+                  "id": {
+                    "type": "FlaskPythonIdentifier",
+                    "name": "new_id"
+                  }
+                }
+              }
+            },
+            {
+              "type": "FlaskPythonExpressionStatement",
+              "expression": {
+                "type": "FlaskPythonMethodCall",
+                "object": {
+                  "type": "FlaskPythonIdentifier",
+                  "name": "products"
+                },
+                "methodName": "append",
+                "arguments": [
+                  {
+                    "type": "FlaskPythonArgument",
+                    "keywordName": null,
+                    "value": {
+                      "type": "FlaskPythonIdentifier",
+                      "name": "new_product"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "FlaskPythonReturnStatement",
+              "expression": {
+                "type": "FlaskPythonFunctionCall",
+                "functionName": "redirect",
+                "arguments": [
+                  {
+                    "type": "FlaskPythonArgument",
+                    "keywordName": null,
+                    "value": {
+                      "type": "FlaskPythonFunctionCall",
+                      "functionName": "url_for",
+                      "arguments": [
+                        {
+                          "type": "FlaskPythonArgument",
+                          "keywordName": null,
+                          "value": {
+                            "type": "FlaskPythonStringLiteral",
+                            "value": "index"
+                          }
+                        }
+                      ],
+                      "isFlaskFunction": true
+                    }
+                  }
+                ],
+                "isFlaskFunction": true
+              }
+            }
+          ],
+          "elseBloc": null
+        },
+        {
+          "type": "FlaskPythonReturnStatement",
+          "expression": {
+            "type": "FlaskPythonFunctionCall",
+            "functionName": "render_template",
+            "arguments": [
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": null,
+                "value": {
+                  "type": "FlaskPythonStringLiteral",
+                  "value": "add.html"
+                }
+              }
+            ],
+            "isFlaskFunction": true
+          }
+        }
+      ],
+      "routePath": "/add",
+      "methods": [
+        "'GET'",
+        "'POST'"
+      ]
+    },
+    {
+      "type": "FlaskPythonFunctionDeclaration",
+      "name": "delete_product",
+      "parameters": [
+        "id"
+      ],
+      "body": [
+        {
+          "type": "FlaskPythonGlobalStatement",
+          "variableNames": [
+            "products"
+          ]
+        },
+        {
+          "type": "FlaskPythonAssignmentStatement",
+          "variableName": "products",
+          "expression": {
+            "type": "FlaskPythonListComprehensionExpression",
+            "elementExpression": {
+              "type": "FlaskPythonIdentifier",
+              "name": "p"
+            },
+            "loopVariable": "p",
+            "iterableExpression": {
+              "type": "FlaskPythonIdentifier",
+              "name": "products"
+            },
+            "conditionExpression": {
+              "type": "FlaskPythonBinaryExpression",
+              "left": {
+                "type": "FlaskPythonMemberAccess",
+                "object": {
+                  "type": "FlaskPythonIdentifier",
+                  "name": "p"
+                },
+                "memberName": "[id]"
+              },
+              "right": {
+                "type": "FlaskPythonIdentifier",
+                "name": "id"
+              },
+              "operator": "!="
+            }
+          }
+        },
+        {
+          "type": "FlaskPythonReturnStatement",
+          "expression": {
+            "type": "FlaskPythonFunctionCall",
+            "functionName": "redirect",
+            "arguments": [
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": null,
+                "value": {
+                  "type": "FlaskPythonFunctionCall",
+                  "functionName": "url_for",
+                  "arguments": [
+                    {
+                      "type": "FlaskPythonArgument",
+                      "keywordName": null,
+                      "value": {
+                        "type": "FlaskPythonStringLiteral",
+                        "value": "index"
+                      }
+                    }
+                  ],
+                  "isFlaskFunction": true
+                }
+              }
+            ],
+            "isFlaskFunction": true
+          }
+        }
+      ],
+      "routePath": "/delete/<int:id>",
+      "methods": [
+      ]
+    },
+    {
+      "type": "FlaskPythonIfStatement",
+      "condition": {
+        "type": "FlaskPythonBinaryExpression",
+        "left": {
+          "type": "FlaskPythonIdentifier",
+          "name": "__name__"
+        },
+        "right": {
+          "type": "FlaskPythonStringLiteral",
+          "value": "__main__"
+        },
+        "operator": "=="
+      },
+      "thenBloc": [
+        {
+          "type": "FlaskPythonExpressionStatement",
+          "expression": {
+            "type": "FlaskPythonMethodCall",
+            "object": {
+              "type": "FlaskPythonIdentifier",
+              "name": "app"
+            },
+            "methodName": "run",
+            "arguments": [
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": "debug",
+                "value": {
+                  "type": "FlaskPythonBooleanLiteral",
+                  "value": true
+                }
+              },
+              {
+                "type": "FlaskPythonArgument",
+                "keywordName": "port",
+                "value": {
+                  "type": "FlaskPythonIntegerLiteral",
+                  "value": 5001
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "elseBloc": null
+    }
+  ]
+}

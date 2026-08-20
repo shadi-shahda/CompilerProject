@@ -56,8 +56,73 @@ public class JinjaHtmlRenderer implements TemplatesASTVisitor<String> {
 
     @Override
     public String visit(KeyValueAttribute attribute) {
-        String value = attribute.value.accept(this);
-        return attribute.getKey() + "=\"" + value + "\"";
+
+        String value =
+                attribute.value.accept(this);
+
+        /*
+         * Static generation:
+         *
+         * /product/1 -> detail_1.html
+         * /product/2 -> detail_2.html
+         */
+        if (
+                "href".equalsIgnoreCase(attribute.getKey())
+                        && value != null
+                        && value.startsWith("/product/")
+        ) {
+
+            String id =
+                    value.substring(
+                            "/product/".length()
+                    );
+
+            value =
+                    "detail_"
+                            + id
+                            + ".html";
+        }
+
+        /*
+         * Static add page:
+         *
+         * /add -> add.html
+         */
+        if (
+                "href".equalsIgnoreCase(attribute.getKey())
+                        && "/add".equals(value)
+        ) {
+            value = "add.html";
+        }
+
+        /*
+         * Static home page:
+         *
+         * / -> index.html
+         */
+        if (
+                "href".equalsIgnoreCase(attribute.getKey())
+                        && "/".equals(value)
+        ) {
+            value = "index.html";
+        }
+
+        /*
+         * Static CSS path:
+         *
+         * /static/style.css -> static/style.css
+         */
+        if (
+                "href".equalsIgnoreCase(attribute.getKey())
+                        && "/static/style.css".equals(value)
+        ) {
+            value = "static/style.css";
+        }
+
+        return attribute.getKey()
+                + "=\""
+                + value
+                + "\"";
     }
 
     @Override
