@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-from regeneration_helper import regenerate
 
 app = Flask(__name__)
 
@@ -46,8 +45,6 @@ def add_product():
 
         products.append(new_product)
 
-        regenerate(products)
-
         return redirect(url_for("index"))
 
     return render_template("add.html")
@@ -61,8 +58,6 @@ def delete_product(id):
         p for p in products
         if p["id"] != id
     ]
-
-    regenerate(products)
 
     return redirect(url_for("index"))
 

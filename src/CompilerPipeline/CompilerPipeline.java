@@ -21,7 +21,6 @@ import CssVisitor.AntlrToCssASTVisitor;
 import FinalGeneration.FinalOutputWriter;
 import FinalGeneration.JinjaHtmlRenderer;
 import FinalGeneration.PythonContextExtractor;
-import FinalGeneration.PythonFunctionRenderExecutor;
 import FinalGeneration.PythonRenderTemplateAnalyzer;
 import FinalGeneration.PythonRuntimeContext;
 import FinalGeneration.RenderContextResolver;
@@ -1118,9 +1117,6 @@ public class CompilerPipeline {
             return generatedFiles;
         }
 
-        PythonFunctionRenderExecutor executor =
-                new PythonFunctionRenderExecutor();
-
         for (
                 Object productObject
                 : products
@@ -1159,70 +1155,10 @@ public class CompilerPipeline {
                     idValue
             );
 
-
-            // =========================================================
-            // Execute Python Route Function
-            // =========================================================
-
-            PythonFunctionRenderExecutor.ExecutionResult executionResult =
-                    executor.execute(
-                            pythonResult.program,
-                            pythonResult.runtimeContext,
-                            binding.getFunctionName(),
-                            parameters
-                    );
-
-            if (
-                    !executionResult.isSuccess()
-            ) {
-
-                System.out.println(
-                        "Cannot generate detail page for id "
-                                + idValue
-                                + ": "
-                                + executionResult.getError()
-                );
-
-                continue;
-            }
-
-
-            // =========================================================
-            // Render Jinja Template
-            // =========================================================
-
-            JinjaHtmlRenderer renderer =
-                    new JinjaHtmlRenderer(
-                            executionResult.getContext()
-                    );
-
-            String html =
-                    detailResult.program.accept(
-                            renderer
-                    );
-
-
-            // =========================================================
-            // Output Path
-            // =========================================================
-
             String outputPath =
                     "output/detail_"
                             + idValue
                             + ".html";
-
-
-            // =========================================================
-            // Write HTML
-            // =========================================================
-
-            FinalOutputWriter writer =
-                    new FinalOutputWriter();
-
-            writer.write(
-                    outputPath,
-                    html
-            );
 
 
             // =========================================================
