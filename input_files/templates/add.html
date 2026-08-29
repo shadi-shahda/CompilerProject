@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
     <title>Add Product</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>add product</h1>
-        <form method="POST">
-            <input type="text" name="name" placeholder="name" required>
-            <input type="number" name="price" placeholder="price" required>
-            <input type="text" name="image" placeholder="image" required>
-            <textarea name="details" placeholder="description"></textarea>
-            <button type="submit">Save</button>
-        </form>
-        <a href="/">Home</a>
-    </div>
+<body data-page="add">
+
+<div class="container">
+    <h1>Add Product</h1>
+
+    <form id="addProductForm" class="form">
+        <input name="name" placeholder="Product name" required>
+        <input name="details" placeholder="Product details">
+        <input name="image" placeholder="Image URL">
+        <input name="price" placeholder="Price" type="number">
+
+        <button class="btn" type="submit">Add</button>
+    </form>
+
+    <a href="/index.html">Back to products</a>
+</div>
+
+<script src="/static/app.js"></script>
 </body>
 </html>

@@ -54,10 +54,6 @@ public class CssSymbolTable {
     return value;
   }
 
-  // =========================
-  // DEFINE CSS SIDE
-  // =========================
-
   public void defineSelector(String selector) {
     definedSelectors.add(normalizeSelector(selector));
   }
@@ -70,9 +66,6 @@ public class CssSymbolTable {
     definedIds.add(normalizeId(idName));
   }
 
-  // =========================
-  // HTML SIDE INPUT
-  // =========================
 
   public void setUsedHtmlSelectors(Set<String> classes,
       Set<String> ids,
@@ -91,26 +84,11 @@ public class CssSymbolTable {
     }
   }
 
-  // =========================
-  // CROSS CHECK
-  // =========================
-
   public void performCrossCheck() {
 
     System.out.println("=== CSS <-> HTML Cross-Reference Analysis ===");
 
     boolean issuesFound = false;
-
-    // CHECK CLASSES
-    // for (String htmlClass : usedClassesInHtml) {
-    // if (!definedClasses.contains(htmlClass)) {
-    // System.out.println(
-    // "WARNING: HTML uses class '" + htmlClass +
-    // "' but it is NOT defined in style.css"
-    // );
-    // issuesFound = true;
-    // }
-    // }
 
     for (String cssClass : definedClasses) {
       if (!usedClassesInHtml.contains(cssClass)) {
@@ -120,17 +98,6 @@ public class CssSymbolTable {
         issuesFound = true;
       }
     }
-
-    // CHECK IDS
-    // for (String htmlId : usedIdsInHtml) {
-    // if (!definedIds.contains(htmlId)) {
-    // System.out.println(
-    // "WARNING: HTML uses id '" + htmlId +
-    // "' but it is NOT defined in style.css"
-    // );
-    // issuesFound = true;
-    // }
-    // }
 
     for (String cssId : definedIds) {
       if (!usedIdsInHtml.contains(cssId)) {
@@ -146,9 +113,15 @@ public class CssSymbolTable {
     }
   }
 
-  // =========================
-  // DEBUG PRINT
-  // =========================
+  public void reset() {
+    definedSelectors.clear();
+    definedClasses.clear();
+    definedIds.clear();
+
+    usedSelectors.clear();
+    usedClassesInHtml.clear();
+    usedIdsInHtml.clear();
+  }
 
   public void printTable() {
 

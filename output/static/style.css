@@ -1,14 +1,14 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial sans-serif;
     background: #eef2f7;
-    color: #111827;
+    color: #111827
 }
 
 .container {
     width: 90%;
     max-width: 1150px;
-    margin: 40px auto;
+    margin: 40px auto
 }
 
 h1 {
@@ -17,14 +17,14 @@ h1 {
     font-size: 42px;
     font-weight: 800;
     color: #111827;
-    text-align: center;
+    text-align: center
 }
 
 .grid {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
-    margin-top: 28px;
+    margin-top: 28px
 }
 
 .card {
@@ -33,7 +33,7 @@ h1 {
     padding: 18px;
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
-    text-align: left;
+    text-align: left
 }
 
 img {
@@ -42,28 +42,28 @@ img {
     object-fit: cover;
     border-radius: 14px;
     background: #e5e7eb;
-    margin-bottom: 14px;
+    margin-bottom: 14px
 }
 
 h3 {
     margin: 8px 0;
     font-size: 22px;
     font-weight: 700;
-    color: #111827;
+    color: #111827
 }
 
 p {
     margin: 8px 0;
     font-size: 15px;
     line-height: 1.6;
-    color: #4b5563;
+    color: #4b5563
 }
 
 strong {
     display: block;
     margin-top: 12px;
     font-size: 20px;
-    color: #16a34a;
+    color: #16a34a
 }
 
 .details-card {
@@ -72,13 +72,13 @@ strong {
     background: white;
     padding: 24px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12)
 }
 
 .actions {
     display: flex;
     gap: 12px;
-    margin-top: 18px;
+    margin-top: 18px
 }
 
 .btn {
@@ -91,7 +91,7 @@ strong {
     font-size: 15px;
     font-weight: 700;
     background: #2563eb;
-    color: white;
+    color: white
 }
 
 .btn-delete {
@@ -104,7 +104,7 @@ strong {
     font-size: 15px;
     font-weight: 700;
     background: #dc2626;
-    color: white;
+    color: white
 }
 
 .form {
@@ -115,17 +115,18 @@ strong {
     background: white;
     padding: 26px;
     border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12)
 }
 
 input {
     padding: 14px;
     border: 1px solid #d1d5db;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 15px
 }
 
 a {
     color: #2563eb;
-    font-weight: 700;
+    font-weight: 700
 }
+
