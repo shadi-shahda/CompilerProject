@@ -24,12 +24,6 @@ public class TemplatesGenerator implements TemplatesASTVisitor<String> {
                 || tagName.equalsIgnoreCase("meta");
     }
 
-    private boolean isInlineNode(TemplatesASTNode node) {
-        return node instanceof HtmlText
-                || node instanceof JinjaPrint
-                || node instanceof AttributeExpressionPart;
-    }
-
     @Override
     public String visit(TemplatesProgram program) {
         StringBuilder sb = new StringBuilder();

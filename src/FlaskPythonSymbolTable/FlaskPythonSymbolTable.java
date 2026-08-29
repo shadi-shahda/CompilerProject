@@ -98,6 +98,14 @@ public class FlaskPythonSymbolTable {
     semanticErrors.add("Error at line " + line + ": " + msg);
   }
 
+  public List<String> getErrors() {
+    return this.semanticErrors;
+  }
+
+  public boolean hasErrors() {
+    return !this.semanticErrors.isEmpty();
+  }
+
   public void printTable() {
     System.out.println("\n======================= SYMBOL TABLE SNAPSHOT =======================");
 
