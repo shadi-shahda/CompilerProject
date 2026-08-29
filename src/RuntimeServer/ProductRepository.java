@@ -10,12 +10,26 @@ public class ProductRepository {
     private final List<Map<String, Object>> products = new ArrayList<>();
 
     public ProductRepository() {
-        addInitialProduct(1, "Laptop", "High performance laptop for coding.", "https://via.placeholder.com/150", 1500);
-        addInitialProduct(2, "Phone", "Smart phone with great camera.", "https://via.placeholder.com/150", 800);
+    }
+
+    public ProductRepository(List<Map<String, Object>> initialProducts) {
+        if (initialProducts == null) {
+            return;
+        }
+
+        for (Map<String, Object> product : initialProducts) {
+            products.add(new LinkedHashMap<>(product));
+        }
     }
 
     public synchronized List<Map<String, Object>> getAll() {
-        return new ArrayList<>(products);
+        List<Map<String, Object>> copy = new ArrayList<>();
+
+        for (Map<String, Object> product : products) {
+            copy.add(new LinkedHashMap<>(product));
+        }
+
+        return copy;
     }
 
     public synchronized Map<String, Object> addProduct(
@@ -40,26 +54,17 @@ public class ProductRepository {
     public synchronized boolean deleteById(int id) {
         return products.removeIf(product -> {
             Object productId = product.get("id");
-            return productId instanceof Number number && number.intValue() == id;
+
+            if (productId instanceof Number number) {
+                return number.intValue() == id;
+            }
+
+            try {
+                return Integer.parseInt(String.valueOf(productId)) == id;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         });
-    }
-
-    private void addInitialProduct(
-            int id,
-            String name,
-            String details,
-            String image,
-            int price
-    ) {
-        Map<String, Object> product = new LinkedHashMap<>();
-
-        product.put("id", id);
-        product.put("name", name);
-        product.put("details", details);
-        product.put("image", image);
-        product.put("price", price);
-
-        products.add(product);
     }
 
     private int generateNextId() {
@@ -70,6 +75,12 @@ public class ProductRepository {
 
             if (id instanceof Number number) {
                 maxId = Math.max(maxId, number.intValue());
+                continue;
+            }
+
+            try {
+                maxId = Math.max(maxId, Integer.parseInt(String.valueOf(id)));
+            } catch (NumberFormatException ignored) {
             }
         }
 

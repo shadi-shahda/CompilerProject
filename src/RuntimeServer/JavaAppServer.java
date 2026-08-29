@@ -4,6 +4,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
 
 public class JavaAppServer {
 
@@ -14,9 +16,17 @@ public class JavaAppServer {
     private HttpServer server;
 
     public JavaAppServer(int port, String outputDirectory) {
+        this(port, outputDirectory, List.of());
+    }
+
+    public JavaAppServer(
+            int port,
+            String outputDirectory,
+            List<Map<String, Object>> initialProducts
+    ) {
         this.port = port;
         this.outputDirectory = outputDirectory;
-        this.productRepository = new ProductRepository();
+        this.productRepository = new ProductRepository(initialProducts);
     }
 
     public void start() throws IOException {

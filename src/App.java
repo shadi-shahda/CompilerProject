@@ -3,6 +3,7 @@ import RuntimeServer.JavaAppServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class App {
 
@@ -15,16 +16,19 @@ public class App {
                             "input_files/static/style.css",
                             "output"
                     );
+
             List<String> availableTemplates = new ArrayList<>();
             availableTemplates.add("index.html");
             availableTemplates.add("add.html");
             availableTemplates.add("detail.html");
 
-            compilerPipeline.compile(availableTemplates);
+            List<Map<String, Object>> initialProducts =
+                    compilerPipeline.compile(availableTemplates);
 
             JavaAppServer server = new JavaAppServer(
                     8081,
-                    "output"
+                    "output",
+                    initialProducts
             );
 
             server.start();

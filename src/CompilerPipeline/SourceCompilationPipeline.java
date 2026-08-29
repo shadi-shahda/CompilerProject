@@ -1,5 +1,6 @@
 package CompilerPipeline;
 
+import CompilerOutput.AstAndSymbolTableReportWriter;
 import CompilerOutput.SemanticReportWriter;
 
 import CssAST.CssProgram;
@@ -38,6 +39,7 @@ import java.nio.file.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SourceCompilationPipeline {
 
@@ -58,10 +60,17 @@ public class SourceCompilationPipeline {
         this.outputDirectory = Path.of(outputDirectory);
     }
 
-    public void compile(List<String> availableTemplates) throws IOException {
+    public List<Map<String, Object>> compile(
+            List<String> availableTemplates
+    ) throws IOException {
+
         System.out.println("========== COMPILATION STARTED ==========");
 
         FlaskPythonProgram pythonAst = parsePythonFile();
+
+        List<Map<String, Object>> initialProducts =
+                new PythonProductsExtractor().extractProducts(pythonAst);
+
         FlaskPythonSymbolTable pythonSymbolTable = analyzePythonSemantics(
                 pythonAst,
                 availableTemplates
@@ -73,7 +82,15 @@ public class SourceCompilationPipeline {
         for (String availableTemplate : availableTemplates) {
             TemplatesProgram ast = parseTemplateFile(availableTemplate);
             templatesPrograms.add(ast);
-            templatesSymbolTables.add(analyzeTemplateSemantics(ast, availableTemplate, pythonSymbolTable));
+
+            TemplatesSymbolTable templateSymbolTable =
+                    analyzeTemplateSemantics(
+                            ast,
+                            availableTemplate,
+                            pythonSymbolTable
+                    );
+
+            templatesSymbolTables.add(templateSymbolTable);
         }
 
         CssProgram cssAst = parseCssFile();
@@ -90,6 +107,17 @@ public class SourceCompilationPipeline {
                 "compiler_output/semantic_report.txt"
         );
 
+        new AstAndSymbolTableReportWriter().write(
+                pythonAst,
+                pythonSymbolTable,
+                templatesPrograms,
+                templatesSymbolTables,
+                availableTemplates,
+                cssAst,
+                CssSymbolTable.instance,
+                "compiler_output/ast_and_symbol_tables.txt"
+        );
+
         stopIfSemanticErrorsExist(
                 pythonSymbolTable,
                 templatesSymbolTables,
@@ -102,7 +130,14 @@ public class SourceCompilationPipeline {
                 cssAst
         );
 
+        System.out.println(
+                "Initial products extracted from Python AST: "
+                        + initialProducts.size()
+        );
+
         System.out.println("========== COMPILATION FINISHED SUCCESSFULLY ==========");
+
+        return initialProducts;
     }
 
     private FlaskPythonProgram parsePythonFile() throws IOException {
