@@ -11,21 +11,16 @@ public class JavaAppServer {
 
     private final int port;
     private final String outputDirectory;
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     private HttpServer server;
 
     public JavaAppServer(int port, String outputDirectory) {
-        this(port, outputDirectory, List.of());
-    }
-
-    public JavaAppServer(
-            int port,
-            String outputDirectory,
-            List<Map<String, Object>> initialProducts
-    ) {
         this.port = port;
         this.outputDirectory = outputDirectory;
+    }
+
+    public void setProductRepository(List<Map<String, Object>> initialProducts) {
         this.productRepository = new ProductRepository(initialProducts);
     }
 
