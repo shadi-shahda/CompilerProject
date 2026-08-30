@@ -42,6 +42,14 @@ public class FlaskPythonSymbolTable {
     this.scopes.peek().put(name, type);
   }
 
+  public boolean isVariableDefinedInCurrentScope(String name) {
+    return this.scopes.peek().containsKey(name);
+  }
+
+  public FlaskPythonType getVariableTypeFromCurrentScope(String name) {
+    return this.scopes.peek().getOrDefault(name, FlaskPythonType.UNKNOWN);
+  }
+
   public boolean isVariableDefined(String name) {
     for (int i = this.scopes.size() - 1; i >= 0; i--) {
       if (this.scopes.get(i).containsKey(name))
