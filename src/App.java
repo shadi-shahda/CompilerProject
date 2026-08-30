@@ -8,6 +8,7 @@ import java.util.Map;
 public class App {
 
     public static void main(String[] args) {
+        JavaAppServer server = new JavaAppServer(8081, "output");
         try {
             SourceCompilationPipeline compilerPipeline =
                     new SourceCompilationPipeline(
@@ -25,17 +26,14 @@ public class App {
             List<Map<String, Object>> initialProducts =
                     compilerPipeline.compile(availableTemplates);
 
-            JavaAppServer server = new JavaAppServer(
-                    8081,
-                    "output",
-                    initialProducts
-            );
-
+            server.setProductRepository(initialProducts);
             server.start();
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
+        } finally {
+            server.stop();
         }
     }
 }
