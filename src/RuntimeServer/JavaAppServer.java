@@ -55,8 +55,7 @@ public class JavaAppServer {
         server.start();
 
         System.out.println("Java server started successfully.");
-        System.out.println("Open: http://localhost:" + port);
-        System.out.println("Products API: http://localhost:" + port + "/api/products");
+        System.out.println("Open: http://localhost:" + port + "/index.html");
     }
 
     public void stop() {
