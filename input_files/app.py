@@ -21,6 +21,14 @@ products = [
     },
 ]
 
+# x = unknown_variable
+
+# bad_value = "price" + 10
+
+# def scope_demo():
+#     local_value = 10
+# x = local_value
+
 @app.route("/")
 def home():
     return render_template("index.html")
