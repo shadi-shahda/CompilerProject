@@ -32,7 +32,6 @@ public class App {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
-        } finally {
             server.stop();
         }
     }
