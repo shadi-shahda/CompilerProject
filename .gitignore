@@ -29,3 +29,5 @@ out/
 bin/
 report.md
 tests/
+
+__pycache__/
