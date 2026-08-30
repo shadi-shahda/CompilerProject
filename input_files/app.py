@@ -23,7 +23,7 @@ products = [
 
 # x = unknown_variable
 
-bad_value = "price" + 10
+# bad_value = "price" + 10
 
 # def scope_demo():
 #     local_value = 10
