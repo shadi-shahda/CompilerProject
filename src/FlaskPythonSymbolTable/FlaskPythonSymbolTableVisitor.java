@@ -70,8 +70,27 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
   @Override
   public FlaskPythonType visit(FlaskPythonAssignmentStatement assignStmt) {
     FlaskPythonType inferredType = FlaskPythonType.UNKNOWN;
+
     if (assignStmt.expression != null) {
       inferredType = assignStmt.expression.accept(this);
+    }
+
+    if (symbolTable.isVariableDefinedInCurrentScope(assignStmt.variableName)) {
+      FlaskPythonType previousType =
+              symbolTable.getVariableTypeFromCurrentScope(assignStmt.variableName);
+
+      if (isTypeMismatch(previousType, inferredType)) {
+        symbolTable.reportError(
+                "Type Mismatch: variable '"
+                        + assignStmt.variableName
+                        + "' was previously defined as "
+                        + previousType
+                        + " but is now assigned a value of type "
+                        + inferredType
+                        + ".",
+                assignStmt.getLineNumber()
+        );
+      }
     }
 
     symbolTable.defineVariable(assignStmt.variableName, inferredType);
@@ -428,6 +447,33 @@ public class FlaskPythonSymbolTableVisitor implements FlaskPythonASTVisitor<Flas
     }
 
     return FlaskPythonType.UNKNOWN;
+  }
+
+  private boolean isTypeMismatch(
+          FlaskPythonType previousType,
+          FlaskPythonType newType
+  ) {
+    if (previousType == FlaskPythonType.UNKNOWN || newType == FlaskPythonType.UNKNOWN) {
+      return false;
+    }
+
+    if (previousType == FlaskPythonType.OBJECT || newType == FlaskPythonType.OBJECT) {
+      return false;
+    }
+
+    if (previousType == FlaskPythonType.ROUTE
+            || previousType == FlaskPythonType.METHOD
+            || previousType == FlaskPythonType.TEMPLATE_VARIABLE) {
+      return false;
+    }
+
+    if (newType == FlaskPythonType.ROUTE
+            || newType == FlaskPythonType.METHOD
+            || newType == FlaskPythonType.TEMPLATE_VARIABLE) {
+      return false;
+    }
+
+    return previousType != newType;
   }
 
   private String stripQuotes(String s) {

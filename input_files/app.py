@@ -21,13 +21,20 @@ products = [
     },
 ]
 
+# Undifined variable
 # x = unknown_variable
 
+# Type error
 # bad_value = "price" + 10
 
+# scope error
 # def scope_demo():
 #     local_value = 10
 # x = local_value
+
+# Type mismatch
+# x = 10
+# x = "sss"
 
 @app.route("/")
 def home():
